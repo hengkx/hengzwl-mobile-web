@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Button,
@@ -15,8 +15,10 @@ import {
 import axios from 'axios';
 import { UploadOutlined } from '@ant-design/icons';
 import { TablePaginationConfig } from 'antd/lib/table';
+import { StoreValue } from 'antd/lib/form/interface';
 import api from '../../config/api';
 import './less/company.less';
+import { IShop } from '../Shop/Shop';
 
 const { Column } = Table;
 const { Option } = Select;
@@ -30,9 +32,13 @@ const layout = {
   wrapperCol: { span: 20 },
 };
 
+interface ITask {
+  id: number;
+}
+
 const Task: React.FC = () => {
-  const [tasks, setTasks] = useState<object[]>();
-  const [shops, setShops] = useState<object[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>();
+  const [shops, setShops] = useState<IShop[]>([]);
   const [selected, setSelected] = useState<CompanyInterface>();
   const [visible, setVisible] = useState(false);
   const [pagination, setPagination] = useState<TablePaginationConfig>();
@@ -65,7 +71,7 @@ const Task: React.FC = () => {
     }
   };
 
-  const handleFinish = async (values: any) => {
+  const handleFinish = async (values: StoreValue) => {
     if (selected) {
       const res = await axios.put(`${api.task}/${selected.id}`, values);
       if (res.code === 0) {
@@ -127,7 +133,7 @@ const Task: React.FC = () => {
           </Form.Item>
           <Form.Item label="店铺" name="shopId" rules={[{ required: true }]}>
             <Select>
-              {shops.map((item: any) => (
+              {shops.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.name}
                 </Option>

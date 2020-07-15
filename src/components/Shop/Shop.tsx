@@ -17,13 +17,14 @@ const layout = {
   wrapperCol: { span: 20 },
 };
 
-interface Shop {
+export interface IShop {
   id: number;
+  name: string;
 }
 
 const ShopList: React.FC = () => {
-  const [tasks, setTasks] = useState<Shop[]>();
-  const [platforms, setPlatforms] = useState<Shop[]>([]);
+  const [tasks, setTasks] = useState<IShop[]>();
+  const [platforms, setPlatforms] = useState<IShop[]>([]);
   const [selected, setSelected] = useState<CompanyInterface>();
   const [visible, setVisible] = useState(false);
   const [pagination, setPagination] = useState<TablePaginationConfig>();
@@ -96,7 +97,7 @@ const ShopList: React.FC = () => {
           </Form.Item>
           <Form.Item label="平台" name="platformId" rules={[{ required: true }]}>
             <Select>
-              {platforms.map((item: any) => (
+              {platforms.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.name}
                 </Option>

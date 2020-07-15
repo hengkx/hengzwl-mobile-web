@@ -23,12 +23,15 @@ const StudentList: React.FC = () => {
 
   const match = useRouteMatch();
 
-  const loadData = async (params = {}) => {
-    const res = await axios.get(api.student, { params: { ...form.getFieldsValue(), ...params } });
-    const { records: data, ...others } = res.data;
-    setStudents(data);
-    setPagination(others);
-  };
+  const loadData = React.useCallback(
+    async (params = {}) => {
+      const res = await axios.get(api.student, { params: { ...form.getFieldsValue(), ...params } });
+      const { records: data, ...others } = res.data;
+      setStudents(data);
+      setPagination(others);
+    },
+    [form],
+  );
 
   React.useEffect(() => {
     (async () => {
@@ -38,7 +41,7 @@ const StudentList: React.FC = () => {
       setSchools(schoolRes.data);
     })();
     loadData();
-  }, []);
+  }, [loadData]);
 
   const handlePaginationChange = (page: number, pageSize: number | undefined) => {
     loadData({ page, pageSize });

@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
-    "antd": "^4.4.1",
+    "antd": "^4.4.2",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "crypto-js": "^4.0.0",

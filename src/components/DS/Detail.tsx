@@ -19,7 +19,7 @@ const Detail: React.FC = () => {
       const res = await axios.get(`${api.student}/${id}`);
       setStudent(res.data);
     })();
-  }, []);
+  }, [id]);
 
   if (!student) {
     return <div />;

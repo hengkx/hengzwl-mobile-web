@@ -12,7 +12,6 @@ import {
   InputNumber,
   Select,
 } from 'antd';
-import moment from 'moment';
 import axios from 'axios';
 import { UploadOutlined } from '@ant-design/icons';
 import { TablePaginationConfig } from 'antd/lib/table';
@@ -31,14 +30,7 @@ const layout = {
   wrapperCol: { span: 20 },
 };
 
-const normFile = (e: any) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
-
-const Company = () => {
+const Task: React.FC = () => {
   const [tasks, setTasks] = useState<object[]>();
   const [shops, setShops] = useState<object[]>([]);
   const [selected, setSelected] = useState<CompanyInterface>();
@@ -53,7 +45,7 @@ const Company = () => {
     setPagination(others);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       const res = await axios.get(api.shop, { params: { pagination: false } });
       setShops(res.data);
@@ -113,7 +105,12 @@ const Company = () => {
             label="图片"
             name="imgUrl"
             valuePropName="fileList"
-            getValueFromEvent={normFile}
+            getValueFromEvent={(e) => {
+              if (Array.isArray(e)) {
+                return e;
+              }
+              return e && e.fileList;
+            }}
             rules={[{ required: true }]}
           >
             <Upload
@@ -190,4 +187,4 @@ const Company = () => {
   );
 };
 
-export default Company;
+export default Task;

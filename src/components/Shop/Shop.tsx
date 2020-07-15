@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Popconfirm, message, Modal, Form, Input, Card, Select } from 'antd';
-import moment from 'moment';
 import axios from 'axios';
-import { UploadOutlined } from '@ant-design/icons';
 import { TablePaginationConfig } from 'antd/lib/table';
 import api from '../../config/api';
 import './less/company.less';
@@ -19,16 +17,13 @@ const layout = {
   wrapperCol: { span: 20 },
 };
 
-const normFile = (e: any) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
+interface Shop {
+  id: number;
+}
 
-const Company = () => {
-  const [tasks, setTasks] = useState<object[]>();
-  const [platforms, setPlatforms] = useState<object[]>([]);
+const ShopList: React.FC = () => {
+  const [tasks, setTasks] = useState<Shop[]>();
+  const [platforms, setPlatforms] = useState<Shop[]>([]);
   const [selected, setSelected] = useState<CompanyInterface>();
   const [visible, setVisible] = useState(false);
   const [pagination, setPagination] = useState<TablePaginationConfig>();
@@ -144,4 +139,4 @@ const Company = () => {
   );
 };
 
-export default Company;
+export default ShopList;

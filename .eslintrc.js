@@ -20,7 +20,10 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
+  plugins: ['react-hooks'],
   rules: {
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -28,10 +31,11 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'react/jsx-props-no-spreading': 'off',
     'compat/compat': 'off',
+    'react/jsx-one-expression-per-line': ['off'],
   },
   overrides: [
     {
-      files: ['./src/**/*.{ts,tsx}'],
+      files: ['**/*.{ts,tsx}'],
       rules: {
         'react/prop-types': 'off',
       },

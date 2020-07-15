@@ -1,0 +1,16 @@
+export default {
+  signIn: '/api/account/signIn',
+  getAccountInfo: '/api/account/info',
+  getOptions: '/api/base/options',
+  form: '/api/form',
+  company: '/api/company',
+  menu: '/api/menu',
+  view: '/api/view',
+  data: '/api/data',
+  task: '/api/task',
+  platform: '/api/platform',
+  shop: '/api/shop',
+  student: '/api/ds/student',
+  class: '/api/ds/class',
+  school: '/api/ds/school',
+};

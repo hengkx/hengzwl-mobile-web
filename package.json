@@ -1,0 +1,117 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.2.1",
+    "antd": "^4.4.1",
+    "axios": "^0.19.2",
+    "classnames": "^2.2.6",
+    "crypto-js": "^4.0.0",
+    "enquire-js": "^0.2.1",
+    "immutability-helper": "^3.1.1",
+    "lodash": "^4.17.19",
+    "md5.js": "^1.3.5",
+    "moment": "^2.27.0",
+    "qs": "^6.9.4",
+    "rc-queue-anim": "^1.8.5",
+    "rc-scroll-anim": "^2.7.4",
+    "rc-tween-one": "^2.7.2",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-app-rewired": "^2.1.6",
+    "react-dnd": "^11.1.3",
+    "react-dnd-html5-backend": "^11.1.3",
+    "react-dom": "^16.13.1",
+    "react-responsive": "^8.1.0",
+    "react-router-dom": "^5.2.0",
+    "xlsx": "^0.16.3"
+  },
+  "scripts": {
+    "start": "set PORT=80 && react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject",
+    "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
+    "lint-fix": "yarn --silent lint --fix; exit 0",
+    "lint-styles": "stylelint --ignore-path .eslintignore '**/*.*(css|less)' --syntax less",
+    "lint-styles-fix": "yarn --silent lint-styles --fix; exit 0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "cross-env NODE_ENV=development eslint --cache"
+    ],
+    "{*.json,.{babelrc,eslintrc,prettierrc,stylelintrc}}": [
+      "prettier --ignore-path .eslintignore --parser json --write"
+    ],
+    "*.{css,less}": [
+      "stylelint --ignore-path .eslintignore --syntax less --fix",
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ],
+    "*.{html,md,yml}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/react": "^10.4.6",
+    "@testing-library/user-event": "^12.0.11",
+    "@types/classnames": "^2.2.10",
+    "@types/crypto-js": "^3.1.47",
+    "@types/jest": "^26.0.4",
+    "@types/lodash": "^4.14.157",
+    "@types/node": "^14.0.23",
+    "@types/qs": "^6.9.3",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-responsive": "^8.0.2",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/uuid": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
+    "babel-plugin-import": "^1.13.0",
+    "cross-env": "^7.0.2",
+    "customize-cra": "^1.0.0-alpha.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-compat": "^3.8.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.18.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "husky": "^4.2.5",
+    "less": "^3.12.0",
+    "less-loader": "^6.2.0",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
+    "react-scripts": "^3.4.1",
+    "stylelint": "^13.6.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
+    "stylelint-order": "^4.1.0",
+    "typescript": "^3.9.6"
+  }
+}

@@ -18,7 +18,7 @@ jobs:
           node-version: '12.x'
 
       - name: Build Project
-        run: yarn && yarn run ci
+        run: yarn && yarn run build
 
       - name: Deploy to Server
         uses: hengkx/ssh-deploy@v1.0.1
@@ -26,6 +26,5 @@ jobs:
           USERNAME: ${{ secrets.DEPLOY_USER }}
           PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
           HOST: ${{ secrets.DEPLOY_HOST }}
-          SOURCE: 'dist'
+          SOURCE: 'build'
           TARGET: '/root/hengzwl/web'
-          AFTER_COMMAND: 'npm run stop && npm install --production && npm run start'

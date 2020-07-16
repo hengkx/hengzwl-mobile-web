@@ -1,6 +1,7 @@
 export default {
   signIn: '/api/account/signIn',
   getAccountInfo: '/api/account/info',
+  getBindWeChatQRCode: '/api/account/getBindWeChatQRCode',
   getOptions: '/api/base/options',
   form: '/api/form',
   company: '/api/company',

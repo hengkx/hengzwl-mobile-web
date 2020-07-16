@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, Layout } from 'antd';
+import * as React from 'react';
+import { Menu, Layout, Modal, message } from 'antd';
 import { Switch, Route, Link, useLocation, useRouteMatch } from 'react-router-dom';
 import axios from 'axios';
 import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined } from '@ant-design/icons';
@@ -29,20 +29,35 @@ const adminNavs = [
 interface User {
   name: string;
   username: string;
+  unionId?: string;
 }
 
 const Main: React.FC = () => {
-  const [user, setUser] = useState<User>();
-  const [collapsed, setCollapsed] = useState(false);
+  const [user, setUser] = React.useState<User>();
+  const [collapsed, setCollapsed] = React.useState(false);
+  const [bindUrl, setBindUrl] = React.useState<string>();
   const location = useLocation();
   const match = useRouteMatch();
 
   const init = async () => {
     const userRes = await axios.get<User>(api.getAccountInfo);
     setUser(userRes.data);
+    if (!userRes.data.unionId) {
+      const res = await axios.get(api.getBindWeChatQRCode);
+      setBindUrl(res.data.url);
+      const interval = setInterval(async () => {
+        const { data } = await axios.get<User>(api.getAccountInfo);
+        if (data.unionId) {
+          clearInterval(interval);
+          message.success('绑定成功');
+          setBindUrl('');
+          setUser(data);
+        }
+      }, 1000);
+    }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     init();
   }, []);
 
@@ -52,6 +67,7 @@ const Main: React.FC = () => {
   if (!user) {
     return <div />;
   }
+
   return (
     <Layout className="main">
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -95,6 +111,15 @@ const Main: React.FC = () => {
           </Switch>
         </Content>
       </Layout>
+      <Modal
+        visible={!!bindUrl}
+        footer={null}
+        closable={false}
+        bodyStyle={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
+      >
+        <img src={bindUrl} alt="" />
+        <div style={{ color: '#f00' }}>请使用微信扫描绑定帐号</div>
+      </Modal>
     </Layout>
   );
 };

@@ -166,16 +166,18 @@ const StudentList: React.FC = () => {
           dataIndex="id"
           render={(text, record) => (
             <>
-              <Button
-                type="link"
-                style={{ paddingRight: 0 }}
-                onClick={() => {
-                  setSelected(record);
-                  form.setFieldsValue({ ...record, time: moment(record.time) });
-                }}
-              >
-                缴费
-              </Button>
+              {record.totalCost - record.paid > 0 && (
+                <Button
+                  type="link"
+                  style={{ paddingRight: 0 }}
+                  onClick={() => {
+                    setSelected(record);
+                    form.setFieldsValue({ ...record, time: moment(record.time) });
+                  }}
+                >
+                  缴费
+                </Button>
+              )}
               <Button
                 type="link"
                 style={{ paddingRight: 0 }}

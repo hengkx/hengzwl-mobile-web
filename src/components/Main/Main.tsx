@@ -5,17 +5,16 @@ import axios from 'axios';
 import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined } from '@ant-design/icons';
 import Task from '../Task';
 import Shop from '../Shop';
-import './less/main.less';
 import api from '../../config/api';
 import { ReactComponent as Logo } from '../IndexPage/images/logo.svg';
+import './less/main.less';
 
 const { Header, Sider, Content } = Layout;
 
 const Company = React.lazy(() => import('../Company'));
 const MenuComponent = React.lazy(() => import('../Menu'));
-const Student = React.lazy(() => import('../DS/StudentList'));
-const StudentDetail = React.lazy(() => import('../DS/Detail'));
-const navs = [{ name: '学员列表', url: '/student' }];
+const DS = React.lazy(() => import('../DS'));
+const navs = [{ name: '学员列表', url: '/ds' }];
 
 const adminNavs = [
   { name: '表单', url: '/form' },
@@ -106,8 +105,7 @@ const Main: React.FC = () => {
             <Route exact path={`${match.url}/shop`} component={Shop} />
             <Route exact path={`${match.url}/company`} component={Company} />
             <Route exact path={`${match.url}/menu`} component={MenuComponent} />
-            <Route exact path={`${match.url}/student`} component={Student} />
-            <Route exact path={`${match.url}/student/:id`} component={StudentDetail} />
+            <Route path={`${match.url}/ds`} component={DS} />
           </Switch>
         </Content>
       </Layout>

@@ -92,6 +92,7 @@ const StudentList: React.FC = () => {
           >
             <Form.Item label="车型" name="classId" rules={[{ required: true }]}>
               <Select style={{ width: 150 }}>
+                <Option value="0">全部</Option>
                 {classes.map((item) => (
                   <Option key={item.id} value={`${item.id}`}>
                     {item.name}
@@ -108,6 +109,7 @@ const StudentList: React.FC = () => {
             </Form.Item>
             <Form.Item label="校区" name="schoolId" rules={[{ required: true }]}>
               <Select style={{ width: '138px' }}>
+                <Option value="0">全部</Option>
                 {schools.map((item) => (
                   <Option key={item.id} value={`${item.id}`}>
                     {item.district}

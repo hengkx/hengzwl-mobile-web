@@ -36,7 +36,7 @@ axios.interceptors.response.use(
   (response) => {
     if (response.data.code === 401) {
       window.location.href = '/account/signin';
-    } else if (response.data.code !== 0) {
+    } else if (response.data.code !== 0 && response.data.message) {
       message.error(response.data.message);
     }
     return response.data;

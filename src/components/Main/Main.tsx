@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Menu, Layout, Modal, message } from 'antd';
-import { Switch, Route, Link, useLocation, useRouteMatch } from 'react-router-dom';
+import { Menu, Layout, Modal, message, Button, Space } from 'antd';
+import { Switch, Route, Link, useLocation, useRouteMatch, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined } from '@ant-design/icons';
 import Task from '../Task';
@@ -38,6 +38,7 @@ const Main: React.FC = () => {
   const [user, setUser] = React.useState<User>();
   const [collapsed, setCollapsed] = React.useState(false);
   const [bindUrl, setBindUrl] = React.useState<string>();
+  const history = useHistory();
   const location = useLocation();
   const match = useRouteMatch();
 
@@ -100,7 +101,20 @@ const Main: React.FC = () => {
             onClick: toggle,
           })}
           <div style={{ flex: 1 }} />
-          <div className="header-user">{user.name}</div>
+          <div className="header-user">
+            <Space>
+              {user.name}
+              <Button
+                type="link"
+                onClick={() => {
+                  localStorage.clear();
+                  history.push('/account/signIn');
+                }}
+              >
+                退出
+              </Button>
+            </Space>
+          </div>
         </Header>
         <Content style={{ margin: 24, minHeight: 'auto' }}>
           <Switch>

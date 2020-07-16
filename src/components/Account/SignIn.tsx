@@ -11,15 +11,22 @@ import './less/signIn.less';
 const SignIn: React.FC = () => {
   const history = useHistory();
   const [form] = Form.useForm();
+  const [verifyId, setVerifyId] = React.useState('');
 
   const onFinish = async (values: Store) => {
     const res = await axios.post(api.signIn, {
       ...values,
+      verify: true,
+      verifyId,
       password: new MD5().update(values.password).digest('hex'),
     });
     if (res.code === 0) {
-      localStorage.setItem('token', res.data.token);
-      history.push('/dashboard');
+      if (res.data.verifyId) {
+        setVerifyId(res.data.verifyId);
+      } else {
+        localStorage.setItem('token', res.data.token);
+        history.push('/dashboard');
+      }
     }
   };
 
@@ -38,6 +45,14 @@ const SignIn: React.FC = () => {
               placeholder="密码"
             />
           </Form.Item>
+          {verifyId && (
+            <Form.Item name="verifyCode" rules={[{ required: true }]}>
+              <Input
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="请输入验证码"
+              />
+            </Form.Item>
+          )}
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>自动登录</Checkbox>

@@ -11,7 +11,10 @@ export default {
   task: '/api/task',
   platform: '/api/platform',
   shop: '/api/shop',
-  student: '/api/ds/student',
-  class: '/api/ds/class',
-  school: '/api/ds/school',
+  ds: {
+    student: '/api/ds/student',
+    class: '/api/ds/class',
+    school: '/api/ds/school',
+    pay: '/api/ds/pay',
+  },
 };

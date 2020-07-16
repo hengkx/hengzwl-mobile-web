@@ -16,7 +16,7 @@ const Detail: React.FC = () => {
 
   React.useEffect(() => {
     (async () => {
-      const res = await axios.get(`${api.student}/${id}`);
+      const res = await axios.get(`${api.ds.student}/${id}`);
       setStudent(res.data);
     })();
   }, [id]);

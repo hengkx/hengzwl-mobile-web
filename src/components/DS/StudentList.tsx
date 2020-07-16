@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Table, Button, Popconfirm, message, Form, Input, Card, Select } from 'antd';
+import { Table, Button, Popconfirm, message, Form, Input, Card, Select, InputNumber } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import { TablePaginationConfig } from 'antd/lib/table';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { StoreValue } from 'antd/lib/form/interface';
 
+import Modal from 'antd/lib/modal/Modal';
+import { StepForwardFilled } from '@ant-design/icons';
 import api from '../../config/api';
 import './less/student.less';
 import { Student, Class, School } from './interface';
@@ -18,6 +20,7 @@ const StudentList: React.FC = () => {
   const [classes, setClasses] = React.useState<Class[]>([]);
   const [schools, setSchools] = React.useState<School[]>([]);
   const [selected, setSelected] = React.useState<Student>();
+  const [paid, setPaid] = React.useState<number>();
   const [pagination, setPagination] = React.useState<TablePaginationConfig>();
   const [form] = Form.useForm();
 
@@ -25,7 +28,9 @@ const StudentList: React.FC = () => {
 
   const loadData = React.useCallback(
     async (params = {}) => {
-      const res = await axios.get(api.student, { params: { ...form.getFieldsValue(), ...params } });
+      const res = await axios.get(api.ds.student, {
+        params: { ...form.getFieldsValue(), ...params },
+      });
       const { records: data, ...others } = res.data;
       setStudents(data);
       setPagination(others);
@@ -35,9 +40,9 @@ const StudentList: React.FC = () => {
 
   React.useEffect(() => {
     (async () => {
-      const res = await axios.get(api.class);
+      const res = await axios.get(api.ds.class);
       setClasses(res.data);
-      const schoolRes = await axios.get(api.school);
+      const schoolRes = await axios.get(api.ds.school);
       setSchools(schoolRes.data);
     })();
     loadData();
@@ -48,7 +53,7 @@ const StudentList: React.FC = () => {
   };
 
   const handleDelClick = async (id: string) => {
-    const res = await axios.delete(`${api.student}/${id}`);
+    const res = await axios.delete(`${api.ds.student}/${id}`);
     if (res.code === 0) {
       message.success('删除成功');
       loadData();
@@ -61,16 +66,31 @@ const StudentList: React.FC = () => {
       expireTime: values.expireTime.valueOf(),
     };
     if (selected) {
-      const res = await axios.put(`${api.student}/${selected.id}`, newValues);
+      const res = await axios.put(`${api.ds.student}/${selected.id}`, newValues);
       if (res.code === 0) {
         message.success('修改成功');
         setSelected(undefined);
         loadData();
       }
     } else {
-      const res = await axios.post(api.student, newValues);
+      const res = await axios.post(api.ds.student, newValues);
       if (res.code === 0) {
         message.success('添加成功');
+        loadData();
+      }
+    }
+  };
+
+  const handlePay = async () => {
+    if (!paid) {
+      message.error('缴费金额必须大于0');
+    } else if (selected!.totalCost - selected!.paid < paid) {
+      message.error('缴费金额大于欠款金额');
+    } else {
+      const res = await axios.post(api.ds.pay, { paid, studentId: selected!.id });
+      if (res.code === 0) {
+        message.success('缴费成功');
+        setSelected(undefined);
         loadData();
       }
     }
@@ -158,6 +178,11 @@ const StudentList: React.FC = () => {
           render={(_, record) => (
             <span style={{ color: record.totalCost - record.paid > 0 ? '#f00' : '' }}>
               {record.totalCost - record.paid}
+              {record.totalCost - record.paid > 0 && (
+                <Button type="link" onClick={() => setSelected(record)}>
+                  缴费
+                </Button>
+              )}
             </span>
           )}
         />
@@ -168,28 +193,7 @@ const StudentList: React.FC = () => {
           dataIndex="id"
           render={(text, record) => (
             <>
-              {record.totalCost - record.paid > 0 && (
-                <Button
-                  type="link"
-                  style={{ paddingRight: 0 }}
-                  onClick={() => {
-                    setSelected(record);
-                    form.setFieldsValue({ ...record, time: moment(record.time) });
-                  }}
-                >
-                  缴费
-                </Button>
-              )}
-              <Button
-                type="link"
-                style={{ paddingRight: 0 }}
-                onClick={() => {
-                  setSelected(record);
-                  form.setFieldsValue({ ...record, time: moment(record.time) });
-                }}
-              >
-                编辑
-              </Button>
+              <Link to={`${match.url}/edit/${record.id}`}>编辑</Link>
               <Popconfirm title="确定删除这项吗?" onConfirm={() => handleDelClick(text)}>
                 <Button type="link">删除</Button>
               </Popconfirm>
@@ -197,6 +201,19 @@ const StudentList: React.FC = () => {
           )}
         />
       </Table>
+      <Modal
+        visible={!!selected}
+        title={`${selected?.name} 缴费`}
+        onCancel={() => setSelected(undefined)}
+        onOk={handlePay}
+      >
+        <InputNumber
+          placeholder="请输入金额"
+          value={paid}
+          onChange={(val) => setPaid(val as number)}
+          style={{ width: '100%' }}
+        />
+      </Modal>
     </Card>
   );
 };

@@ -1,6 +1,20 @@
-import React, { useEffect } from 'react';
-import { Button, message, Form, Input, Card, Select, DatePicker, InputNumber, Space } from 'antd';
+import * as React from 'react';
+import {
+  Button,
+  message,
+  Form,
+  Input,
+  Card,
+  Select,
+  DatePicker,
+  InputNumber,
+  Space,
+  Checkbox,
+} from 'antd';
 import axios from 'axios';
+import moment from 'moment';
+import { useParams, useHistory } from 'react-router-dom';
+import { StoreValue } from 'antd/lib/form/interface';
 import api from '../../config/api';
 import { Class, School } from './interface';
 
@@ -11,10 +25,6 @@ declare global {
 }
 
 const { Option } = Select;
-
-interface CompanyInterface {
-  id: string;
-}
 
 const layout = {
   labelCol: { span: 4 },
@@ -30,12 +40,25 @@ const Edit: React.FC = () => {
   const [classes, setClasses] = React.useState<Class[]>([]);
   const [schools, setSchools] = React.useState<School[]>([]);
   const [form] = Form.useForm();
+  const { id } = useParams();
+  const history = useHistory();
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
-      const res = await axios.get(api.class);
+      if (id) {
+        const { data } = await axios.get(`${api.ds.student}/${id}`);
+        if (data) {
+          form.setFieldsValue({ ...data, time: moment(data.time) });
+        }
+      }
+    })();
+  }, [id, form]);
+
+  React.useEffect(() => {
+    (async () => {
+      const res = await axios.get(api.ds.class);
       setClasses(res.data);
-      const schoolRes = await axios.get(api.school);
+      const schoolRes = await axios.get(api.ds.school);
       setSchools(schoolRes.data);
     })();
   }, []);
@@ -71,36 +94,60 @@ const Edit: React.FC = () => {
     }
   };
 
-  const handleFinish = async (values: unknown) => {
-    // if (selected) {
-    //   const res = await axios.put(`${api.shop}/${selected.id}`, values);
-    //   if (res.code === 0) {
-    //     message.success('修改成功');
-    //     setSelected(undefined);
-    //     loadData();
-    //   }
-    // } else {
-    //   const res = await axios.post(api.shop, values);
-    //   if (res.code === 0) {
-    //     message.success('添加成功');
-    //     setVisible(false);
-    //     loadData();
-    //   }
-    // }
+  const handleFinish = async (values: StoreValue) => {
+    if (id) {
+      const res = await axios.put(`${api.ds.student}/${id}`, {
+        ...values,
+        time: values.time.format('YYYY-MM-DD HH:mm:ss'),
+        id,
+      });
+      if (res.code === 0) {
+        message.success('修改成功');
+        history.goBack();
+      }
+    } else {
+      const res = await axios.post(api.ds.student, {
+        ...values,
+        time: values.time.format('YYYY-MM-DD HH:mm:ss'),
+      });
+      if (res.code === 0) {
+        message.success('添加成功');
+        history.goBack();
+      }
+    }
   };
   const style = { width: '100%' };
 
   return (
     <Card className="company">
-      <Form {...layout} form={form} onFinish={handleFinish} style={{ width: 500 }}>
+      <Form
+        {...layout}
+        form={form}
+        onFinish={handleFinish}
+        initialValues={{
+          classId: 6,
+          schoolId: 1,
+          other: 0,
+          time: moment(),
+          isVeteran: false,
+          // name: 'name',
+          // idCard: 'idCard',
+          // address: 'address',
+          // phone: '18511558119',
+          // tuition: 1000,
+          // paid: 50,
+          // remark: 'remark',
+        }}
+        style={{ width: 500 }}
+      >
         <Form.Item label="学员姓名" name="name" rules={[{ required: true }]}>
-          <Input />
+          <Input readOnly={id} />
         </Form.Item>
         <Form.Item label="身份证号" name="idCard" rules={[{ required: true }]}>
-          <Input />
+          <Input readOnly={id} />
         </Form.Item>
         <Form.Item label="家庭住址" name="address" rules={[{ required: true }]}>
-          <Input />
+          <Input readOnly={id} />
         </Form.Item>
         <Form.Item
           label="联系电话"
@@ -121,6 +168,14 @@ const Edit: React.FC = () => {
             ))}
           </Select>
         </Form.Item>
+        <Form.Item
+          label="是否退伍"
+          name="isVeteran"
+          rules={[{ required: true }]}
+          valuePropName="checked"
+        >
+          <Checkbox />
+        </Form.Item>
         <Form.Item label="学车校区" name="schoolId" rules={[{ required: true }]}>
           <Select>
             {schools.map((item) => (
@@ -136,16 +191,21 @@ const Edit: React.FC = () => {
         <Form.Item label="其它费用" name="other" rules={[{ required: true }]}>
           <InputNumber style={style} />
         </Form.Item>
+        <Form.Item label={id ? '实际已交' : '交费'} name="paid" rules={[{ required: true }]}>
+          <InputNumber readOnly={id} style={style} />
+        </Form.Item>
+        <Form.Item label="报名时间" name="time" rules={[{ required: true }]}>
+          <DatePicker style={style} />
+        </Form.Item>
         <Form.Item label="备注信息" name="remark">
           <Input />
         </Form.Item>
-        <Form.Item label="报名时间" name="time">
-          <DatePicker style={style} />
-        </Form.Item>
-        <Form.Item>
-          <Space>
+        <Form.Item noStyle>
+          <Space style={{ display: 'flex', justifyContent: 'center' }}>
             <Button onClick={handleReadIdCardClick}>读取身份证</Button>
-            <Button type="primary">保存</Button>
+            <Button type="primary" htmlType="submit">
+              保存
+            </Button>
           </Space>
         </Form.Item>
       </Form>

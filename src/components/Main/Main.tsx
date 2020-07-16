@@ -15,13 +15,15 @@ const Company = React.lazy(() => import('../Company'));
 const MenuComponent = React.lazy(() => import('../Menu'));
 const Student = React.lazy(() => import('../DS/StudentList'));
 const StudentDetail = React.lazy(() => import('../DS/Detail'));
+const navs = [{ name: '学员列表', url: '/student' }];
 
-const navs = [
+const adminNavs = [
   { name: '表单', url: '/form' },
   { name: '视图', url: '/view' },
   { name: '任务列表', url: '/task' },
   { name: '店铺列表', url: '/shop' },
-  { name: '学员列表', url: '/student' },
+  { name: '菜单', url: '/menu' },
+  { name: '公司', url: '/company' },
 ];
 
 interface User {
@@ -64,16 +66,13 @@ const Main: React.FC = () => {
               <Link to={`${match.url}${item.url}`}>{item.name}</Link>
             </Menu.Item>
           ))}
-          {user.username === 'admin' && (
-            <Menu.Item key={`${match.url}/menu`} icon={<UserOutlined />}>
-              <Link to={`${match.url}/menu`}>菜单</Link>
-            </Menu.Item>
-          )}
-          {user.username === 'admin' && (
-            <Menu.Item key={`${match.url}/company`} icon={<UserOutlined />}>
-              <Link to={`${match.url}/company`}>公司</Link>
-            </Menu.Item>
-          )}
+          {user &&
+            user.username === 'admin' &&
+            adminNavs.map((item) => (
+              <Menu.Item key={`${match.url}${item.url}`} icon={<UserOutlined />}>
+                <Link to={`${match.url}${item.url}`}>{item.name}</Link>
+              </Menu.Item>
+            ))}
         </Menu>
       </Sider>
       <Layout style={{ overflow: 'auto' }}>

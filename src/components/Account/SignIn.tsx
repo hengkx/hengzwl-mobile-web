@@ -19,7 +19,7 @@ const SignIn: React.FC = () => {
     });
     if (res.code === 0) {
       localStorage.setItem('token', res.data.token);
-      history.push('/');
+      history.push('/dashboard');
     }
   };
 

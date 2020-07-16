@@ -13,8 +13,10 @@ export default {
   shop: '/api/shop',
   ds: {
     student: '/api/ds/student',
+    getStudentListBySubject: '/api/ds/student/getListBySubject',
     class: '/api/ds/class',
     school: '/api/ds/school',
     pay: '/api/ds/pay',
+    exam: '/api/ds/exam/batch',
   },
 };

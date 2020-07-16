@@ -14,7 +14,10 @@ const { Header, Sider, Content } = Layout;
 const Company = React.lazy(() => import('../Company'));
 const MenuComponent = React.lazy(() => import('../Menu'));
 const DS = React.lazy(() => import('../DS'));
-const navs = [{ name: '学员列表', url: '/ds' }];
+const navs = [
+  { name: '学员列表', url: '/ds' },
+  { name: '考试管理', url: '/ds/exam' },
+];
 
 const adminNavs = [
   { name: '表单', url: '/form' },
@@ -41,7 +44,7 @@ const Main: React.FC = () => {
   const init = async () => {
     const userRes = await axios.get<User>(api.getAccountInfo);
     setUser(userRes.data);
-    if (!userRes.data.unionId) {
+    if (userRes.data && !userRes.data.unionId) {
       const res = await axios.get(api.getBindWeChatQRCode);
       setBindUrl(res.data.url);
       const interval = setInterval(async () => {

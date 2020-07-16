@@ -3,6 +3,7 @@ import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import StudentList from './StudentList';
 import Detail from './Detail';
 import Edit from './Edit';
+import Exam from './Exam';
 
 const Main: React.FC = () => {
   const match = useRouteMatch();
@@ -10,6 +11,7 @@ const Main: React.FC = () => {
   return (
     <Switch>
       <Redirect exact from={`${match.url}`} to={`${match.url}/student`} />
+      <Route exact path={`${match.url}/exam`} component={Exam} />
       <Route exact path={`${match.url}/student`} component={StudentList} />
       <Route exact path={`${match.url}/student/add`} component={Edit} />
       <Route exact path={`${match.url}/student/edit/:id`} component={Edit} />

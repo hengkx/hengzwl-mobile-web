@@ -5,9 +5,7 @@ import axios from 'axios';
 import { TablePaginationConfig } from 'antd/lib/table';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { StoreValue } from 'antd/lib/form/interface';
-
 import Modal from 'antd/lib/modal/Modal';
-import { StepForwardFilled } from '@ant-design/icons';
 import api from '../../config/api';
 import './less/student.less';
 import { Student, Class, School } from './interface';

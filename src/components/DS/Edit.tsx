@@ -149,13 +149,11 @@ const Edit: React.FC = () => {
           </Space>
         </Form.Item>
       </Form>
-      <object
-        aria-label="idr"
-        classID="clsid:5eb842ae-5c49-4fd8-8ce9-77d4af9fd4ff"
-        id="Idr"
-        width="0"
-        height="0"
-        data="/idr/idr.cab"
+      <div
+        dangerouslySetInnerHTML={{
+          __html:
+            '<object aria-label="idr" classid="clsid:5eb842ae-5c49-4fd8-8ce9-77d4af9fd4ff" id="Idr" width="0" height="0" codebase="/idr/idr.cab"></object>',
+        }}
       />
     </Card>
   );

@@ -46,7 +46,7 @@ const Main: React.FC = () => {
       setBindUrl(res.data.url);
       const interval = setInterval(async () => {
         const { data } = await axios.get<User>(api.getAccountInfo);
-        if (data.unionId) {
+        if (data && data.unionId) {
           clearInterval(interval);
           message.success('绑定成功');
           setBindUrl('');

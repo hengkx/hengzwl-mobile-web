@@ -124,7 +124,7 @@ const StudentList: React.FC = () => {
           </Form>
           <Button onClick={() => loadData()}>搜索</Button>
         </div>
-        <Button type="primary" onClick={() => loadData()}>
+        <Button type="primary" href={`${match.url}/add`}>
           添加学员
         </Button>
       </div>

@@ -154,7 +154,7 @@ const Edit: React.FC = () => {
           name="phone"
           rules={[
             { required: true },
-            { pattern: /^1[3578]\d{9,9}$/, message: '请输入正确联系电话' },
+            { pattern: /^1[356789]\d{9,9}$/, message: '请输入正确联系电话' },
           ]}
         >
           <Input />

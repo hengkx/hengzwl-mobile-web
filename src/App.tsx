@@ -6,9 +6,9 @@ import moment from 'moment';
 
 moment.locale('zh-cn');
 
-const Main = React.lazy(() => import('./components/Main1'));
-const Wechat = React.lazy(() => import('./components/Wechat1'));
-const AuthRedirect = React.lazy(() => import('./components/Wechat1/AuthRedirect'));
+const Main = React.lazy(() => import('./components/main'));
+const Wechat = React.lazy(() => import('./components/wechat'));
+const AuthRedirect = React.lazy(() => import('./components/wechat/AuthRedirect'));
 
 const App: React.FC = () => {
   return (

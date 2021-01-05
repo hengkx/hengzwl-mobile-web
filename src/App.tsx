@@ -2,12 +2,14 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Main from './components/main';
 import Wechat from './components/wechat';
-import AuthRedirect from './components/wechat/AuthRedirect';
+import Invite from './components/wechat/Invite';
+import InviteResult from './components/wechat/InviteResult';
 
 const App: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/wx/:inviteId?" component={AuthRedirect} />
+      <Route exact path="/wechat/invite/result" component={InviteResult} />
+      <Route exact path="/wechat/invite/:id" component={Invite} />
       <Route path="/wechat" component={Wechat} />
       <Route path="/" component={Main} />
     </Switch>

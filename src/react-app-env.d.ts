@@ -3,6 +3,7 @@ import axios from 'axios';
 
 interface BaseResponse<T> {
   code: number;
+  message?: string;
   data: T;
 }
 

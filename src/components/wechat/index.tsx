@@ -7,14 +7,6 @@ const Wechat: React.FC = () => {
   const [user, setUser] = React.useState<any>();
   React.useEffect(() => {
     const { code, state } = qs.parse(window.location.search.substr(1));
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.src = 'https://res.wx.qq.com/open/js/jweixin-1.6.0.js';
-    // script.onload = () => {
-
-    // };
-    document.head.appendChild(script);
     (async () => {
       const res = await axios.get('/wechat/getJSTicket');
       if (res.code === 0) {

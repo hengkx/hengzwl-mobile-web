@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.0
+        uses: actions/setup-node@v2-beta
         with:
           node-version: '12.x'
 
@@ -27,4 +27,4 @@ jobs:
           PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
           HOST: ${{ secrets.DEPLOY_HOST }}
           SOURCE: 'build'
-          TARGET: '/root/hengzwl/web'
+          TARGET: '/root/privacy/mobile-web'

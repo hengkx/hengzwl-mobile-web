@@ -6,7 +6,7 @@ import { getAuthorizeUrl } from './utils';
 import logo from '../../images/logo.png';
 import './less/invite.less';
 
-const redirectUri = 'https://m.hengzwl.com/wechat/invite/reuslt';
+const redirectUri = 'https://m.hengzwl.com/wechat/invite/result';
 
 interface Params {
   id: string;

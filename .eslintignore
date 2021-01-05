@@ -19,3 +19,6 @@ serviceWorker.ts
 react-app-env.d.ts
 
 craco.config.js
+
+.eslintrc.js
+

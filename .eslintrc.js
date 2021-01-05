@@ -15,10 +15,8 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
   },
   plugins: ['react-hooks'],
   rules: {
@@ -32,6 +30,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'compat/compat': 'off',
     'react/jsx-one-expression-per-line': ['off'],
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   overrides: [
     {

@@ -1,24 +1,16 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
-import zhCN from 'antd/es/locale/zh_CN';
-import moment from 'moment';
-
-moment.locale('zh-cn');
-
-const Main = React.lazy(() => import('./components/main'));
-const Wechat = React.lazy(() => import('./components/wechat'));
-const AuthRedirect = React.lazy(() => import('./components/wechat/AuthRedirect'));
+import Main from './components/main';
+import Wechat from './components/wechat';
+import AuthRedirect from './components/wechat/AuthRedirect';
 
 const App: React.FC = () => {
   return (
-    <ConfigProvider locale={zhCN}>
-      <Switch>
-        <Route exact path="/wx/:inviteId?" component={AuthRedirect} />
-        <Route path="/wechat" component={Wechat} />
-        <Route path="/" component={Main} />
-      </Switch>
-    </ConfigProvider>
+    <Switch>
+      <Route exact path="/wx/:inviteId?" component={AuthRedirect} />
+      <Route path="/wechat" component={Wechat} />
+      <Route path="/" component={Main} />
+    </Switch>
   );
 };
 

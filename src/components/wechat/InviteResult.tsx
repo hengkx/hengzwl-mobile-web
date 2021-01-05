@@ -9,9 +9,7 @@ const Wechat: React.FC = () => {
 
   React.useEffect(() => {
     (async () => {
-      const res = await axios.post('/api/wechat/invite/signup', {
-        params: { code, state },
-      });
+      const res = await axios.post('/api/wechat/invite/signup', { code, state });
       if (res.code === 0) {
         setUser(res.data);
       } else if (res.message) {

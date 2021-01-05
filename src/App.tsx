@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -13,13 +13,11 @@ const AuthRedirect = React.lazy(() => import('./components/wechat/AuthRedirect')
 const App: React.FC = () => {
   return (
     <ConfigProvider locale={zhCN}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Switch>
-          <Route exact path="/wx/:inviteId?" component={AuthRedirect} />
-          <Route path="/wechat" component={Wechat} />
-          <Route path="/" component={Main} />
-        </Switch>
-      </Suspense>
+      <Switch>
+        <Route exact path="/wx/:inviteId?" component={AuthRedirect} />
+        <Route path="/wechat" component={Wechat} />
+        <Route path="/" component={Main} />
+      </Switch>
     </ConfigProvider>
   );
 };

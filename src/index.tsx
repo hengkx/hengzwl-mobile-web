@@ -2,7 +2,6 @@ import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { message } from 'antd';
 import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import App from './App';
@@ -36,8 +35,6 @@ axios.interceptors.response.use(
   (response) => {
     if (response.data.code === 401) {
       window.location.href = '/account/signin';
-    } else if (response.data.code !== 0 && response.data.message) {
-      message.error(response.data.message);
     }
     return response.data;
   },

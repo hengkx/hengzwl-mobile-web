@@ -10,9 +10,9 @@ import * as serviceWorker from './serviceWorker';
 import './index.less';
 
 if (process.env.NODE_ENV === 'development') {
-  axios.defaults.baseURL = 'http://127.0.0.1:7001';
+  axios.defaults.baseURL = 'http://127.0.0.1:3000';
 } else {
-  axios.defaults.baseURL = 'https://api.task.hengzwl.com';
+  axios.defaults.baseURL = 'https://api.privacy.hengzwl.com';
 }
 
 // compatible IE11

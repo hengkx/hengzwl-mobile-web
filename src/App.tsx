@@ -6,12 +6,9 @@ import moment from 'moment';
 
 moment.locale('zh-cn');
 
-const SignIn = React.lazy(() => import('./components/Account/SignIn'));
-const SignUp = React.lazy(() => import('./components/Account/SignUp'));
-const Main = React.lazy(() => import('./components/Main'));
-const IndexPage = React.lazy(() => import('./components/IndexPage'));
-const Wechat = React.lazy(() => import('./components/Wechat'));
-const AuthRedirect = React.lazy(() => import('./components/Wechat/AuthRedirect'));
+const Main = React.lazy(() => import('./components/Main1'));
+const Wechat = React.lazy(() => import('./components/Wechat1'));
+const AuthRedirect = React.lazy(() => import('./components/Wechat1/AuthRedirect'));
 
 const App: React.FC = () => {
   return (
@@ -20,10 +17,7 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path="/wx/:inviteId?" component={AuthRedirect} />
           <Route path="/wechat" component={Wechat} />
-          <Route exact path="/account/signIn" component={SignIn} />
-          <Route exact path="/account/signUp" component={SignUp} />
-          <Route path="/dashboard" component={Main} />
-          <Route exact path="/" component={IndexPage} />
+          <Route path="/" component={Main} />
         </Switch>
       </Suspense>
     </ConfigProvider>

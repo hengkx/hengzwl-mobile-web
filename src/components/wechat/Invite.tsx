@@ -28,7 +28,7 @@ const Invite: React.FC = () => {
         <div style={{ fontSize: 18 }}>邀您体验 恒记 APP</div>
       </Space>
       <Button block type="primary" size="large" style={{ marginTop: 50 }} onClick={handleReceive}>
-        立即领取
+        立即体验
       </Button>
     </div>
   );

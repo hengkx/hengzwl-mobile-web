@@ -48,7 +48,9 @@ const Main: FC<MainProps> = ({ data }) => {
 export default Main;
 
 export async function getStaticProps() {
-  const res = await fetch('https://api.privacy.hengzwl.com/api/checkUpdate');
+  const res = await fetch(
+    `https://api.privacy.hengzwl.com/api/checkUpdate?r=${Math.random()}`
+  );
 
   return {
     props: { data: await res.json() },

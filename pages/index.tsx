@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
+import axios from 'axios';
 
 export interface CheckUpdate {
   Code: number;
@@ -17,7 +18,15 @@ interface MainProps {
   data: CheckUpdate;
 }
 
-const Main: FC<MainProps> = ({ data }) => {
+const Main: FC<MainProps> = () => {
+  const [data, setData] = useState({} as CheckUpdate);
+
+  useEffect(() => {
+    axios.get('https://api.privacy.hengzwl.com/api/checkUpdate').then((res) => {
+      setData(res as any);
+    });
+  }, []);
+
   return (
     <div className="h-full flex flex-col items-center justify-center -mt-8 gap-4">
       <Image
@@ -46,11 +55,3 @@ const Main: FC<MainProps> = ({ data }) => {
 };
 
 export default Main;
-
-export async function getStaticProps() {
-  const res = await fetch(`https://api.privacy.hengzwl.com/api/checkUpdate`);
-
-  return {
-    props: { data: await res.json() },
-  };
-}

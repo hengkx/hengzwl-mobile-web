@@ -6,8 +6,13 @@ import axios from 'axios';
 import Router, { useRouter } from 'next/router';
 import App from 'next/app';
 import { SWRConfig } from 'swr';
+import { StyleProvider } from '@ant-design/cssinjs';
 
-axios.defaults.baseURL = 'https://api.privacy.hengzwl.com';
+if (process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = 'http://localhost:5001';
+} else {
+  axios.defaults.baseURL = 'https://api.privacy.hengzwl.com';
+}
 
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
@@ -79,7 +84,10 @@ export default function MyApp({
           fetcher: (resource, init) => axios(resource, init),
         }}
       >
-        <Component {...pageProps} />
+        <StyleProvider hashPriority="high">
+          {' '}
+          <Component {...pageProps} />
+        </StyleProvider>
       </SWRConfig>
     </>
   );

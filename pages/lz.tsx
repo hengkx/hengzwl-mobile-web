@@ -58,7 +58,7 @@ function Main() {
           pagination={false}
           dataSource={data?.orders}
           columns={[
-            { title: '名称', dataIndex: 'name', width: 200 },
+            { title: '名称', dataIndex: 'name', width: 260 },
             {
               title: '编码',
               dataIndex: 'no',

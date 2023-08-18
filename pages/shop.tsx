@@ -65,7 +65,7 @@ function Main() {
           dataSource={data?.orders}
           columns={[
             {
-              title: '订单号',
+              title: '订单编号',
               dataIndex: 'no',
               width: 320,
               render(value) {

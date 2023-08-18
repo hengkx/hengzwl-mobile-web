@@ -85,7 +85,6 @@ export default function MyApp({
         }}
       >
         <StyleProvider hashPriority="high">
-          {' '}
           <Component {...pageProps} />
         </StyleProvider>
       </SWRConfig>

@@ -24,7 +24,7 @@ export interface LZ {
 function Main() {
   const router = useRouter();
   const { data } = useSWR<LZ>(
-    router.query.key && `/api/chd/lz?key=${router.query.key}`
+    router.query.key && `/api/chd/order?key=${router.query.key}`
   );
 
   return (
@@ -36,7 +36,7 @@ function Main() {
         type="primary"
         onClick={async () => {
           const data: any = await axios.post(
-            '/api/chd/tuan/download',
+            '/api/chd/download/tuan',
             { key: router.query.key },
             {
               responseType: 'blob',

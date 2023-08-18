@@ -9,17 +9,21 @@ const { Paragraph } = Typography;
 
 interface Order {
   no: string;
-  name: string;
+  goods: string;
+  date: string;
+  count: number;
+  price: number;
+  codes: string[];
 }
 
-export interface LZ {
+export interface OrderRes {
   orders: Order[];
   expireTime: string;
 }
 
 function Main() {
   const router = useRouter();
-  const { data } = useSWR<LZ>(
+  const { data } = useSWR<OrderRes>(
     router.query.key && `/api/chd/order?key=${router.query.key}`
   );
 
@@ -32,7 +36,7 @@ function Main() {
         type="primary"
         onClick={async () => {
           const data: any = await axios.post(
-            '/api/chd/download/lz',
+            '/api/chd/download/shop',
             { key: router.query.key },
             {
               responseType: 'blob',
@@ -43,7 +47,7 @@ function Main() {
           link.href = url;
           link.setAttribute(
             'download',
-            `礼赞 ${dayjs().format('YYYY-MM-DD HHmmss')} by 恒记.xlsx`
+            `页面商城 ${dayjs().format('YYYY-MM-DD HHmmss')} by 恒记.xlsx`
           );
           document.body.appendChild(link);
           link.click();
@@ -51,7 +55,7 @@ function Main() {
       >
         点击下载Excel
       </Button>
-      <div className="flex-1 overflow-y-auto max-w-xl">
+      <div className="flex-1 overflow-y-auto max-w-4xl">
         <Table
           rowKey="no"
           size="small"
@@ -60,11 +64,11 @@ function Main() {
           pagination={false}
           dataSource={data?.orders}
           columns={[
-            { title: '名称', dataIndex: 'name', width: 260 },
             {
-              title: '编码',
+              title: '订单号',
               dataIndex: 'no',
-              render(value, record, index) {
+              width: 320,
+              render(value) {
                 return (
                   <Paragraph copyable style={{ marginBottom: 0 }}>
                     {value}
@@ -72,6 +76,36 @@ function Main() {
                 );
               },
             },
+            {
+              title: '编码',
+              dataIndex: 'items',
+              width: 180,
+              render(value) {
+                return value
+                  .filter((p: any) => p)
+                  .map((p: any) => <div key={p}>{p.name}</div>);
+              },
+            },
+            {
+              title: '编码',
+              dataIndex: 'items',
+              width: 180,
+              render(value) {
+                return value
+                  .filter((p: any) => p)
+                  .map((p: any) => (
+                    <Paragraph key={p} copyable style={{ marginBottom: 0 }}>
+                      {p.code}
+                    </Paragraph>
+                  ));
+              },
+            },
+            {
+              title: '实付款',
+              dataIndex: 'price',
+              width: 60,
+            },
+            { title: '购买时间', dataIndex: 'time', width: 170 },
           ]}
         />
       </div>

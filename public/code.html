@@ -383,33 +383,34 @@
     <pre
       class="hljs"
     ><code><div><span class="hljs-comment">// 读取页面商城编码</span>
-<span class="hljs-keyword">let</span> result = <span class="hljs-string">""</span>;
-$(<span class="hljs-string">".td3"</span>).each(<span class="hljs-function">(<span class="hljs-params">_, el</span>) =&gt;</span> {
-  result += $(el).html().replaceAll(<span class="hljs-string">"&lt;br&gt;"</span>, <span class="hljs-string">"\r\n"</span>) + <span class="hljs-string">"\r\n"</span>;
+<span class="hljs-keyword">let</span> result = <span class="hljs-string">''</span>;
+$(<span class="hljs-string">'.td3'</span>).each(<span class="hljs-function">(<span class="hljs-params">_, el</span>) =&gt;</span> {
+  result += $(el).html().replaceAll(<span class="hljs-string">'&lt;br&gt;'</span>, <span class="hljs-string">'\r\n'</span>) + <span class="hljs-string">'\r\n'</span>;
 });
 result;
 <span class="hljs-built_in">console</span>.log(result);
 <span class="hljs-comment">// 读取团购编码</span>
 <span class="hljs-keyword">let</span> items = [];
-$(<span class="hljs-string">".contentbox&gt;.margintop10"</span>).each(<span class="hljs-function">(<span class="hljs-params">_, el</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> no = $(el).find(<span class="hljs-string">".margintop10"</span>).text().replace(<span class="hljs-string">"订单号："</span>, <span class="hljs-string">""</span>);
-  <span class="hljs-keyword">const</span> tds = $(el).find(<span class="hljs-string">".buy_table_gray&gt;td"</span>);
+$(<span class="hljs-string">'.contentbox&gt;.margintop10'</span>).each(<span class="hljs-function">(<span class="hljs-params">_, el</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> no = $(el).find(<span class="hljs-string">'.margintop10'</span>).text().replace(<span class="hljs-string">'订单号：'</span>, <span class="hljs-string">''</span>);
+  <span class="hljs-keyword">const</span> tds = $(el).find(<span class="hljs-string">'.buy_table_gray&gt;td'</span>);
   <span class="hljs-keyword">if</span> (no) {
-    items.push(tds.eq(<span class="hljs-number">4</span>).html()?.replaceAll(<span class="hljs-string">"&lt;br&gt;"</span>, <span class="hljs-string">"\r\n"</span>) || <span class="hljs-string">""</span>);
+    items.push(tds.eq(<span class="hljs-number">4</span>).html()?.replaceAll(<span class="hljs-string">'&lt;br&gt;'</span>, <span class="hljs-string">'\r\n'</span>) || <span class="hljs-string">''</span>);
   }
 });
+<span class="hljs-built_in">console</span>.log(items.join(<span class="hljs-string">'\n'</span>));
 <span class="hljs-comment">// 读取趣编码编码</span>
 <span class="hljs-keyword">let</span> items = [];
-$(<span class="hljs-string">".content-acqiurerole"</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  items.push($(<span class="hljs-keyword">this</span>).text().replace(<span class="hljs-string">"兑换码"</span>, <span class="hljs-string">""</span>).trim());
+$(<span class="hljs-string">'.content-acqiurerole'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  items.push($(<span class="hljs-keyword">this</span>).text().replace(<span class="hljs-string">'兑换码'</span>, <span class="hljs-string">''</span>).trim());
 });
-<span class="hljs-built_in">console</span>.log(items.filter(<span class="hljs-function">(<span class="hljs-params">p</span>) =&gt;</span> p).join(<span class="hljs-string">"\n"</span>));
+<span class="hljs-built_in">console</span>.log(items.filter(<span class="hljs-function">(<span class="hljs-params">p</span>) =&gt;</span> p).join(<span class="hljs-string">'\n'</span>));
 <span class="hljs-comment">// 读取领奖专区</span>
 <span class="hljs-keyword">let</span> items = [];
-$(<span class="hljs-string">"#showList tr"</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  items.push($(<span class="hljs-keyword">this</span>).find(<span class="hljs-string">"td"</span>).eq(<span class="hljs-number">3</span>).text());
+$(<span class="hljs-string">'#showList tr'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  items.push($(<span class="hljs-keyword">this</span>).find(<span class="hljs-string">'td'</span>).eq(<span class="hljs-number">3</span>).text());
 });
-<span class="hljs-built_in">console</span>.log(items.filter(<span class="hljs-function">(<span class="hljs-params">p</span>) =&gt;</span> p).join(<span class="hljs-string">"\n"</span>));
+<span class="hljs-built_in">console</span>.log(items.filter(<span class="hljs-function">(<span class="hljs-params">p</span>) =&gt;</span> p).join(<span class="hljs-string">'\n'</span>));
 </div></code></pre>
   </body>
 </html>

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 import { Button, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
@@ -10,7 +10,7 @@ const { Paragraph, Text } = Typography;
 
 function Detail() {
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = useParams();
 
   const { data } = useFetch<AccountInfo>(id && `/api/chd/info/${id}`);
   if (!data) {

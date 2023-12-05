@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 
@@ -23,9 +23,10 @@ export interface OrderRes {
 
 function Main() {
   const router = useRouter();
-  const { data } = useSWR<OrderRes>(
-    router.query.key && `/api/chd/order?key=${router.query.key}`
-  );
+  const searchParams = useSearchParams();
+  const key = searchParams.get('key');
+
+  const { data } = useSWR<OrderRes>(key && `/api/chd/order?key=${key}`);
 
   return (
     <div className="h-full flex flex-col items-center justify-center gap-4 py-4">
@@ -37,7 +38,7 @@ function Main() {
         onClick={async () => {
           const data: any = await axios.post(
             '/api/chd/download/shop',
-            { key: router.query.key },
+            { key },
             {
               responseType: 'blob',
             }

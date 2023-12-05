@@ -3,10 +3,10 @@ import type { AppProps } from 'next/app';
 import { ConfigProvider, theme } from 'antd';
 import Head from 'next/head';
 import axios from 'axios';
-import Router, { useRouter } from 'next/router';
 import App from 'next/app';
 import { SWRConfig } from 'swr';
 import { StyleProvider } from '@ant-design/cssinjs';
+import Router, { useRouter } from 'next/navigation';
 
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'http://localhost:5001';
@@ -40,7 +40,7 @@ axios.interceptors.response.use(
       error.response.status === 401 &&
       !window.location.pathname.startsWith('/account/login')
     ) {
-      Router.push(`/account/login?redirect=${window.location.pathname}`);
+      // Router.push(`/account/login?redirect=${window.location.pathname}`);
       return;
     }
     return { code: 500, message: error.message };

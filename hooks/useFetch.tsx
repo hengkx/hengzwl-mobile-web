@@ -1,8 +1,8 @@
 import useSWR from 'swr';
 
-const useFetch = <T,>(url: string) => {
+const useFetch = <T,>(url: string | undefined) => {
   const { data, isLoading } = useSWR<BaseResponse<T>>(url);
-  return { data, isLoading };
+  return { data: data?.data, isLoading };
 };
 
 export default useFetch;

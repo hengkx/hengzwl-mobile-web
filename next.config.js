@@ -1,9 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    optimizeCss: true,
-  },
+  transpilePackages: [
+    '@babel/runtime',
+    'rc-util',
+    '@ant-design',
+    'antd',
+    'rc-pagination',
+    'rc-picker',
+    'rc-tree',
+    'rc-table',
+  ],
 };
 
 module.exports = nextConfig;

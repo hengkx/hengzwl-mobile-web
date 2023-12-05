@@ -20,6 +20,33 @@ global {
   interface Window {
     frankieFinancial: any;
   }
+
+  export interface AccountInfo {
+    id: string;
+    createdAt: number;
+    updatedAt: number;
+    deletedAt: null;
+    collectCount: number;
+    collectSetCount: number;
+    collects: Collect[];
+    collectStatuses: number[];
+    packages: any[];
+  }
+
+  export interface Collect {
+    id: number;
+    mobs: Mob[];
+    name: string;
+    active: boolean;
+    totalCount: number;
+    activeCount: number;
+  }
+
+  export interface Mob {
+    id: number;
+    name: string;
+    active: boolean;
+  }
 }
 
 declare module 'axios' {

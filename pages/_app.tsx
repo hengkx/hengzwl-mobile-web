@@ -57,7 +57,6 @@ export default function MyApp({
   isDarkMode,
 }: MyAppProps) {
   const router = useRouter();
-
   return (
     <>
       <Head>

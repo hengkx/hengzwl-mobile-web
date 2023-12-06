@@ -47,7 +47,7 @@ function Detail() {
 
   return (
     <div className="h-full overflow-hidden flex gap-4 px-4">
-      <div className="py-4">
+      <div className="py-4 w-52">
         <Text strong>
           激活套装：{data.collectSetCount} 激活数：{data.collectCount}
         </Text>
@@ -62,7 +62,7 @@ function Detail() {
           </div>
         ))}
       </div>
-      <Tabs defaultActiveKey="1" items={items} style={{ height: '100%' }} />
+      <Tabs size="small" items={items} style={{ height: '100%', width: 1000 }} />
     </div>
   );
 }

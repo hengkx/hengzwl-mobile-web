@@ -11,12 +11,13 @@ import Router, { useRouter } from 'next/navigation';
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'http://localhost:5001';
 } else {
-  axios.defaults.baseURL = 'https://api.privacy.hengzwl.com';
+  axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
 }
 
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
   (config) => {
+    config.headers.set('device', JSON.stringify({ version: '1.10.40' }));
     config.headers.set('Authorization', localStorage.getItem('token'));
     return config;
   },

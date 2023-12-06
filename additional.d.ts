@@ -21,6 +21,20 @@ global {
     frankieFinancial: any;
   }
 
+  interface ItemEnchant {
+    id: number;
+    value: string;
+    description: string;
+  }
+
+  interface Item {
+    id: number;
+    name: string;
+    point: number;
+    enchants: ItemEnchant[];
+    count: number;
+  }
+
   export interface AccountInfo {
     id: string;
     createdAt: number;
@@ -31,6 +45,7 @@ global {
     collects: Collect[];
     collectStatuses: number[];
     packages: any[];
+    armors: Item[];
   }
 
   export interface Collect {
@@ -52,32 +67,11 @@ global {
 declare module 'axios' {
   export interface AxiosResponse<T = any> extends Promise<BaseResponse<T>> {}
   export interface AxiosInstance {
-    get<T = any>(
-      url: string,
-      config?: AxiosRequestConfig
-    ): Promise<BaseResponse<T>>;
-    delete<T = any>(
-      url: string,
-      config?: AxiosRequestConfig
-    ): Promise<BaseResponse<T>>;
-    head<T = any>(
-      url: string,
-      config?: AxiosRequestConfig
-    ): Promise<BaseResponse<T>>;
-    post<T = any>(
-      url: string,
-      data?: any,
-      config?: AxiosRequestConfig
-    ): Promise<BaseResponse<T>>;
-    put<T = any>(
-      url: string,
-      data?: any,
-      config?: AxiosRequestConfig
-    ): Promise<BaseResponse<T>>;
-    patch<T = any>(
-      url: string,
-      data?: any,
-      config?: AxiosRequestConfig
-    ): Promise<BaseResponse<T>>;
+    get<T = any>(url: string, config?: AxiosRequestConfig): Promise<BaseResponse<T>>;
+    delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<BaseResponse<T>>;
+    head<T = any>(url: string, config?: AxiosRequestConfig): Promise<BaseResponse<T>>;
+    post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<BaseResponse<T>>;
+    put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<BaseResponse<T>>;
+    patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<BaseResponse<T>>;
   }
 }

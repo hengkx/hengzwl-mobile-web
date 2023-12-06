@@ -14,13 +14,13 @@ function Item(props: any) {
       {props.items.map((item: any, index: number) => (
         <div key={index}>
           <Text className="block">
-            {item.type} {item.name || item.id} x{item.count}
+            {item.type} {item.name || item.id} x{item.count} {item.score}
           </Text>
-          {/* {item.enchants.map((p: any) => (
-            <Text className="block" type="secondary" key={p.id}>
-              {p.description}
+          {item.enchants.map((p: any, childIndex: number) => (
+            <Text className="block" type="secondary" key={childIndex}>
+              {p.description} {p.id} <Text>{p.score}</Text>
             </Text>
-          ))} */}
+          ))}
         </div>
       ))}
     </div>
@@ -36,11 +36,14 @@ function Detail() {
     return;
   }
 
-  const items: TabsProps['items'] = data.packages.map((p) => ({
-    key: p.type,
-    label: `${p.type}[${p.count}]`,
-    children: <Item items={p.items} />,
-  }));
+  const items: TabsProps['items'] = [
+    { key: '防具', label: '防具', children: <Item items={data.armors} /> },
+    ...data.packages.map((p) => ({
+      key: p.type,
+      label: `${p.type}[${p.count}]`,
+      children: <Item items={p.items} />,
+    })),
+  ];
 
   return (
     <div className="h-full overflow-hidden flex gap-4 px-4">
@@ -50,9 +53,7 @@ function Detail() {
         </Text>
         {data.collects.map((collect) => (
           <div key={collect.id}>
-            <Text type={collect.active ? undefined : 'secondary'}>
-              {collect.name}
-            </Text>
+            <Text type={collect.active ? undefined : 'secondary'}>{collect.name}</Text>
             {collect.activeCount !== collect.totalCount && (
               <Text type="secondary">
                 [{collect.activeCount}/{collect.totalCount}]

@@ -25,21 +25,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.clear();
 axios.interceptors.response.use(
   ({ data }) => {
-    if (
-      data &&
-      data.code === 401 &&
-      window.location.pathname !== '/account/login'
-    ) {
+    if (data && data.code === 401 && window.location.pathname !== '/account/login') {
       return (window.location.pathname = '/account/login');
     }
     return data;
   },
   (error) => {
     console.log(error);
-    if (
-      error.response.status === 401 &&
-      !window.location.pathname.startsWith('/account/login')
-    ) {
+    if (error.response.status === 401 && !window.location.pathname.startsWith('/account/login')) {
       // Router.push(`/account/login?redirect=${window.location.pathname}`);
       return;
     }
@@ -51,11 +44,7 @@ interface MyAppProps extends AppProps {
   isDarkMode: 'dark' | 'light';
 }
 
-export default function MyApp({
-  Component,
-  pageProps,
-  isDarkMode,
-}: MyAppProps) {
+export default function MyApp({ Component, pageProps, isDarkMode }: MyAppProps) {
   const router = useRouter();
   return (
     <>

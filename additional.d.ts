@@ -59,6 +59,7 @@ global {
     packages: any[];
     armors: Item[];
     accessories: Item[];
+    pets: Item[];
   }
 
   export interface Collect {

@@ -186,7 +186,11 @@ function Detail() {
   return (
     <div className="h-full overflow-hidden flex gap-4 px-4">
       <div className="py-4 w-52">
-        <Descriptions column={1} title={`${data.name}评分`} items={scoreItems} />
+        <Descriptions
+          column={1}
+          title={`${data.name} ${(classMap as any)[data.classId]} 评分`}
+          items={scoreItems}
+        />
         <Text strong>
           激活套装：{data.collectSetCount} 激活数：{data.collectCount}
         </Text>

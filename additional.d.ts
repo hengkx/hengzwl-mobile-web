@@ -40,6 +40,7 @@ global {
     createdAt: number;
     updatedAt: number;
     name: string;
+    classId: number;
     armorScore: number;
     accessoryScore: number;
     gemScore: number;

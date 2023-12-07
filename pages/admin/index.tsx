@@ -9,8 +9,10 @@ const { Search } = Input;
 
 function Main() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
-  const [count, setCount] = useState(7);
-  const [score, setScore] = useState('200,210,220,230,260,280,300');
+  const [count, setCount] = useState(26);
+  const [score, setScore] = useState(
+    '1000,1010,1020,1030,1040,1050,1070,1090,1110,1130,1150,1180,1210,1240,1270,1300,1335,1370,1405,1440,1475,1520,1560,1610,1700,1800'
+  );
 
   const [form] = Form.useForm();
 
@@ -31,7 +33,7 @@ function Main() {
   const handleClick = async () => {
     const res = await axios.post('/api/chd/score/batch', {
       id: selectedRowKeys.join(','),
-      score: '200,210,220,230,260,280,300',
+      score,
     });
     console.log(res);
     setSelectedRowKeys([]);
@@ -70,7 +72,12 @@ function Main() {
         columns={[
           { title: 'Id', dataIndex: 'id' },
           { title: '名称', dataIndex: 'name' },
-          { title: 'Lv', dataIndex: 'superLv', width: 100 },
+          {
+            title: 'Lv',
+            dataIndex: 'superLv',
+            width: 100,
+            render: (text: any, record: any) => text || record.lv,
+          },
           {
             title: 'Score',
             dataIndex: 'score',

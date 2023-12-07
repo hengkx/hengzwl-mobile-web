@@ -39,13 +39,26 @@ global {
     id: string;
     createdAt: number;
     updatedAt: number;
-    deletedAt: null;
+    name: string;
+    armorScore: number;
+    accessoryScore: number;
+    gemScore: number;
+    runeScore: number;
+    bangleScore: number;
+    broochScore: number;
+    badgeScore: number;
+    haloScore: number;
+    crystalScore: number;
+    ringScore: number;
+    medalScore: number;
+    collectScore: number;
     collectCount: number;
     collectSetCount: number;
     collects: Collect[];
     collectStatuses: number[];
     packages: any[];
     armors: Item[];
+    accessories: Item[];
   }
 
   export interface Collect {

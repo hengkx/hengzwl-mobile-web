@@ -23,19 +23,26 @@ global {
 
   interface ItemEnchant {
     id: number;
-    value: string;
+    value: number;
     description: string;
   }
 
+  /**
+   * @deprecated
+   */
   interface Item {
     id: number;
     name: string;
     point: number;
     enchants: ItemEnchant[];
     count: number;
+    icon: string;
+    iconIndex: number;
+    score: number;
   }
 
   export interface AccountInfo {
+    uLv: number;
     id: string;
     createdAt: number;
     updatedAt: number;
@@ -61,6 +68,7 @@ global {
     collectStatuses: number[];
     packages: any[];
     titles: any[];
+    gems: Item[];
     /**
      * 防具
      */
@@ -77,6 +85,46 @@ global {
      * 守护
      */
     guards: Item[];
+    /**
+     * 勋章
+     */
+    medals: Item[];
+    /**
+     * 光环
+     */
+    halos: Item[];
+    /**
+     * 胸针
+     */
+    brooches: Item[];
+    /**
+     * 结晶
+     */
+    crystals: Item[];
+    /**
+     * 手镯
+     */
+    bangles: Item[];
+    /**
+     * 徽章
+     */
+    badges: Item[];
+    /**
+     * 符文
+     */
+    runes: Item[];
+    /**
+     * 特效戒指
+     */
+    rings: Item[];
+    /**
+     * 军帽
+     */
+    caps: Item[];
+    /**
+     * 武器
+     */
+    weapons: Item[];
   }
 
   export interface Collect {

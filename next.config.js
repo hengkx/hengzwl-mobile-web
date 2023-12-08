@@ -11,6 +11,16 @@ const nextConfig = {
     'rc-tree',
     'rc-table',
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'oss.hengzwl.com',
+        port: '',
+        // pathname: '/account123/**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

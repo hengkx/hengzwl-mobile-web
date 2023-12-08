@@ -10,10 +10,8 @@ const { Search } = Input;
 
 function Main() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
-  const [count, setCount] = useState(26);
-  const [score, setScore] = useState(
-    '1000,1010,1020,1030,1040,1050,1070,1090,1110,1130,1150,1180,1210,1240,1270,1300,1335,1370,1405,1440,1475,1520,1560,1610,1700,1800'
-  );
+  const [count, setCount] = useState(10);
+  const [score, setScore] = useState('500,510,530,560,600,650,710,780,860,950');
 
   const [form] = Form.useForm();
 

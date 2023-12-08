@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import { useParams, useRouter } from 'next/navigation';
@@ -12,9 +12,11 @@ import {
   TabsProps,
   Typography,
 } from 'antd';
+import html2canvas from 'html2canvas';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { Icon, Item } from '@/components';
+import downloadjs from 'downloadjs';
 
 const classMap = {
   '1': '战士',
@@ -129,6 +131,7 @@ function CItem(props: any) {
 function Detail() {
   const router = useRouter();
   const { id } = useParams() || {};
+  const ref = useRef<HTMLDivElement>(null);
 
   const { data } = useFetch<AccountInfo>(id && `/api/chd/info/${id}`);
 
@@ -265,9 +268,20 @@ function Detail() {
 
   const { armors, accessories, pets, gems, weapons } = data;
 
+  const handleExport = async () => {
+    if (ref.current) {
+      const canvas = await html2canvas(ref.current);
+      const dataURL = canvas.toDataURL('image/png');
+      downloadjs(dataURL, 'download.png', 'image/png');
+    }
+  };
+
   return (
     <div className="flex gap-4 px-4">
-      <div className="flex gap-2 flex-wrap">
+      <div className="fixed bottom-5 right-5">
+        <Button onClick={handleExport}>Export</Button>
+      </div>
+      <div ref={ref} className="flex gap-2 flex-wrap">
         <div className="flex flex-col gap-2">
           <Card size="small" title="基本信息">
             <Descriptions

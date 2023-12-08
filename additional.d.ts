@@ -51,16 +51,32 @@ global {
     haloScore: number;
     crystalScore: number;
     ringScore: number;
+    guardScore: number;
     medalScore: number;
+    petScore: number;
     collectScore: number;
     collectCount: number;
     collectSetCount: number;
     collects: Collect[];
     collectStatuses: number[];
     packages: any[];
+    titles: any[];
+    /**
+     * 防具
+     */
     armors: Item[];
+    /**
+     * 首饰
+     */
     accessories: Item[];
+    /**
+     * 宠物
+     */
     pets: Item[];
+    /**
+     * 守护
+     */
+    guards: Item[];
   }
 
   export interface Collect {

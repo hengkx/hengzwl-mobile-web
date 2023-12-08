@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Button, Form, Input, InputNumber, Space, Table } from 'antd';
 import { useFetch } from '@/hooks';
 import queryString from 'querystring';
+import _ from 'lodash';
 
 const { Search } = Input;
 
@@ -32,7 +33,7 @@ function Main() {
 
   const handleClick = async () => {
     const res = await axios.post('/api/chd/score/batch', {
-      id: selectedRowKeys.join(','),
+      id: _.uniq(selectedRowKeys).join(','),
       score,
     });
     console.log(res);

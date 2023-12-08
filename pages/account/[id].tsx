@@ -98,6 +98,7 @@ function Item(props: any) {
           <Text className="block">
             {item.type} {item.name || item.id} x{item.count} {item.score} {item.totalEnchantScore}
           </Text>
+          {item.key}
           {item.enchants.map((p: any, childIndex: number) => (
             <Text className="block" type="secondary" key={childIndex}>
               {p.description} {p.id} <Text>{p.score}</Text> {p.max}
@@ -123,7 +124,42 @@ function Detail() {
     return;
   }
   const items: TabsProps['items'] = [
-    { key: '宠物', label: '宠物', children: <Item items={data.pets} /> },
+    {
+      key: 'title',
+      label: '称号',
+      children: (
+        <div className="h-[850px] overflow-y-auto">
+          {data.titles.map((collect) => (
+            <div key={collect.id}>
+              <Text>{collect.name}</Text>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      key: 'collect',
+      label: '图鉴',
+      children: (
+        <div>
+          <Text strong>
+            激活套装：{data.collectSetCount} 激活数：{data.collectCount}
+          </Text>
+          {data.collects.map((collect) => (
+            <div key={collect.id}>
+              <Text type={collect.active ? undefined : 'secondary'}>{collect.name}</Text>
+              {collect.activeCount !== collect.totalCount && (
+                <Text type="secondary">
+                  [{collect.activeCount}/{collect.totalCount}]
+                </Text>
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
+    { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={data.accessories} /> },
     { key: '防具', label: '防具', children: <Item items={data.armors} /> },
     ...data.packages.map((p) => ({
@@ -181,6 +217,14 @@ function Detail() {
       label: '戒指',
       children: data.ringScore,
     },
+    {
+      label: '守护',
+      children: data.guardScore,
+    },
+    {
+      label: '宠物',
+      children: data.petScore,
+    },
   ];
 
   return (
@@ -191,19 +235,6 @@ function Detail() {
           title={`${data.name} ${(classMap as any)[data.classId]} 评分`}
           items={scoreItems}
         />
-        <Text strong>
-          激活套装：{data.collectSetCount} 激活数：{data.collectCount}
-        </Text>
-        {data.collects.map((collect) => (
-          <div key={collect.id}>
-            <Text type={collect.active ? undefined : 'secondary'}>{collect.name}</Text>
-            {collect.activeCount !== collect.totalCount && (
-              <Text type="secondary">
-                [{collect.activeCount}/{collect.totalCount}]
-              </Text>
-            )}
-          </div>
-        ))}
       </div>
       <Tabs size="small" items={items} style={{ height: '100%', width: 1000 }} />
     </div>

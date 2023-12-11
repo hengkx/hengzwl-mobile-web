@@ -80,9 +80,18 @@ function Detail() {
   const ref = useRef<HTMLDivElement>(null);
 
   const { data } = useFetch<Role>(id && `/api/chd/info/skill/${id}`);
-  const { data: skills } = useFetch<ClassSkill[]>(data && `/api/chd/class/${data.classId}/skill`);
+  const { data: skills } = useFetch<ClassSkill[]>(
+    data && `/api/chd/class/${data.currentClassId}/skill`
+  );
 
-  const skillMap = useMemo(() => (data?.skills ? getMap(data.skills) : {}), [data?.skills]);
+  const skillMap = useMemo(
+    () =>
+      data
+        ? getMap((data.currentClassId == data.classId ? data.skills : data.subSkills) || [])
+        : {},
+    [data]
+  );
+
   // const dataSource = useMemo(() => {
   //   if (!skills) {
   //     return [];
@@ -112,7 +121,7 @@ function Detail() {
     }
   };
 
-  const title = `${data.server} ${data.name} ${ClassMap[data.classId]} 加点`;
+  const title = `${data.server} ${data.name} ${ClassMap[data.currentClassId]} 加点`;
 
   return (
     <div className="flex  gap-4 px-4">

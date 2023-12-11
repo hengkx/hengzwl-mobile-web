@@ -4,6 +4,7 @@ export interface Role {
   id: string;
   classId: keyof typeof ClassMap;
   subClassId?: keyof typeof ClassMap;
+  currentClassId: keyof typeof ClassMap;
   name: string;
   skills?: Skill[];
   subSkills?: Skill[];

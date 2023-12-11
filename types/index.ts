@@ -18,6 +18,12 @@ interface Fairy {
   attrs: FairyAttr[];
 }
 
+interface Package {
+  type: string;
+  count: number;
+  items: Item[];
+}
+
 export interface Role {
   id: string;
   roleId: number;
@@ -31,7 +37,7 @@ export interface Role {
   server: string;
   nameBackground?: NameBackground;
   fairies: Fairy[];
-  packages: any[];
+  packages: Package[];
 }
 
 export interface Skill {

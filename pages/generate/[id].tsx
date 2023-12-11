@@ -23,6 +23,19 @@ const Grade = {
 const { Paragraph, Text } = Typography;
 
 const ShowSkillIds = [4305001, 4306001, 4307001, 4308001];
+const ShowPackageTypes = [
+  '装备',
+  '消耗',
+  '其他',
+  '任务',
+  '宠物栏',
+  '仓库',
+  '随身仓库1',
+  '随身仓库2',
+  '随身仓库3',
+  '随身仓库4',
+  '随身仓库5',
+];
 
 function Detail() {
   const router = useRouter();
@@ -148,9 +161,16 @@ function Detail() {
                     {role.nameBackground && <Icon {...role.nameBackground} />}
                     {role.name}
                     {role.nameBackground && <Icon {...role.nameBackground} />}
+                    {role.packages.find((p) => p.type === '人物')?.items[2].name}
                   </div>
                 }
-                extra={role.packages.find((p) => p.type === '人物')?.items[2].name}
+                extra={
+                  <div>
+                    {role.packages
+                      .filter((p) => ShowPackageTypes.includes(p.type) && p.count > 0)
+                      .map((p) => `${p.type}[${p.count}]`)}
+                  </div>
+                }
               >
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-2">
@@ -183,7 +203,14 @@ function Detail() {
                     {pets
                       .filter((p) => p.roleId === role.roleId && !p.storage)
                       .map((item, index) => (
-                        <Item key={index} {...item} />
+                        <Item {...item} key={index} />
+                      ))}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {role.packages
+                      .find((p) => p.type === '装备')
+                      ?.items.map((item, index) => (
+                        <Item {...item} key={index} />
                       ))}
                   </div>
                 </div>

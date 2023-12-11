@@ -1,6 +1,7 @@
 import { Typography } from 'antd';
 import Icon from './Icon';
 import { ItemEnchant } from '@/types';
+import { memo } from 'react';
 
 const { Text } = Typography;
 
@@ -54,4 +55,4 @@ function Item({ color, name, icon, iconIndex, enchants, petPotential }: ItemProp
   );
 }
 
-export default Item;
+export default memo(Item);

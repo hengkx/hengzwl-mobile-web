@@ -18,7 +18,7 @@ interface Fairy {
   attrs: FairyAttr[];
 }
 
-interface Package {
+export interface Package {
   type: string;
   count: number;
   items: Item[];
@@ -38,6 +38,7 @@ export interface Role {
   nameBackground?: NameBackground;
   fairies: Fairy[];
   packages: Package[];
+  gender: number;
 }
 
 export interface Skill {
@@ -94,6 +95,7 @@ interface Item {
   enchantScore: number;
   roleId: number;
   storage: boolean;
+  posId1: number;
 }
 
 export interface AccountInfo {

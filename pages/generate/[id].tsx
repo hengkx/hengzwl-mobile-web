@@ -9,7 +9,8 @@ import { useFetch } from '@/hooks';
 import { Icon, Item } from '@/components';
 import downloadjs from 'downloadjs';
 import { ClassMap } from '@/constants';
-import { AccountInfo } from '@/types';
+import { AccountInfo, Package, Role } from '@/types';
+import _, { divide } from 'lodash';
 
 const Grade = {
   1: 'D',
@@ -36,7 +37,13 @@ const ShowPackageTypes = [
   '随身仓库4',
   '随身仓库5',
 ];
+// 觉醒石
 const ShowItemIds = [166200412, 166200112];
+// 材料 石头等
+const ShowItemCountIds = [
+  180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818, 430139032,
+  190147815, 20201200, 190147814,
+];
 
 function Detail() {
   const router = useRouter();
@@ -143,6 +150,31 @@ function Detail() {
     }
   };
 
+  // const renderWeapon = (packages: Package[]) => {
+  //   const items = _.orderBy(
+  //     _.flatten(packages.filter((p) => p.type === '装备' || p.type === '战斗').map((p) => p.items)),
+  //     'score',
+  //     'desc'
+  //   );
+  //   const weapon = items.find((p) => p.posId1 === 11);
+  //   return <div>{weapon && <Item {...weapon} />}</div>;
+  // };
+
+  const renderItemCount = (role: Role) => {
+    const items = _.flatten(role.packages.map((p) => p.items));
+    const group = _.groupBy(items, 'id');
+    return (
+      <div className="grid grid-cols-4 gap-1">
+        {Object.keys(group)
+          .map((key) => ({ ...group[key][0], count: _.sumBy(group[key], 'count') }))
+          .filter((p) => ShowItemCountIds.includes(p.id))
+          .map((item, index) => (
+            <Item onlyCount {...item} key={index} />
+          ))}
+      </div>
+    );
+  };
+
   const title = `${server} ${data.uLv}级 ${roles
     .map((p) => ClassMap[p.currentClassId])
     .join('/')} ${data.collectCount}张图鉴`;
@@ -151,18 +183,21 @@ function Detail() {
     <div className="flex items-center">
       <div ref={ref} className="mx-auto">
         <Watermark content={`由恒记APP导出`}>
-          <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 grayscale">
+          <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 ">
             <div className="text-center">{title}</div>
             {roles.map((role) => (
               <Card
                 key={role.id}
                 size="small"
                 title={
-                  <div className="flex items-center">
-                    {role.nameBackground && <Icon {...role.nameBackground} />}
-                    {role.name}
-                    {role.nameBackground && <Icon {...role.nameBackground} />}
-                    {role.packages.find((p) => p.type === '人物')?.items[2].name}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center">
+                      {role.nameBackground && <Icon {...role.nameBackground} />}
+                      {role.name}
+                      {role.nameBackground && <Icon {...role.nameBackground} />}
+                    </div>
+                    <div>{role.packages.find((p) => p.type === '人物')?.items[2].name}</div>
+                    <div>{role.gender === 1 ? '男' : '女'}</div>
                   </div>
                 }
                 extra={
@@ -175,30 +210,16 @@ function Detail() {
               >
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-2">
-                    {weapons
-                      .filter((p) => p.roleId === role.roleId && !p.storage)
-                      .map((item, index) => (
-                        <Item key={index} {...item} />
-                      ))}
-                  </div>
-                  {role.fairies && (
-                    <div className="flex flex-col">
-                      <div className="text-lg text-center" style={{ color: 'rgb(255, 117, 188)' }}>
-                        {role.fairies[2].name}
-                      </div>
-                      {role.fairies[2].attrs.map((item) => (
-                        <Text key={item.description}>{item.description}</Text>
-                      ))}
-                    </div>
-                  )}
-                  <div>
-                    {(role.skills || role.subSkills)
-                      ?.filter((p) => ShowSkillIds.includes(p.id) && p.slv > 10)
-                      .map((skill) => (
-                        <div key={skill.id}>
-                          {skill.name}({skill.slv}/{skill.maxSlv})
-                        </div>
-                      ))}
+                    {_.uniqBy(
+                      _.orderBy(
+                        weapons.filter((p) => p.roleId === role.roleId && !p.storage),
+                        'posId1',
+                        'desc'
+                      ),
+                      'posId1'
+                    ).map((item, index) => (
+                      <Item key={index} {...item} />
+                    ))}
                   </div>
                   <div>
                     {pets
@@ -207,14 +228,36 @@ function Detail() {
                         <Item {...item} key={index} />
                       ))}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    {role.packages
-                      .find((p) => p.type === '装备')
-                      ?.items.filter((p) => ShowItemIds.includes(p.id))
-                      .map((item, index) => (
-                        <Item {...item} name={item.id + item.name} key={index} />
+                  {role.fairies && (
+                    <div className="flex flex-col">
+                      <Text className="text-center" style={{ color: 'rgb(255, 117, 188)' }}>
+                        {role.fairies[2].name}
+                      </Text>
+                      {role.fairies[2].attrs.map((item) => (
+                        <Text key={item.description} type="secondary">
+                          {item.description}
+                        </Text>
+                      ))}
+                    </div>
+                  )}
+                  <div>
+                    {(role.skills || role.subSkills)
+                      ?.filter((p) => ShowSkillIds.includes(p.id) && p.slv > 10)
+                      .map((skill) => (
+                        <Text className="block" key={skill.id} type="warning">
+                          {skill.name}({skill.slv}/{skill.maxSlv})
+                        </Text>
                       ))}
                   </div>
+                  <div>{renderItemCount(role)}</div>
+                </div>
+                <div className="grid grid-cols-5">
+                  {role.packages
+                    .find((p) => p.type === '装备')
+                    ?.items.filter((p) => ShowItemIds.includes(p.id))
+                    .map((item, index) => (
+                      <Item {...item} key={index} />
+                    ))}
                 </div>
               </Card>
             ))}

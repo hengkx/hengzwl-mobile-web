@@ -28,9 +28,28 @@ interface ItemProps {
   count: number;
   petPotential?: PetPotential;
   color?: string;
+  onlyCount?: boolean;
 }
 
-function Item({ color, name, icon, iconIndex, enchants, petPotential }: ItemProps) {
+function Item({
+  onlyCount,
+  count,
+  color,
+  name,
+  icon,
+  iconIndex,
+  enchants,
+  petPotential,
+}: ItemProps) {
+  if (onlyCount) {
+    return (
+      <div className="flex items-center">
+        <Icon icon={icon} iconIndex={iconIndex} />
+        <div className="font-bold">X{count}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
@@ -38,13 +57,11 @@ function Item({ color, name, icon, iconIndex, enchants, petPotential }: ItemProp
         <Text style={{ color }}>{name}</Text>
       </div>
       <div className="flex flex-col">
-        {enchants
-          .filter((p) => p.value > 50)
-          .map((p, index) => (
-            <Text className="block" type="secondary" key={index}>
-              {p.description}
-            </Text>
-          ))}
+        {enchants.map((p, index) => (
+          <Text className="block" type="secondary" key={index}>
+            {p.description}
+          </Text>
+        ))}
       </div>
       {Boolean(petPotential) && petPotential && (
         <Text className="block" type="warning">

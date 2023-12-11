@@ -3,14 +3,12 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { useParams, useRouter } from 'next/navigation';
 import { Button, Card, DescriptionsProps, Typography, Watermark } from 'antd';
-import html2canvas from 'html2canvas';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { Icon, Item } from '@/components';
-import downloadjs from 'downloadjs';
 import { ClassMap } from '@/constants';
 import { AccountInfo, Package, Role } from '@/types';
-import _, { divide } from 'lodash';
+import _ from 'lodash';
 
 const Grade = {
   1: 'D',
@@ -141,14 +139,6 @@ function Detail() {
   ];
 
   const { armors, accessories, pets, gems, weapons, roles, server } = data;
-
-  const handleExport = async () => {
-    if (ref.current) {
-      const canvas = await html2canvas(ref.current);
-      const dataURL = canvas.toDataURL('image/png');
-      downloadjs(dataURL, 'download.png', 'image/png');
-    }
-  };
 
   // const renderWeapon = (packages: Package[]) => {
   //   const items = _.orderBy(
@@ -319,9 +309,6 @@ function Detail() {
             </Card>
           </div>
         </Watermark>
-      </div>
-      <div className="fixed bottom-5 right-5 z-[9999]">
-        <Button onClick={handleExport}>Export</Button>
       </div>
     </div>
   );

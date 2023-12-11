@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Button, Descriptions, DescriptionsProps, Table, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
+import { AccountInfo } from '@/types';
 
 const classMap = {
   '1': '战士',

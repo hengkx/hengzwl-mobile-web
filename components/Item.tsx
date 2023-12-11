@@ -1,5 +1,6 @@
 import { Typography } from 'antd';
 import Icon from './Icon';
+import { ItemEnchant } from '@/types';
 
 const { Text } = Typography;
 
@@ -25,14 +26,15 @@ interface ItemProps {
   point: number;
   count: number;
   petPotential?: PetPotential;
+  color?: string;
 }
 
-function Item({ name, icon, iconIndex, enchants, petPotential }: ItemProps) {
+function Item({ color, name, icon, iconIndex, enchants, petPotential }: ItemProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Icon icon={icon} iconIndex={iconIndex} />
-        <Text>{name}</Text>
+        <Text style={{ color }}>{name}</Text>
       </div>
       <div className="flex flex-col">
         {enchants

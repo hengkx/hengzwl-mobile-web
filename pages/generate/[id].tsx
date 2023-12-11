@@ -36,6 +36,7 @@ const ShowPackageTypes = [
   '随身仓库4',
   '随身仓库5',
 ];
+const ShowItemIds = [166200412, 166200112];
 
 function Detail() {
   const router = useRouter();
@@ -209,8 +210,9 @@ function Detail() {
                   <div className="flex flex-col gap-2">
                     {role.packages
                       .find((p) => p.type === '装备')
-                      ?.items.map((item, index) => (
-                        <Item {...item} key={index} />
+                      ?.items.filter((p) => ShowItemIds.includes(p.id))
+                      .map((item, index) => (
+                        <Item {...item} name={item.id + item.name} key={index} />
                       ))}
                   </div>
                 </div>

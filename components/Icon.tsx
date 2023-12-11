@@ -13,9 +13,19 @@ interface IconProps {
   height?: number;
   column?: number;
   scale?: number;
+  className?: string;
 }
 
-function ChdIcon({ name, icon, iconIndex, size = 32, column, scale = 1, ...props }: IconProps) {
+function ChdIcon({
+  className,
+  name,
+  icon,
+  iconIndex,
+  size = 32,
+  column,
+  scale = 1,
+  ...props
+}: IconProps) {
   const width = useMemo(() => props.width || size, [props.width, size]);
   const height = useMemo(() => props.height || size, [props.height, size]);
   const rowCount = useMemo(() => column || (size === 32 ? 16 : 9), [size, column]);
@@ -35,7 +45,7 @@ function ChdIcon({ name, icon, iconIndex, size = 32, column, scale = 1, ...props
   }
 
   return (
-    <div>
+    <div className={className}>
       <Image
         src={`https://oss.hengzwl.com/chd/${icon.replace(
           ' ',

@@ -24,6 +24,7 @@ interface ItemProps {
   icon: string;
   iconIndex: number;
   enchants: ItemEnchant[];
+  chaosStatuses: ItemEnchant[];
   point: number;
   count: number;
   petPotential?: PetPotential;
@@ -40,6 +41,7 @@ function Item({
   iconIndex,
   enchants,
   petPotential,
+  chaosStatuses,
 }: ItemProps) {
   if (onlyCount) {
     return (
@@ -57,8 +59,18 @@ function Item({
         <Text style={{ color }}>{name}</Text>
       </div>
       <div className="flex flex-col">
+        {chaosStatuses.map((p, index) => (
+          <Text className="block" type="warning" key={index}>
+            {p.description}
+          </Text>
+        ))}
         {enchants.map((p, index) => (
-          <Text className="block" type="secondary" key={index}>
+          <Text
+            className="block"
+            type="secondary"
+            style={chaosStatuses.length > 0 ? { color: 'rgb(255, 0, 255)' } : undefined}
+            key={index}
+          >
             {p.description}
           </Text>
         ))}

@@ -7,79 +7,6 @@ import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { AccountInfo } from '@/types';
 
-const classMap = {
-  '1': '战士',
-  '2': '盾卫',
-  '3': '法师',
-  '4': '游侠',
-  '5': '督军',
-  '6': '狂战士',
-  '7': '圣殿骑士',
-  '8': '武术家',
-  '9': '魔法师',
-  '10': '吉他手',
-  '11': '神射手',
-  '12': '火枪手',
-  '13': '工程师',
-  '14': '机甲师',
-  '24': '圣十字军',
-  '25': '剑刃舞者',
-  '26': '恐怖骑士',
-  '27': '修行武者',
-  '28': '幻灵师',
-  '29': '演奏大师',
-  '30': '刺杀者',
-  '31': '审判官',
-  '32': '星能机师',
-  '33': '术士',
-  '34': '通灵师',
-  '36': '英雄',
-  '37': '剑圣',
-  '38': '星芒骑士',
-  '39': '武道宗师',
-  '40': '元素之灵',
-  '41': '巨星',
-  '42': '风行刺客',
-  '43': '魔射手',
-  '44': '远古机甲师',
-  '45': '通灵领主',
-  '46': '卡牌师',
-  '47': '高阶卡牌师',
-  '49': '天穹卡牌师',
-  '50': '黑暗卡牌师',
-  '52': '史诗卡牌师',
-  '53': '流浪剑客',
-  '54': '武士',
-  '56': '黑影',
-  '57': '修道士',
-  '58': '圣执事',
-  '60': '神之使者',
-  '61': '战锤佣兵',
-  '62': '焰之勇者',
-  '64': '阿格尼',
-  '65': '剑师',
-  '66': '封印者',
-  '68': '逐暗者',
-  '69': '宝石星',
-  '70': '长矛手',
-  '71': '黑骑士',
-  '73': '暗影行者',
-  '74': '疾风舞者',
-  '75': '唤雨之灵',
-  '76': '旅者',
-  '77': '破界者',
-  '78': '次元守望者',
-  '173': '贤者',
-  '174': '光明祭司',
-  '176': '守护天使',
-  '177': '黑暗战士',
-  '178': '黑暗剑客',
-  '180': '梦魇恶魔',
-  '181': '傀儡师',
-  '182': '傀儡专家',
-  '184': '傀儡宗师',
-};
-
 const Grade = {
   1: 'D',
   2: 'C',
@@ -97,12 +24,17 @@ function Item(props: any) {
       {props.items.map((item: any, index: number) => (
         <div key={index}>
           <Text className="block">
-            {item.type} {item.name || item.id} x{item.count} {item.score} {item.totalEnchantScore}
+            {item.type} {item.name || item.id} x{item.count} {item.score} {item.totalEnchantScore}{' '}
+            {item.id}
           </Text>
-          {item.key}
+          {item.chaosStatuses.map((p: any, childIndex: number) => (
+            <Text className="block" type="secondary" key={childIndex}>
+              {p.description} {p.id} <Text>{p.score}</Text> optionId {p.optionId}
+            </Text>
+          ))}
           {item.enchants.map((p: any, childIndex: number) => (
             <Text className="block" type="secondary" key={childIndex}>
-              {p.description} {p.id} <Text>{p.score}</Text> {p.max}
+              {p.description} {p.id} <Text>{p.score}</Text> optionId {p.optionId}
             </Text>
           ))}
           {Boolean(item.petPotential) && (
@@ -125,19 +57,19 @@ function Detail() {
     return;
   }
   const items: TabsProps['items'] = [
-    {
-      key: 'title',
-      label: '称号',
-      children: (
-        <div className="h-[850px] overflow-y-auto">
-          {data.titles.map((collect) => (
-            <div key={collect.id}>
-              <Text>{collect.name}</Text>
-            </div>
-          ))}
-        </div>
-      ),
-    },
+    // {
+    //   key: 'title',
+    //   label: '称号',
+    //   children: (
+    //     <div className="h-[850px] overflow-y-auto">
+    //       {data.titles.map((collect) => (
+    //         <div key={collect.id}>
+    //           <Text>{collect.name}</Text>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   ),
+    // },
     {
       key: 'collect',
       label: '图鉴',
@@ -231,11 +163,7 @@ function Detail() {
   return (
     <div className="h-full overflow-hidden flex gap-4 px-4">
       <div className="py-4 w-52">
-        <Descriptions
-          column={1}
-          title={`${data.name} ${(classMap as any)[data.classId]} 评分`}
-          items={scoreItems}
-        />
+        <Descriptions column={1} items={scoreItems} />
       </div>
       <Tabs size="small" items={items} style={{ height: '100%', width: 1000 }} />
     </div>

@@ -88,6 +88,7 @@ interface Item {
   name: string;
   point: number;
   enchants: ItemEnchant[];
+  chaosStatuses: ItemEnchant[];
   count: number;
   icon: string;
   iconIndex: number;

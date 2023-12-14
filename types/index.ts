@@ -83,9 +83,10 @@ export interface ItemEnchant {
   description: string;
 }
 
-interface Item {
+export interface Item {
   id: number;
   name: string;
+  color: string;
   point: number;
   enchants: ItemEnchant[];
   chaosStatuses: ItemEnchant[];

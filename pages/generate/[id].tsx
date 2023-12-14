@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { Icon, Item } from '@/components';
 import { ClassMap } from '@/constants';
-import { AccountInfo, Package, Role } from '@/types';
-import _, { head } from 'lodash';
+import { AccountInfo, Item as ItemA, Role } from '@/types';
+import _ from 'lodash';
 import { GetServerSideProps } from 'next';
 
 const Grade = {
@@ -37,12 +37,33 @@ const ShowPackageTypes = [
   '随身仓库5',
 ];
 // 觉醒石
-const ShowItemIds = [166200412, 166200112, 166200612];
+const ShowItemIds = [166200112, 166200612];
 // 材料 石头等
 const ShowItemCountIds = [
   180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818, 430139032,
   190147815, 20201200, 190147814,
 ];
+
+function ExpAwakenList({ data }: { data?: ItemA[] }) {
+  if (!data || data.length === 0) {
+    return null;
+  }
+  const { icon, iconIndex, color, name } = data[0];
+  return (
+    <div>
+      <div className="flex items-center gap-2">
+        <Icon icon={icon} iconIndex={iconIndex} />
+        <Text style={{ color }}>{name}</Text>
+        <Text>X{data.length}</Text>
+      </div>
+      {data.map((item, index) => (
+        <Text key={index} className="block" type="secondary">
+          {item.enchants.find((p) => p.id === 18852)?.description}
+        </Text>
+      ))}
+    </div>
+  );
+}
 
 function Detail({ data }: { data: AccountInfo }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -169,7 +190,7 @@ function Detail({ data }: { data: AccountInfo }) {
   return (
     <div className="flex items-center">
       <div ref={ref} className="mx-auto">
-        <Watermark content={`由恒记APP导出`}>
+        <Watermark content={`${dayjs().format('YYYY-MM-DD')} 由恒记APP导出`}>
           <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 ">
             <div className="text-center">{title}</div>
             {roles.map((role) => (
@@ -185,6 +206,10 @@ function Detail({ data }: { data: AccountInfo }) {
                     </div>
                     <div>{role.packages.find((p) => p.type === '人物')?.items[2].name}</div>
                     <div>{role.gender === 1 ? '男' : '女'}</div>
+                    <div>
+                      {ClassMap[role.classId]}
+                      {role.subClassId ? '/' + ClassMap[role.subClassId] : ''}
+                    </div>
                   </div>
                 }
                 extra={
@@ -238,7 +263,13 @@ function Detail({ data }: { data: AccountInfo }) {
                   </div>
                   <div>{renderItemCount(role)}</div>
                 </div>
+
                 <div className="grid grid-cols-5">
+                  <ExpAwakenList
+                    data={role.packages
+                      .find((p) => p.type === '装备')
+                      ?.items.filter((p) => p.id === 166200412)}
+                  />
                   {role.packages
                     .find((p) => p.type === '装备')
                     ?.items.filter((p) => ShowItemIds.includes(p.id))

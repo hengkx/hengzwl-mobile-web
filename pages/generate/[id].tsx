@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import { useParams, useRouter } from 'next/navigation';
-import { Button, Card, DescriptionsProps, Typography, Watermark } from 'antd';
+import { Alert, Button, Card, DescriptionsProps, Typography, Watermark } from 'antd';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { ExpAwaken, Icon, Item } from '@/components';
@@ -189,16 +189,27 @@ function Detail({ data }: { data: AccountInfo }) {
                   </div>
                 }
               >
-                <div className="flex gap-2 mb-1">
-                  {role.titles.map((item) => (
-                    <Text
-                      key={item.id}
-                      style={{ color: item.color === 'rgb(255,255,183)' ? '#ffff00' : item.color }}
-                    >
-                      {item.name}
-                    </Text>
-                  ))}
-                </div>
+                {role.titles.length > 0 && (
+                  <Alert
+                    style={{ marginBottom: 8 }}
+                    message={
+                      <div className="flex gap-2">
+                        {role.titles.map((item) => (
+                          <Text
+                            key={item.id}
+                            style={{
+                              color: item.color,
+                            }}
+                          >
+                            {item.name}
+                          </Text>
+                        ))}
+                      </div>
+                    }
+                    type="info"
+                  />
+                )}
+
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-2">
                     {_.uniqBy(

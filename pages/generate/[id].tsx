@@ -54,7 +54,7 @@ function ExpAwakenList({ data }: { data?: ItemA[] }) {
       <div className="flex items-center gap-2">
         <Icon icon={icon} iconIndex={iconIndex} />
         <Text style={{ color }}>{name}</Text>
-        <Text>X{data.length}</Text>
+        <Text style={{ fontWeight: 'bold' }}>X{data.length}</Text>
       </div>
       {data.map((item, index) => (
         <Text key={index} className="block" type="secondary">

@@ -8,7 +8,7 @@ import { useFetch } from '@/hooks';
 import { Icon, Item } from '@/components';
 import { ClassMap } from '@/constants';
 import { AccountInfo, Package, Role } from '@/types';
-import _ from 'lodash';
+import _, { head } from 'lodash';
 import { GetServerSideProps } from 'next';
 
 const Grade = {
@@ -312,7 +312,9 @@ function Detail({ data }: { data: AccountInfo }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
-  const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`);
+  const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`, {
+    headers: { device: JSON.stringify({ version: '1.10.42' }) },
+  });
   const data = await res.json();
   return { props: { data: data.data } };
 };

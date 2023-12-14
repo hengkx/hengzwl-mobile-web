@@ -9,6 +9,7 @@ import { Icon, Item } from '@/components';
 import { ClassMap } from '@/constants';
 import { AccountInfo, Package, Role } from '@/types';
 import _ from 'lodash';
+import { GetServerSideProps } from 'next';
 
 const Grade = {
   1: 'D',
@@ -43,12 +44,8 @@ const ShowItemCountIds = [
   190147815, 20201200, 190147814,
 ];
 
-function Detail() {
-  const router = useRouter();
-  const { id } = useParams() || {};
+function Detail({ data }: { data: AccountInfo }) {
   const ref = useRef<HTMLDivElement>(null);
-
-  const { data } = useFetch<AccountInfo>(id && `/api/chd/info/${id}`);
 
   const specialItems = useMemo(() => {
     if (data) {
@@ -313,5 +310,11 @@ function Detail() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
+  const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`);
+  const data = await res.json();
+  return { props: { data: data.data } };
+};
 
 export default Detail;

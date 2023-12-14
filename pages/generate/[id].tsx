@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Button, Card, DescriptionsProps, Typography, Watermark } from 'antd';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
-import { Icon, Item } from '@/components';
+import { ExpAwaken, Icon, Item } from '@/components';
 import { ClassMap } from '@/constants';
 import { AccountInfo, Item as ItemA, Role } from '@/types';
 import _ from 'lodash';
@@ -43,27 +43,6 @@ const ShowItemCountIds = [
   180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818, 430139032,
   190147815, 20201200, 190147814,
 ];
-
-function ExpAwakenList({ data }: { data?: ItemA[] }) {
-  if (!data || data.length === 0) {
-    return null;
-  }
-  const { icon, iconIndex, color, name } = data[0];
-  return (
-    <div>
-      <div className="flex items-center gap-2">
-        <Icon icon={icon} iconIndex={iconIndex} />
-        <Text style={{ color }}>{name}</Text>
-        <Text style={{ fontWeight: 'bold' }}>X{data.length}</Text>
-      </div>
-      {data.map((item, index) => (
-        <Text key={index} className="block" type="secondary">
-          {item.enchants.find((p) => p.id === 18852)?.description}
-        </Text>
-      ))}
-    </div>
-  );
-}
 
 function Detail({ data }: { data: AccountInfo }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -158,16 +137,6 @@ function Detail({ data }: { data: AccountInfo }) {
 
   const { armors, accessories, pets, gems, weapons, roles, server } = data;
 
-  // const renderWeapon = (packages: Package[]) => {
-  //   const items = _.orderBy(
-  //     _.flatten(packages.filter((p) => p.type === '装备' || p.type === '战斗').map((p) => p.items)),
-  //     'score',
-  //     'desc'
-  //   );
-  //   const weapon = items.find((p) => p.posId1 === 11);
-  //   return <div>{weapon && <Item {...weapon} />}</div>;
-  // };
-
   const renderItemCount = (role: Role) => {
     const items = _.flatten(role.packages.map((p) => p.items));
     const group = _.groupBy(items, 'id');
@@ -230,7 +199,7 @@ function Detail({ data }: { data: AccountInfo }) {
                       ),
                       'posId1'
                     ).map((item, index) => (
-                      <Item key={index} {...item} />
+                      <Item key={index} showEnchant={item.posId1 === 13} {...item} />
                     ))}
                   </div>
                   <div>
@@ -265,7 +234,7 @@ function Detail({ data }: { data: AccountInfo }) {
                 </div>
 
                 <div className="grid grid-cols-5">
-                  <ExpAwakenList
+                  <ExpAwaken
                     data={role.packages
                       .find((p) => p.type === '装备')
                       ?.items.filter((p) => p.id === 166200412)}

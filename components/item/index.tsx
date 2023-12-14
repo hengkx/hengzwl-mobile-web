@@ -1,5 +1,5 @@
 import { Typography } from 'antd';
-import Icon from './Icon';
+import Icon from '../Icon';
 import { ItemEnchant } from '@/types';
 import { memo } from 'react';
 
@@ -30,6 +30,7 @@ interface ItemProps {
   petPotential?: PetPotential;
   color?: string;
   onlyCount?: boolean;
+  showEnchant?: boolean;
 }
 
 function Item({
@@ -42,6 +43,7 @@ function Item({
   enchants,
   petPotential,
   chaosStatuses,
+  showEnchant = true,
 }: ItemProps) {
   if (onlyCount) {
     return (
@@ -64,16 +66,17 @@ function Item({
             {p.description}
           </Text>
         ))}
-        {enchants.map((p, index) => (
-          <Text
-            className="block"
-            type="secondary"
-            style={chaosStatuses.length > 0 ? { color: 'rgb(255, 0, 255)' } : undefined}
-            key={index}
-          >
-            {p.description}
-          </Text>
-        ))}
+        {showEnchant &&
+          enchants.map((p, index) => (
+            <Text
+              className="block"
+              type="secondary"
+              style={chaosStatuses.length > 0 ? { color: 'rgb(255, 0, 255)' } : undefined}
+              key={index}
+            >
+              {p.description}
+            </Text>
+          ))}
       </div>
       {Boolean(petPotential) && petPotential && (
         <Text className="block" type="warning">
@@ -85,3 +88,5 @@ function Item({
 }
 
 export default memo(Item);
+
+export { default as ExpAwaken } from './ExpAwaken';

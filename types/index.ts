@@ -24,6 +24,13 @@ export interface Package {
   items: Item[];
 }
 
+interface Title {
+  id: number;
+  name: string;
+  color: string;
+  score: number;
+}
+
 export interface Role {
   id: string;
   roleId: number;
@@ -39,6 +46,7 @@ export interface Role {
   fairies: Fairy[];
   packages: Package[];
   gender: number;
+  titles: Title[];
 }
 
 export interface Skill {

@@ -189,6 +189,16 @@ function Detail({ data }: { data: AccountInfo }) {
                   </div>
                 }
               >
+                <div className="flex gap-2 mb-1">
+                  {role.titles.map((item) => (
+                    <Text
+                      key={item.id}
+                      style={{ color: item.color === 'rgb(255,255,183)' ? '#ffff00' : item.color }}
+                    >
+                      {item.name}
+                    </Text>
+                  ))}
+                </div>
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-2">
                     {_.uniqBy(

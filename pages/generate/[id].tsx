@@ -232,7 +232,7 @@ function Detail({ data }: { data: AccountInfo }) {
                       'posId1',
                       'desc'
                     ).map((item, index) => (
-                      <Item key={index} showEnchant={item.posId1 === 13} {...item} />
+                      <Item key={index} showEnchant {...item} />
                     ))}
                   </div>
                   <div>

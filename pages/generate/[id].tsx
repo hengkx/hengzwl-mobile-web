@@ -6,7 +6,7 @@ import { Alert, Button, Card, DescriptionsProps, Typography, Watermark } from 'a
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { ExpAwaken, Icon, Item } from '@/components';
-import { ClassMap } from '@/constants';
+import { ClassMap, MustShowWeaponIds } from '@/constants';
 import { AccountInfo, Item as ItemA, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
@@ -212,13 +212,25 @@ function Detail({ data }: { data: AccountInfo }) {
 
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-2">
-                    {_.uniqBy(
-                      _.orderBy(
-                        weapons.filter((p) => p.roleId === role.roleId && !p.storage),
-                        'posId1',
-                        'desc'
+                    {_.orderBy(
+                      _.uniqBy(
+                        [
+                          ..._.uniqBy(
+                            _.orderBy(
+                              weapons.filter((p) => p.roleId === role.roleId && !p.storage),
+                              'posId1',
+                              'desc'
+                            ),
+                            'posId1'
+                          ),
+                          ...weapons.filter(
+                            (p) => p.roleId === role.roleId && MustShowWeaponIds.includes(p.id)
+                          ),
+                        ],
+                        'id'
                       ),
-                      'posId1'
+                      'posId1',
+                      'desc'
                     ).map((item, index) => (
                       <Item key={index} showEnchant={item.posId1 === 13} {...item} />
                     ))}

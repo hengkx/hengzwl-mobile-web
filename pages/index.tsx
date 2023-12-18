@@ -38,7 +38,7 @@ const Main: FC<MainProps> = () => {
         苹果下载
       </a>
       <a className="bg-black text-white w-60 py-2 text-center rounded-md" href={data.DownloadUrl}>
-        安卓下载已在小米平台上架
+        安卓下载
       </a>
       <pre>{data.ModifyContent}</pre>
     </div>

@@ -244,11 +244,11 @@ function Detail({ data }: { data: AccountInfo }) {
                 <div className="grid grid-cols-5">
                   <ExpAwaken
                     data={role.packages
-                      .find((p) => p.type === '装备')
+                      .find((p) => p.type === '装备' || p.type === '觉醒石')
                       ?.items.filter((p) => p.id === 166200412)}
                   />
                   {role.packages
-                    .find((p) => p.type === '装备')
+                    .find((p) => p.type === '装备' || p.type === '觉醒石')
                     ?.items.filter((p) => ShowItemIds.includes(p.id))
                     .map((item, index) => (
                       <Item {...item} key={index} />

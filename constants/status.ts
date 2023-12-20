@@ -116,7 +116,7 @@ export const StatusMap: Record<string, string> = {
 /**
  * 物理排除状态
  */
-export const PhyExcludeTypes = [38, 98, 102, 164, 181, 254, 258, 292, 533];
+export const PhyExcludeTypes = [38, 39, 98, 102, 103, 163, 164, 181, 254, 258, 292, 533];
 
 /**
  * 魔法排除状态
@@ -177,6 +177,10 @@ export const StatusScoreMap: Record<string, number> = {
    */
   38: 200,
   /**
+   * 属性力%
+   */
+  39: 20000,
+  /**
    * 休息 恢复HP%
    */
   55: 0,
@@ -212,6 +216,10 @@ export const StatusScoreMap: Record<string, number> = {
    * 魔法最大伤害
    */
   102: 200,
+  /**
+   * 最终魔法最大伤害
+   */
+  103: 40000,
   /**
    * 弹跳力
    */
@@ -292,6 +300,10 @@ export const StatusScoreMap: Record<string, number> = {
    * 魔法暴击伤害
    */
   162: 100,
+  /**
+   * 最终魔法暴击伤害
+   */
+  163: 20000,
   /**
    * 魔法暴击概率
    */
@@ -424,4 +436,8 @@ export const StatusScoreMap: Record<string, number> = {
    * 最大光明卡牌
    */
   1609: 100,
+  /**
+   * 力量/魔法力
+   */
+  1618: 0,
 };

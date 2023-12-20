@@ -37,30 +37,35 @@ function Item({ type, ...props }: any) {
           {item.type} {item.name || item.id} x{item.count} {item.score}
         </Text>
 
-        {item.mergedStatus.map((p: any, childIndex: number) => (
-          <Text className="block" type="secondary" key={childIndex}>
-            {format(StatusMap[p.effectType], p.value)}
-            <Text> {p.score}</Text> {p.effectType}
-          </Text>
-        ))}
+        {item.mergedStatus ? (
+          item.mergedStatus.map((p: any, childIndex: number) => (
+            <Text className="block" type="secondary" key={childIndex}>
+              {format(StatusMap[p.effectType], p.value)}
+              <Text> {p.score}</Text> {p.effectType}
+            </Text>
+          ))
+        ) : (
+          <div>
+            {item.status.map((p: any, childIndex: number) => (
+              <Text className="block" type="secondary" key={childIndex}>
+                {p.description} {p.id} <Text> {StatusScoreMap[p.id] * p.value}</Text>
+              </Text>
+            ))}
+            {item.chaosStatuses.map((p: any, childIndex: number) => (
+              <Text className="block" type="secondary" key={childIndex}>
+                {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
+                {p.effectType}
+              </Text>
+            ))}
+            {item.enchants.map((p: any, childIndex: number) => (
+              <Text className="block" type="secondary" key={childIndex}>
+                {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
+                {p.effectType}
+              </Text>
+            ))}
+          </div>
+        )}
 
-        {/* {item.status.map((p: any, childIndex: number) => (
-          <Text className="block" type="secondary" key={childIndex}>
-            {p.description} {p.id} <Text> {StatusScoreMap[p.id] * p.value}</Text>
-          </Text>
-        ))}
-        {item.chaosStatuses.map((p: any, childIndex: number) => (
-          <Text className="block" type="secondary" key={childIndex}>
-            {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
-            {p.effectType}
-          </Text>
-        ))}
-        {item.enchants.map((p: any, childIndex: number) => (
-          <Text className="block" type="secondary" key={childIndex}>
-            {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
-            {p.effectType}
-          </Text>
-        ))} */}
         {Boolean(item.petPotential) && (
           <Text className="block" type="warning">
             潜能 {(Grade as any)[item.petPotential.grade]}：{item.petPotential.description}
@@ -149,6 +154,11 @@ function Detail() {
           ))}
         </div>
       ),
+    },
+    {
+      key: 'pet111',
+      label: '觉醒石',
+      children: <Item items={data.packages.find((p) => p.type === '觉醒石').items} />,
     },
     { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },

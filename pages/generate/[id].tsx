@@ -138,7 +138,7 @@ function Detail({ data }: { data: AccountInfo }) {
     .join('/')} ${data.collectCount}张图鉴`;
 
   return (
-    <div className="flex items-center grayscale">
+    <div className="flex items-center">
       <div ref={ref} className="mx-auto">
         <Watermark content={`${dayjs().format('YYYY-MM-DD')} 由恒记APP导出`}>
           <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 ">

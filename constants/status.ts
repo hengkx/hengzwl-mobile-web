@@ -219,7 +219,7 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 最终魔法最大伤害
    */
-  103: 40000,
+  103: 30000,
   /**
    * 弹跳力
    */

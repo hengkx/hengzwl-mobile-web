@@ -17,6 +17,7 @@ import {
 import { AccountInfo, Item as ItemA, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
+import { CalcScore } from '@/utils';
 
 const Grade = {
   1: 'D',
@@ -51,6 +52,8 @@ const ShowItemCountIds = [
   190147815, 20201200, 190147814,
 ];
 
+const AddonAccessoriesIds = [200101011, 200101012, 40170602, 321110027, 120270462];
+
 function Detail({ data }: { data: AccountInfo }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -81,29 +84,22 @@ function Detail({ data }: { data: AccountInfo }) {
 
   const armors = useMemo(() => {
     if (data) {
-      const type = ClassTypeMap[data.classId];
-      const items = _.uniqBy(data.armors, 'key').map((item) => {
-        const status = [...item.status, ...item.chaosStatuses, ...item.enchants];
-        const group = _.groupBy(status, 'effectType');
-        const mergedStatus = Object.keys(group).map((effectType) => {
-          const value = _.sumBy(group[effectType], 'value');
-          return {
-            effectType,
-            value,
-            score:
-              (type === 1 && PhyExcludeTypes.includes(parseInt(effectType))) ||
-              (type === 2 && MagicExcludeTypes.includes(parseInt(effectType)))
-                ? 0
-                : value * StatusScoreMap[effectType],
-          };
-        });
-        return {
-          ...item,
-          mergedStatus,
-          score: _.sumBy(mergedStatus, 'score'),
-        };
-      });
+      const items = CalcScore(data.armors, ClassTypeMap[data.classId]);
       return _.orderBy(_.uniqBy(_.orderBy(items, 'score', 'desc'), 'posId1'), 'posId1');
+    }
+    return [];
+  }, [data]);
+
+  const accessories = useMemo(() => {
+    if (data) {
+      const items = CalcScore(_.uniqBy(data.accessories, 'key'), ClassTypeMap[data.classId]);
+      return _.uniqBy(
+        [
+          ..._.orderBy(_.unionBy(_.orderBy(items, 'score', 'desc'), 'posId1'), 'posId1'),
+          ...data.accessories.filter((p) => AddonAccessoriesIds.includes(p.id)),
+        ],
+        'id'
+      );
     }
     return [];
   }, [data]);
@@ -112,66 +108,7 @@ function Detail({ data }: { data: AccountInfo }) {
     return;
   }
 
-  const scoreItems: DescriptionsProps['items'] = [
-    {
-      label: '防具',
-      children: data.armorScore,
-    },
-    {
-      label: '首饰',
-      children: data.accessoryScore,
-    },
-    {
-      label: '宝石',
-      children: data.gemScore,
-    },
-    {
-      label: '图鉴',
-      children: data.collectScore,
-    },
-    {
-      label: '符文',
-      children: data.runeScore,
-    },
-    {
-      label: '手镯',
-      children: data.bangleScore,
-    },
-    {
-      label: '胸针',
-      children: data.broochScore,
-    },
-    {
-      label: '徽章',
-      children: data.badgeScore,
-    },
-    {
-      label: '光环',
-      children: data.haloScore,
-    },
-    {
-      label: '勋章',
-      children: data.medalScore,
-    },
-    {
-      label: '结晶',
-      children: data.crystalScore,
-    },
-    {
-      label: '戒指',
-      children: data.ringScore,
-    },
-    {
-      label: '守护',
-      children: data.guardScore,
-    },
-    {
-      label: '宠物',
-      children: data.petScore,
-    },
-  ];
-
-  const { accessories, pets, gems, weapons, roles, server } = data;
+  const { pets, gems, weapons, roles, server } = data;
 
   const renderItemCount = (role: Role) => {
     const items = _.flatten(role.packages.map((p) => p.items));

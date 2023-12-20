@@ -14,7 +14,7 @@ import {
   StatusScoreMap,
 } from '@/constants';
 import _ from 'lodash';
-import { format } from '@/utils';
+import { CalcScore, format } from '@/utils';
 
 const Grade = {
   1: 'D',
@@ -40,7 +40,7 @@ function Item({ type, ...props }: any) {
         {item.mergedStatus.map((p: any, childIndex: number) => (
           <Text className="block" type="secondary" key={childIndex}>
             {format(StatusMap[p.effectType], p.value)}
-            {/* <Text> {p.score}</Text> {p.effectType} */}
+            <Text> {p.score}</Text> {p.effectType}
           </Text>
         ))}
 
@@ -84,28 +84,15 @@ function Detail() {
 
   const armors = useMemo(() => {
     if (data) {
-      const type = ClassTypeMap[data.classId];
-      return _.uniqBy(data.armors, 'key').map((item) => {
-        const status = [...item.status, ...item.chaosStatuses, ...item.enchants];
-        const group = _.groupBy(status, 'effectType');
-        const mergedStatus = Object.keys(group).map((effectType) => {
-          const value = _.sumBy(group[effectType], 'value');
-          return {
-            effectType,
-            value,
-            score:
-              (type === 1 && PhyExcludeTypes.includes(parseInt(effectType))) ||
-              (type === 2 && MagicExcludeTypes.includes(parseInt(effectType)))
-                ? 0
-                : value * StatusScoreMap[effectType],
-          };
-        });
-        return {
-          ...item,
-          mergedStatus,
-          score: _.sumBy(mergedStatus, 'score'),
-        };
-      });
+      return CalcScore(_.uniqBy(data.armors, 'key'), ClassTypeMap[data.classId]);
+    }
+    return [];
+  }, [data]);
+
+  const accessories = useMemo(() => {
+    if (data) {
+      const items = CalcScore(_.uniqBy(data.accessories, 'key'), ClassTypeMap[data.classId]);
+      return _.orderBy(items, 'score', 'desc');
     }
     return [];
   }, [data]);
@@ -156,7 +143,7 @@ function Detail() {
     },
     { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
-    { key: '首饰', label: '首饰', children: <Item items={data.accessories} /> },
+    { key: '首饰', label: '首饰', children: <Item items={accessories} /> },
     // ...data.packages.map((p) => ({
     //   key: p.type,
     //   label: `${p.type}[${p.count}]`,

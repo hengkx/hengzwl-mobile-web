@@ -116,11 +116,11 @@ export const StatusMap: Record<string, string> = {
 /**
  * 物理排除状态
  */
-export const PhyExcludeTypes = [38, 102];
+export const PhyExcludeTypes = [38, 98, 102, 164, 181, 292];
 /**
  * 魔法排除状态
  */
-export const MagicExcludeTypes = [62, 66, 90, 94, 156, 492];
+export const MagicExcludeTypes = [62, 66, 90, 94, 148, 156, 158, 177, 492];
 
 export const StatusScoreMap: Record<string, number> = {
   /**
@@ -132,17 +132,33 @@ export const StatusScoreMap: Record<string, number> = {
    */
   14: 0,
   /**
+   * 力量%
+   */
+  15: 0,
+  /**
    * 幸运
    */
   18: 0,
+  /**
+   * 幸运%
+   */
+  19: 0,
   /**
    * 魔法力
    */
   22: 0,
   /**
+   * 魔法力%
+   */
+  23: 0,
+  /**
    * 体力
    */
   26: 5,
+  /**
+   * 体力%
+   */
+  27: 50,
   /**
    * 最大生命值
    */
@@ -188,13 +204,33 @@ export const StatusScoreMap: Record<string, number> = {
    */
   94: 200,
   /**
+   * 魔法最小伤害
+   */
+  98: 200,
+  /**
    * 魔法最大伤害
    */
   102: 200,
   /**
+   * 物理/魔法 最大伤害
+   */
+  461: 200,
+  /**
+   * 物理/魔法 最小伤害
+   */
+  462: 200,
+  /**
    * 移动速度
    */
   106: 100,
+  /**
+   * 移动速度%
+   */
+  107: 100,
+  /**
+   * 梯子移动速度
+   */
+  118: 0,
   /**
    * 经验值获取
    */
@@ -203,6 +239,10 @@ export const StatusScoreMap: Record<string, number> = {
    * 金钱获取
    */
   128: 0,
+  /**
+   * 物品掉落概率
+   */
+  132: 0,
   /**
    * 多属性发生概率
    */
@@ -219,6 +259,10 @@ export const StatusScoreMap: Record<string, number> = {
    * 物理贯穿力
    */
   148: 100,
+  /**
+   * 魔法贯穿力
+   */
+  292: 100,
   /**
    * 物理/魔法 贯穿力
    */
@@ -240,6 +284,10 @@ export const StatusScoreMap: Record<string, number> = {
    */
   164: 1000,
   /**
+   * 物理命中率
+   */
+  177: 100,
+  /**
    * 物理攻击命中率
    */
   176: 100,
@@ -247,6 +295,22 @@ export const StatusScoreMap: Record<string, number> = {
    * 魔法攻击命中率
    */
   180: 100,
+  /**
+   * 魔法命中率
+   */
+  181: 100,
+  /**
+   * 物理躲闪率
+   */
+  185: 10,
+  /**
+   * 魔法躲闪率
+   */
+  188: 10,
+  /**
+   * 魔法躲闪率
+   */
+  189: 10,
   /**
    * 物理/魔法 命中率
    */
@@ -272,17 +336,13 @@ export const StatusScoreMap: Record<string, number> = {
    */
   244: 10,
   /**
+   * 技能冷却时间减少‰
+   */
+  440: 500,
+  /**
    * 所有属性
    */
   455: 10,
-  /**
-   * 物理/魔法 最大伤害
-   */
-  461: 100,
-  /**
-   * 物理/魔法 最小伤害
-   */
-  462: 100,
   /**
    * 物理/魔法 爆击伤害
    */
@@ -299,6 +359,10 @@ export const StatusScoreMap: Record<string, number> = {
    * 物理/魔法 伤害减少
    */
   495: 10,
+  /**
+   * 物理/魔法 伤害增加
+   */
+  496: 1,
   /**
    * 普通怪物伤害
    */

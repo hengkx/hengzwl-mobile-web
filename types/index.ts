@@ -89,6 +89,7 @@ export interface ItemEnchant {
   id: number;
   value: number;
   description: string;
+  effectType: number;
 }
 
 export interface Item {
@@ -96,6 +97,7 @@ export interface Item {
   name: string;
   color: string;
   point: number;
+  status: ItemEnchant[];
   enchants: ItemEnchant[];
   chaosStatuses: ItemEnchant[];
   count: number;

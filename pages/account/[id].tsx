@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import { useParams, useRouter } from 'next/navigation';
@@ -6,6 +6,15 @@ import { Button, Descriptions, DescriptionsProps, Table, Tabs, TabsProps, Typogr
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { AccountInfo } from '@/types';
+import {
+  ClassTypeMap,
+  MagicExcludeTypes,
+  PhyExcludeTypes,
+  StatusMap,
+  StatusScoreMap,
+} from '@/constants';
+import _ from 'lodash';
+import { format } from '@/utils';
 
 const Grade = {
   1: 'D',
@@ -18,32 +27,51 @@ const Grade = {
 
 const { Paragraph, Text } = Typography;
 
-function Item(props: any) {
+function Item({ type, ...props }: any) {
+  const renderItem = (item: any, index: number) => {
+    const status = [...item.status, ...item.chaosStatuses, ...item.enchants];
+    // const group = _.groupBy(status, 'effectType');
+    return (
+      <div key={index}>
+        <Text className="block">
+          {item.type} {item.name || item.id} x{item.count} {item.score}
+        </Text>
+
+        {item.mergedStatus.map((p: any, childIndex: number) => (
+          <Text className="block" type="secondary" key={childIndex}>
+            {format(StatusMap[p.effectType], p.value)}
+            {/* <Text> {p.score}</Text> {p.effectType} */}
+          </Text>
+        ))}
+
+        {/* {item.status.map((p: any, childIndex: number) => (
+          <Text className="block" type="secondary" key={childIndex}>
+            {p.description} {p.id} <Text> {StatusScoreMap[p.id] * p.value}</Text>
+          </Text>
+        ))}
+        {item.chaosStatuses.map((p: any, childIndex: number) => (
+          <Text className="block" type="secondary" key={childIndex}>
+            {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
+            {p.effectType}
+          </Text>
+        ))}
+        {item.enchants.map((p: any, childIndex: number) => (
+          <Text className="block" type="secondary" key={childIndex}>
+            {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
+            {p.effectType}
+          </Text>
+        ))} */}
+        {Boolean(item.petPotential) && (
+          <Text className="block" type="warning">
+            潜能 {(Grade as any)[item.petPotential.grade]}：{item.petPotential.description}
+          </Text>
+        )}
+      </div>
+    );
+  };
   return (
     <div className="grid grid-cols-4 gap-2 h-full overflow-y-auto">
-      {props.items.map((item: any, index: number) => (
-        <div key={index}>
-          <Text className="block">
-            {item.type} {item.name || item.id} x{item.count} {item.score} {item.totalEnchantScore}{' '}
-            {item.id}
-          </Text>
-          {item.chaosStatuses.map((p: any, childIndex: number) => (
-            <Text className="block" type="secondary" key={childIndex}>
-              {p.description} {p.id} <Text>{p.score}</Text> optionId {p.optionId}
-            </Text>
-          ))}
-          {item.enchants.map((p: any, childIndex: number) => (
-            <Text className="block" type="secondary" key={childIndex}>
-              {p.description} {p.id} <Text>{p.score}</Text> optionId {p.optionId}
-            </Text>
-          ))}
-          {Boolean(item.petPotential) && (
-            <Text className="block" type="warning">
-              潜能 {(Grade as any)[item.petPotential.grade]}：{item.petPotential.description}
-            </Text>
-          )}
-        </div>
-      ))}
+      {props.items.map((item: any, index: number) => renderItem(item, index))}
     </div>
   );
 }
@@ -53,10 +81,45 @@ function Detail() {
   const { id } = useParams() || {};
 
   const { data } = useFetch<AccountInfo>(id && `/api/chd/info/${id}`);
+
+  const armors = useMemo(() => {
+    if (data) {
+      const type = ClassTypeMap[data.classId];
+      return _.uniqBy(data.armors, 'key').map((item) => {
+        const status = [...item.status, ...item.chaosStatuses, ...item.enchants];
+        const group = _.groupBy(status, 'effectType');
+        const mergedStatus = Object.keys(group).map((effectType) => {
+          const value = _.sumBy(group[effectType], 'value');
+          return {
+            effectType,
+            value,
+            score:
+              (type === 1 && PhyExcludeTypes.includes(parseInt(effectType))) ||
+              (type === 2 && MagicExcludeTypes.includes(parseInt(effectType)))
+                ? 0
+                : value * StatusScoreMap[effectType],
+          };
+        });
+        return {
+          ...item,
+          mergedStatus,
+          score: _.sumBy(mergedStatus, 'score'),
+        };
+      });
+    }
+    return [];
+  }, [data]);
+
   if (!data) {
     return;
   }
   const items: TabsProps['items'] = [
+    {
+      key: '防具',
+      label: '防具',
+      // children: <Item items={_.uniqBy(_.orderBy(armors, 'score', 'desc'), 'posId1')} />,
+      children: <Item items={_.orderBy(armors, 'score', 'desc')} />,
+    },
     // {
     //   key: 'title',
     //   label: '称号',
@@ -94,12 +157,11 @@ function Detail() {
     { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={data.accessories} /> },
-    { key: '防具', label: '防具', children: <Item items={data.armors} /> },
-    ...data.packages.map((p) => ({
-      key: p.type,
-      label: `${p.type}[${p.count}]`,
-      children: <Item items={p.items} />,
-    })),
+    // ...data.packages.map((p) => ({
+    //   key: p.type,
+    //   label: `${p.type}[${p.count}]`,
+    //   children: <Item items={p.items} />,
+    // })),
   ];
   const scoreItems: DescriptionsProps['items'] = [
     {
@@ -162,9 +224,9 @@ function Detail() {
 
   return (
     <div className="h-full overflow-hidden flex gap-4 px-4">
-      <div className="py-4 w-52">
+      {/* <div className="py-4 w-52">
         <Descriptions column={1} items={scoreItems} />
-      </div>
+      </div> */}
       <Tabs size="small" items={items} style={{ height: '100%', width: 1000 }} />
     </div>
   );

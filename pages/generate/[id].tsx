@@ -6,7 +6,14 @@ import { Alert, Button, Card, DescriptionsProps, Typography, Watermark } from 'a
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
 import { ExpAwaken, Icon, Item } from '@/components';
-import { ClassMap, MustShowWeaponIds } from '@/constants';
+import {
+  ClassMap,
+  ClassTypeMap,
+  MagicExcludeTypes,
+  MustShowWeaponIds,
+  PhyExcludeTypes,
+  StatusScoreMap,
+} from '@/constants';
 import { AccountInfo, Item as ItemA, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
@@ -68,6 +75,35 @@ function Detail({ data }: { data: AccountInfo }) {
       }
       items.push(...data.bangles);
       return items;
+    }
+    return [];
+  }, [data]);
+
+  const armors = useMemo(() => {
+    if (data) {
+      const type = ClassTypeMap[data.classId];
+      const items = _.uniqBy(data.armors, 'key').map((item) => {
+        const status = [...item.status, ...item.chaosStatuses, ...item.enchants];
+        const group = _.groupBy(status, 'effectType');
+        const mergedStatus = Object.keys(group).map((effectType) => {
+          const value = _.sumBy(group[effectType], 'value');
+          return {
+            effectType,
+            value,
+            score:
+              (type === 1 && PhyExcludeTypes.includes(parseInt(effectType))) ||
+              (type === 2 && MagicExcludeTypes.includes(parseInt(effectType)))
+                ? 0
+                : value * StatusScoreMap[effectType],
+          };
+        });
+        return {
+          ...item,
+          mergedStatus,
+          score: _.sumBy(mergedStatus, 'score'),
+        };
+      });
+      return _.orderBy(_.uniqBy(_.orderBy(items, 'score', 'desc'), 'posId1'), 'posId1');
     }
     return [];
   }, [data]);
@@ -135,7 +171,7 @@ function Detail({ data }: { data: AccountInfo }) {
     },
   ];
 
-  const { armors, accessories, pets, gems, weapons, roles, server } = data;
+  const { accessories, pets, gems, weapons, roles, server } = data;
 
   const renderItemCount = (role: Role) => {
     const items = _.flatten(role.packages.map((p) => p.items));

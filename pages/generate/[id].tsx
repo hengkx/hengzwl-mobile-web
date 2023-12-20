@@ -163,24 +163,18 @@ function Detail({ data }: { data: AccountInfo }) {
                 }
               >
                 {role.titles.length > 0 && (
-                  <Alert
-                    style={{ marginBottom: 8 }}
-                    message={
-                      <div className="flex gap-2">
-                        {role.titles.map((item) => (
-                          <Text
-                            key={item.id}
-                            style={{
-                              color: item.color,
-                            }}
-                          >
-                            {item.name}
-                          </Text>
-                        ))}
-                      </div>
-                    }
-                    type="info"
-                  />
+                  <div className="flex gap-2 mb-2 bg-[#325669] px-2 py-1 rounded">
+                    {role.titles.map((item) => (
+                      <Text
+                        key={item.id}
+                        style={{
+                          color: item.color,
+                        }}
+                      >
+                        {item.name}
+                      </Text>
+                    ))}
+                  </div>
                 )}
 
                 <div className="flex gap-2">

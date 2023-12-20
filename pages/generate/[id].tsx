@@ -104,11 +104,19 @@ function Detail({ data }: { data: AccountInfo }) {
     return [];
   }, [data]);
 
+  const weapons = useMemo(() => {
+    if (data) {
+      const items = CalcScore(_.uniqBy(data.weapons, 'key'), ClassTypeMap[data.classId]);
+      return _.orderBy(items, 'score', 'desc');
+    }
+    return [];
+  }, [data]);
+
   if (!data) {
     return;
   }
 
-  const { pets, gems, weapons, roles, server } = data;
+  const { pets, gems, roles, server } = data;
 
   const renderItemCount = (role: Role) => {
     const items = _.flatten(role.packages.map((p) => p.items));
@@ -130,7 +138,7 @@ function Detail({ data }: { data: AccountInfo }) {
     .join('/')} ${data.collectCount}张图鉴`;
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center grayscale">
       <div ref={ref} className="mx-auto">
         <Watermark content={`${dayjs().format('YYYY-MM-DD')} 由恒记APP导出`}>
           <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 ">
@@ -184,7 +192,7 @@ function Detail({ data }: { data: AccountInfo }) {
                         [
                           ..._.uniqBy(
                             _.orderBy(
-                              weapons.filter((p) => p.roleId === role.roleId && !p.storage),
+                              weapons.filter((p) => p.roleId === role.roleId),
                               'posId1',
                               'desc'
                             ),

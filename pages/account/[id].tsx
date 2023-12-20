@@ -97,6 +97,14 @@ function Detail() {
     return [];
   }, [data]);
 
+  const weapons = useMemo(() => {
+    if (data) {
+      const items = CalcScore(_.uniqBy(data.weapons, 'key'), ClassTypeMap[data.classId]);
+      return _.orderBy(items, 'score', 'desc');
+    }
+    return [];
+  }, [data]);
+
   if (!data) {
     return;
   }
@@ -106,6 +114,7 @@ function Detail() {
       label: '防具',
       // children: <Item items={_.uniqBy(_.orderBy(armors, 'score', 'desc'), 'posId1')} />,
       children: <Item items={_.orderBy(armors, 'score', 'desc')} />,
+      // children: <Item items={_.orderBy(weapons, 'score', 'desc')} />,
     },
     // {
     //   key: 'title',

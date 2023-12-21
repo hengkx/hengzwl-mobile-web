@@ -1,34 +1,16 @@
 import React, { useMemo, useRef } from 'react';
 import axios from 'axios';
-import useSWR from 'swr';
-import { useParams, useRouter } from 'next/navigation';
-import { Alert, Button, Card, DescriptionsProps, Typography, Watermark } from 'antd';
+import { useSearchParams } from 'next/navigation';
+import { Card, Typography, Watermark } from 'antd';
 import dayjs from 'dayjs';
-import { useFetch } from '@/hooks';
 import { ExpAwaken, Icon, Item } from '@/components';
-import {
-  ClassMap,
-  ClassTypeMap,
-  MagicExcludeTypes,
-  MustShowWeaponIds,
-  PhyExcludeTypes,
-  StatusScoreMap,
-} from '@/constants';
-import { AccountInfo, Item as ItemA, Role } from '@/types';
+import { ClassMap, ClassTypeMap, MustShowWeaponIds } from '@/constants';
+import { AccountInfo, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
 import { CalcScore } from '@/utils';
 
-const Grade = {
-  1: 'D',
-  2: 'C',
-  3: 'B',
-  4: 'A',
-  5: 'S',
-  6: 'R',
-} as const;
-
-const { Paragraph, Text } = Typography;
+const { Text } = Typography;
 
 const ShowSkillIds = [4305001, 4306001, 4307001, 4308001];
 const ShowPackageTypes = [
@@ -51,11 +33,15 @@ const ShowItemCountIds = [
   180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818, 430139032,
   190147815, 20201200, 190147814,
 ];
+// 显示的脚底
+const ShowSoleIds = [43052105, 43052205, 43060505, 43060605, 430110616];
 
 const AddonAccessoriesIds = [200101011, 200101012, 40170602, 321110027, 120270462];
 
 function Detail({ data }: { data: AccountInfo }) {
   const ref = useRef<HTMLDivElement>(null);
+
+  const searchParams = useSearchParams();
 
   const specialItems = useMemo(() => {
     if (data) {
@@ -102,6 +88,32 @@ function Detail({ data }: { data: AccountInfo }) {
       );
     }
     return [];
+  }, [data]);
+
+  const showTradeItems = useMemo(() => {
+    if (data) {
+      let items = _.uniqBy(
+        data.packages.reduce((prev, curr) => [...prev, ...curr.items], []) as any[],
+        'key'
+      );
+      items = items.filter((p) => p.trade);
+      items = CalcScore(items, ClassTypeMap[data.classId]);
+      const wingItems = items.filter(
+        (p) => p.posId1 === 5 && (p.id === 430820210 || p.id === 430820110)
+      );
+      const soleItems = items.filter((p) => p.posId1 === 8 && ShowSoleIds.includes(p.id));
+      // 过滤 时装 帽子 下衣 翅膀 脚底 战斗物品
+      const otherItems = items.filter(
+        (p) =>
+          p.score > 10000 &&
+          p.posId1 !== 1 &&
+          p.posId1 !== 4 &&
+          p.posId1 !== 5 &&
+          !(p.subType === 3 && p.posId1 === 8) &&
+          p.subType !== 1
+      );
+      return _.orderBy([...wingItems, ...soleItems, ...otherItems], 'score', 'desc');
+    }
   }, [data]);
 
   const weapons = useMemo(() => {
@@ -162,6 +174,15 @@ function Detail({ data }: { data: AccountInfo }) {
             <div className="text-center">
               <Text type="secondary">{dayjs(data.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
             </div>
+            {searchParams.get('all') === 'true' && showTradeItems && (
+              <Card size="small" title="装备">
+                <div className="grid grid-cols-5 gap-2">
+                  {showTradeItems.map((item, index) => (
+                    <Item key={index} {...item} />
+                  ))}
+                </div>
+              </Card>
+            )}
             {roles.map((role) => (
               <Card
                 key={role.id}

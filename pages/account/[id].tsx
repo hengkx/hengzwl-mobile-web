@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Button, Descriptions, DescriptionsProps, Table, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
-import { AccountInfo } from '@/types';
+import { AccountInfo, Item } from '@/types';
 import {
   ClassTypeMap,
   MagicExcludeTypes,
@@ -34,7 +34,8 @@ function Item({ type, ...props }: any) {
     return (
       <div key={index}>
         <Text className="block">
-          {item.type} {item.name || item.id} x{item.count} {item.score}
+          {item.type}-{item.subType}-{item.posId1}-{item.id} {item.name || item.id} x{item.count}{' '}
+          {item.score}
         </Text>
 
         {item.mergedStatus ? (
@@ -81,6 +82,8 @@ function Item({ type, ...props }: any) {
   );
 }
 
+const ShowSoleIds = [43052105, 43052205, 43060505, 43060605, 430110616];
+
 function Detail() {
   const router = useRouter();
   const { id } = useParams() || {};
@@ -110,10 +113,41 @@ function Detail() {
     return [];
   }, [data]);
 
+  const showTradeItems = useMemo(() => {
+    if (data) {
+      let items = _.uniqBy(
+        data.packages.reduce((prev, curr) => [...prev, ...curr.items], []) as Item[],
+        'key'
+      );
+      items = items.filter((p) => p.trade);
+      items = CalcScore(items, ClassTypeMap[data.classId]);
+      const wingItems = items.filter(
+        (p) => p.posId1 === 5 && (p.id === 430820210 || p.id === 430820110)
+      );
+      const soleItems = items.filter((p) => p.posId1 === 8 && ShowSoleIds.includes(p.id));
+      // 过滤 时装 帽子 下衣 翅膀 脚底 战斗物品
+      const otherItems = items.filter(
+        (p) =>
+          p.score > 10000 &&
+          p.posId1 !== 1 &&
+          p.posId1 !== 4 &&
+          p.posId1 !== 5 &&
+          !(p.subType === 3 && p.posId1 === 8) &&
+          p.subType !== 1
+      );
+      return _.orderBy([...wingItems, ...soleItems, ...otherItems], 'score', 'desc');
+    }
+  }, [data]);
+
   if (!data) {
     return;
   }
   const items: TabsProps['items'] = [
+    {
+      key: 'showTradeItems',
+      label: 'showTradeItems',
+      children: <Item items={showTradeItems} />,
+    },
     {
       key: '防具',
       label: '防具',
@@ -163,11 +197,11 @@ function Detail() {
     { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={accessories} /> },
-    ...data.packages.map((p) => ({
-      key: p.type,
-      label: `${p.type}[${p.count}]`,
-      children: <Item items={p.items} />,
-    })),
+    // ...data.packages.map((p) => ({
+    //   key: p.type,
+    //   label: `${p.type}[${p.count}]`,
+    //   children: <Item items={p.items} />,
+    // })),
   ];
   const scoreItems: DescriptionsProps['items'] = [
     {

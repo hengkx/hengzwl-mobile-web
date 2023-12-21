@@ -106,8 +106,10 @@ export interface Item {
   score: number;
   enchantScore: number;
   roleId: number;
+  trade: boolean;
   storage: boolean;
   posId1: number;
+  subType: number;
 }
 
 export interface AccountInfo {

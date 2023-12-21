@@ -203,7 +203,7 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 物理最小伤害
    */
-  90: 200,
+  90: 160,
   /**
    * 物理最大伤害
    */
@@ -211,7 +211,7 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 魔法最小伤害
    */
-  98: 200,
+  98: 160,
   /**
    * 魔法最大伤害
    */
@@ -231,7 +231,7 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 物理/魔法 最小伤害
    */
-  462: 200,
+  462: 160,
   /**
    * 移动速度
    */

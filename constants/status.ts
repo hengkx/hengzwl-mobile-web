@@ -241,6 +241,10 @@ export const StatusScoreMap: Record<string, number> = {
    */
   107: 100,
   /**
+   * 弹跳力
+   */
+  110: 0,
+  /**
    * 绳索移动速度
    */
   114: 0,

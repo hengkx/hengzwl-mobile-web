@@ -155,19 +155,19 @@ function Detail() {
         </div>
       ),
     },
-    {
-      key: 'pet111',
-      label: '觉醒石',
-      children: <Item items={data.packages.find((p) => p.type === '觉醒石').items} />,
-    },
+    // {
+    //   key: 'pet111',
+    //   label: '觉醒石',
+    //   children: <Item items={data.packages.find((p) => p.type === '觉醒石').items} />,
+    // },
     { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={accessories} /> },
-    // ...data.packages.map((p) => ({
-    //   key: p.type,
-    //   label: `${p.type}[${p.count}]`,
-    //   children: <Item items={p.items} />,
-    // })),
+    ...data.packages.map((p) => ({
+      key: p.type,
+      label: `${p.type}[${p.count}]`,
+      children: <Item items={p.items} />,
+    })),
   ];
   const scoreItems: DescriptionsProps['items'] = [
     {

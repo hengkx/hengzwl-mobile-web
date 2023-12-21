@@ -159,6 +159,9 @@ function Detail({ data }: { data: AccountInfo }) {
         <Watermark content={`${dayjs().format('YYYY-MM-DD')} 由恒记APP导出`}>
           <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 ">
             <div className="text-center">{title}</div>
+            <div className="text-center">
+              <Text type="secondary">{dayjs(data.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
+            </div>
             {roles.map((role) => (
               <Card
                 key={role.id}

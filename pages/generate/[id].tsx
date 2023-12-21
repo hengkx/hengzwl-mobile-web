@@ -133,6 +133,22 @@ function Detail({ data }: { data: AccountInfo }) {
     );
   };
 
+  const renderAwaken = (role: Role) => {
+    const items = _.flatten(
+      role.packages.filter((p) => p.type === '装备' || p.type === '觉醒石').map((p) => p.items)
+    );
+    return (
+      <div className="grid grid-cols-5">
+        <ExpAwaken data={items.filter((p) => p.id === 166200412)} />
+        {items
+          .filter((p) => ShowItemIds.includes(p.id))
+          .map((item, index) => (
+            <Item {...item} key={index} />
+          ))}
+      </div>
+    );
+  };
+
   const title = `${server} ${data.uLv}级 ${roles
     .map((p) => ClassMap[p.currentClassId])
     .join('/')} ${data.collectCount}张图鉴`;
@@ -241,19 +257,7 @@ function Detail({ data }: { data: AccountInfo }) {
                   <div>{renderItemCount(role)}</div>
                 </div>
 
-                <div className="grid grid-cols-5">
-                  <ExpAwaken
-                    data={role.packages
-                      .find((p) => p.type === '装备' || p.type === '觉醒石')
-                      ?.items.filter((p) => p.id === 166200412)}
-                  />
-                  {role.packages
-                    .find((p) => p.type === '装备' || p.type === '觉醒石')
-                    ?.items.filter((p) => ShowItemIds.includes(p.id))
-                    .map((item, index) => (
-                      <Item {...item} key={index} />
-                    ))}
-                </div>
+                {renderAwaken(role)}
               </Card>
             ))}
             <Card size="small" title="防具">

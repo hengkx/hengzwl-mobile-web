@@ -31,7 +31,7 @@ const ShowItemIds = [166200112, 166200612];
 // 材料 石头等
 const ShowItemCountIds = [
   180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818, 430139032,
-  190147815, 20201200, 190147814,
+  190147815, 20201200, 190147814, 751800117, 522220049, 10318354,
 ];
 // 显示的脚底
 const ShowSoleIds = [43052105, 43052205, 43060505, 43060605, 430110616];
@@ -124,6 +124,17 @@ function Detail({ data }: { data: AccountInfo }) {
     return [];
   }, [data]);
 
+  const gifts = useMemo(() => {
+    if (data?.gifts) {
+      const group = _.groupBy(data.gifts, 'id');
+      return Object.keys(group).map((key) => ({
+        ...group[key][0],
+        count: _.sumBy(group[key], 'count'),
+      }));
+    }
+    return [];
+  }, [data]);
+
   if (!data) {
     return;
   }
@@ -166,7 +177,7 @@ function Detail({ data }: { data: AccountInfo }) {
     .join('/')} ${data.collectCount}张图鉴`;
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center grayscale">
       <div ref={ref} className="mx-auto">
         <Watermark content={`${dayjs().format('YYYY-MM-DD')} 由恒记APP导出`}>
           <div className="flex flex-col w-[1100px] px-4 py-4 gap-2 ">
@@ -174,6 +185,17 @@ function Detail({ data }: { data: AccountInfo }) {
             <div className="text-center">
               <Text type="secondary">{dayjs(data.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
             </div>
+            {gifts.length > 0 && (
+              <Card size="small" title="礼品">
+                <div className="flex flex-wrap gap-2">
+                  {gifts
+                    .filter((p) => ShowItemCountIds.includes(p.id))
+                    .map((item, index) => (
+                      <Item onlyCount showName key={index} {...item} />
+                    ))}
+                </div>
+              </Card>
+            )}
             {searchParams.get('all') === 'true' && showTradeItems && (
               <Card size="small" title="装备">
                 <div className="grid grid-cols-5 gap-2">

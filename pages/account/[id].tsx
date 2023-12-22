@@ -139,9 +139,22 @@ function Detail() {
     }
   }, [data]);
 
+  const gifts = useMemo(() => {
+    if (data?.gifts) {
+      const group = _.groupBy(data.gifts, 'id');
+      return Object.keys(group).map((key) => ({
+        ...group[key][0],
+        count: _.sumBy(group[key], 'count'),
+      }));
+    }
+    return [];
+  }, [data]);
+
   if (!data) {
     return;
   }
+
+  console.log(gifts);
   const items: TabsProps['items'] = [
     {
       key: 'showTradeItems',

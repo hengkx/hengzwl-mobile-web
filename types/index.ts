@@ -141,6 +141,7 @@ export interface AccountInfo {
   collectStatuses: number[];
   packages: any[];
   titles: any[];
+  gifts: any[];
   gems: Item[];
   /**
    * 防具

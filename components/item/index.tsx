@@ -31,6 +31,7 @@ interface ItemProps {
   color?: string;
   onlyCount?: boolean;
   showEnchant?: boolean;
+  showName?: boolean;
 }
 
 function Item({
@@ -44,11 +45,13 @@ function Item({
   petPotential,
   chaosStatuses,
   showEnchant = true,
+  showName,
 }: ItemProps) {
   if (onlyCount) {
     return (
       <div className="flex items-center">
         <Icon icon={icon} iconIndex={iconIndex} />
+        {showName && <Text style={{ color }}>{name}</Text>}
         <div className="font-bold">X{count}</div>
       </div>
     );
@@ -61,13 +64,13 @@ function Item({
         <Text style={{ color }}>{name}</Text>
       </div>
       <div className="flex flex-col">
-        {chaosStatuses.map((p, index) => (
+        {chaosStatuses?.map((p, index) => (
           <Text className="block" type="warning" key={index}>
             {p.description}
           </Text>
         ))}
         {showEnchant &&
-          enchants.map((p, index) => (
+          enchants?.map((p, index) => (
             <Text
               className="block"
               type="secondary"

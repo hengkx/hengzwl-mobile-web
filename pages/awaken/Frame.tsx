@@ -15,7 +15,13 @@ function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY }: FramePro
   const width = 500;
 
   return (
-    <div className="bg-[#f00] h-screen">
+    <div
+      className="bg-[#f00] h-screen relative"
+      style={{
+        width,
+        height: 500,
+      }}
+    >
       <div className="flex">
         <div
           style={{
@@ -30,6 +36,9 @@ function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY }: FramePro
             height: 28,
             backgroundImage: `url(${url},x_${78},y_${0},w_${4},h_${28})`,
             backgroundRepeat: 'repeat-x',
+            position: 'absolute',
+            left: edgeWidth,
+            right: edgeWidth,
           }}
         />
         <div
@@ -37,33 +46,61 @@ function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY }: FramePro
             width: edgeWidth,
             height: 28,
             backgroundImage: `url(${url},x_${84},y_${0},w_${77},h_${28})`,
+            position: 'absolute',
+            right: 0,
           }}
         />
       </div>
-      <div className="flex">
+      <div className="flex w-full justify-between">
         <div
           style={{
-            width: edgeWidth,
+            width: 28,
             height: 28,
-            backgroundImage: `url(${url},x_${0},y_${34},w_${77},h_${28})`,
+            backgroundImage: `url(${url},x_${0},y_${34},w_${28},h_${4})`,
+            backgroundRepeat: 'repeat-y',
           }}
         />
         <div
           style={{
-            width,
+            width: 28,
             height: 28,
-            backgroundImage: `url(${url},x_${78},y_${34},w_${4},h_${28})`,
-            backgroundRepeat: 'repeat-x',
-          }}
-        />
-        <div
-          style={{
-            width: edgeWidth,
-            height: 28,
-            backgroundImage: `url(${url},x_${84},y_${34},w_${77},h_${28})`,
+            backgroundImage: `url(${url},x_${132},y_${34},w_${28},h_${4})`,
+            backgroundRepeat: 'repeat-y',
           }}
         />
       </div>
+      <div
+        style={{
+          width: edgeWidth,
+          height: 28,
+          backgroundImage: `url(${url},x_${0},y_${34},w_${77},h_${28})`,
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+        }}
+      />
+      <div
+        style={{
+          width,
+          height: 28,
+          backgroundImage: `url(${url},x_${78},y_${34},w_${4},h_${28})`,
+          backgroundRepeat: 'repeat-x',
+          position: 'absolute',
+          left: edgeWidth,
+          right: edgeWidth,
+          bottom: 0,
+        }}
+      />
+      <div
+        style={{
+          width: edgeWidth,
+          height: 28,
+          backgroundImage: `url(${url},x_${84},y_${34},w_${77},h_${28})`,
+          position: 'absolute',
+          right: 0,
+          bottom: 0,
+        }}
+      />
     </div>
   );
 }

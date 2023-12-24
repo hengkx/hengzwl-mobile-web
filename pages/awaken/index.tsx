@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { ui } from './awaken.json';
 import ChdImage from './ChdImage';
+import Frame from './Frame';
 function Awaken() {
   console.log(ui.window.subAttr);
 
@@ -36,7 +37,6 @@ function Awaken() {
         (item: any, index) =>
           item.subAttr.baseImageFilename && <ChdImage key={index} {...(item.subAttr as any)} />
       )} */}
-      <ChdImage {...(ui.window.subAttr as any)} />
       {/* <Image
         style={{
           position: 'absolute',
@@ -51,56 +51,7 @@ function Awaken() {
         height={28}
         alt=""
       /> */}
-      <div className="flex">
-        <div
-          style={{
-            width: 77,
-            height: 28,
-            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${0},y_${0},w_${77},h_${28})`,
-          }}
-        />
-        <div
-          style={{
-            width: 500,
-            // width: baseObjectSizeX - 28 * 2,
-            height: 28,
-            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${78},y_${0},w_${4},h_${28})`,
-            backgroundRepeat: 'repeat-x',
-          }}
-        />
-        <div
-          style={{
-            width: 77,
-            height: 28,
-            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${84},y_${0},w_${77},h_${28})`,
-          }}
-        />
-      </div>
-      <div className="flex">
-        <div
-          style={{
-            width: 77,
-            height: 28,
-            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${0},y_${34},w_${77},h_${28})`,
-          }}
-        />
-        <div
-          style={{
-            width: 500,
-            // width: baseObjectSizeX - 28 * 2,
-            height: 28,
-            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${78},y_${34},w_${4},h_${28})`,
-            backgroundRepeat: 'repeat-x',
-          }}
-        />
-        <div
-          style={{
-            width: 77,
-            height: 28,
-            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${84},y_${34},w_${77},h_${28})`,
-          }}
-        />
-      </div>
+      <Frame {...ui.window.subAttr} />
       {/* <Image
       style={{
         position: 'absolute',

@@ -22,12 +22,9 @@ function ChdImage({
   baseCoopX,
   baseCoopY,
   baseParent,
-  baseObjectSizeX,
-  baseObjectSizeY,
 }: ChdImageProps) {
   const width = baseImageX2 - baseImageX;
   const height = baseImageY2 - baseImageY;
-  console.log(baseImageX2, baseObjectSizeX);
   return (
     <Image
       className={baseParent}
@@ -35,12 +32,12 @@ function ChdImage({
         position: 'absolute',
         left: baseCoopX,
         top: baseCoopY,
-        width: baseObjectSizeX,
-        height: baseObjectSizeY,
+        width: width,
+        height: height,
       }}
       src={`https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${baseImageX},y_${baseImageY},w_${width},h_${height}`}
-      width={baseObjectSizeX || width}
-      height={baseObjectSizeY || height}
+      width={width}
+      height={height}
       alt=""
     />
   );

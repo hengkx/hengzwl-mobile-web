@@ -1,5 +1,10 @@
+import { Popover } from 'antd';
 import Image from 'next/image';
-import { memo } from 'react';
+import { CSSProperties, memo, useMemo } from 'react';
+import classNames from 'classnames';
+import { Item } from '@/types';
+import { Icon } from '@/components';
+
 interface ChdImageProps {
   baseImageX: number;
   baseImageX2: number;
@@ -11,6 +16,18 @@ interface ChdImageProps {
   baseParent: string;
   baseObjectSizeX: number;
   baseObjectSizeY: number;
+  title: string;
+  content: string;
+  baseInstanceid: number;
+  staticFrame1X: number;
+  staticFrame1Y: number;
+  active?: boolean;
+  style?: CSSProperties;
+  equipItem?: Item;
+  equipItemAttr?: {
+    baseCoopX: number;
+    baseCoopY: number;
+  };
 }
 
 function ChdImage({
@@ -22,24 +39,95 @@ function ChdImage({
   baseCoopX,
   baseCoopY,
   baseParent,
+  title,
+  content,
+  baseObjectSizeX,
+  baseObjectSizeY,
+  baseInstanceid,
+  staticFrame1X,
+  staticFrame1Y,
+  active,
+  style,
+  equipItem,
+  equipItemAttr,
 }: ChdImageProps) {
   const width = baseImageX2 - baseImageX;
   const height = baseImageY2 - baseImageY;
+
+  const x = useMemo(
+    () => (active ? staticFrame1X : baseImageX) || baseImageX,
+    [active, baseImageX, staticFrame1X]
+  );
+
+  const y = useMemo(
+    () => (active ? staticFrame1Y : baseImageY) || baseImageY,
+    [active, baseImageY, staticFrame1Y]
+  );
+
+  const children = useMemo(
+    () => (
+      <>
+        <div
+          style={{
+            width: baseObjectSizeX,
+            height: baseObjectSizeY,
+            backgroundImage: `url(https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${x},y_${y},w_${width},h_${height})`,
+            backgroundRepeat: 'repeat',
+          }}
+        />
+        {equipItem && equipItemAttr && (
+          <div
+            className="absolute"
+            style={{ top: equipItemAttr.baseCoopX, left: equipItemAttr.baseCoopY }}
+          >
+            <Icon icon={equipItem.icon} iconIndex={equipItem.iconIndex} />
+          </div>
+        )}
+      </>
+    ),
+    [
+      baseImageFilename,
+      baseObjectSizeX,
+      baseObjectSizeY,
+      height,
+      width,
+      x,
+      y,
+      equipItem,
+      equipItemAttr,
+    ]
+  );
+
   return (
-    <Image
-      className={baseParent}
+    <div
+      className={classNames('absolute', baseParent, baseInstanceid)}
       style={{
-        position: 'absolute',
         left: baseCoopX,
         top: baseCoopY,
         width: width,
         height: height,
+        ...style,
       }}
-      src={`https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop,x_${baseImageX},y_${baseImageY},w_${width},h_${height}`}
-      width={width}
-      height={height}
-      alt=""
-    />
+    >
+      {title ? (
+        <Popover
+          title={title}
+          content={
+            <div style={{ width: 200 }}>
+              {content?.split('\\n').map((item, index) => (
+                <div key={index}>{item}</div>
+              ))}
+            </div>
+          }
+          // arrow={false}
+          placement="bottomLeft"
+        >
+          {children}
+        </Popover>
+      ) : (
+        children
+      )}
+    </div>
   );
 }
 

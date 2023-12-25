@@ -1,79 +1,94 @@
-import Image from 'next/image';
-import { ui } from './awaken.json';
-import ChdImage from './ChdImage';
+import { memo } from 'react';
 
 interface FrameProps {
   baseImageFilename: string;
   baseObjectSizeX: number;
   baseObjectSizeY: number;
+  children?: React.ReactNode;
 }
 
-function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY }: FrameProps) {
+function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY, children }: FrameProps) {
   const url = `https://oss.hengzwl.com/chd/${baseImageFilename}?x-oss-process=image/crop`;
 
   const edgeWidth = 77;
-  const width = 500;
+  const borderWidth = 28;
 
   return (
     <div
-      className="bg-[#f00] h-screen relative"
+      className="relative mx-auto"
       style={{
-        width,
-        height: 500,
+        width: baseObjectSizeX,
+        height: baseObjectSizeY,
       }}
     >
-      <div className="flex">
-        <div
-          style={{
-            width: edgeWidth,
-            height: 28,
-            backgroundImage: `url(${url},x_${0},y_${0},w_${77},h_${28})`,
-          }}
-        />
-        <div
-          style={{
-            width,
-            height: 28,
-            backgroundImage: `url(${url},x_${78},y_${0},w_${4},h_${28})`,
-            backgroundRepeat: 'repeat-x',
-            position: 'absolute',
-            left: edgeWidth,
-            right: edgeWidth,
-          }}
-        />
-        <div
-          style={{
-            width: edgeWidth,
-            height: 28,
-            backgroundImage: `url(${url},x_${84},y_${0},w_${77},h_${28})`,
-            position: 'absolute',
-            right: 0,
-          }}
-        />
-      </div>
-      <div className="flex w-full justify-between">
-        <div
-          style={{
-            width: 28,
-            height: 28,
-            backgroundImage: `url(${url},x_${0},y_${34},w_${28},h_${4})`,
-            backgroundRepeat: 'repeat-y',
-          }}
-        />
-        <div
-          style={{
-            width: 28,
-            height: 28,
-            backgroundImage: `url(${url},x_${132},y_${34},w_${28},h_${4})`,
-            backgroundRepeat: 'repeat-y',
-          }}
-        />
-      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: edgeWidth,
+          height: borderWidth,
+          backgroundImage: `url(${url},x_${0},y_${0},w_${77},h_${borderWidth})`,
+        }}
+      />
+      <div
+        style={{
+          height: borderWidth,
+          backgroundImage: `url(${url},x_${78},y_${0},w_${4},h_${borderWidth})`,
+          backgroundRepeat: 'repeat-x',
+          position: 'absolute',
+          left: edgeWidth,
+          right: edgeWidth,
+          top: 0,
+        }}
+      />
       <div
         style={{
           width: edgeWidth,
-          height: 28,
-          backgroundImage: `url(${url},x_${0},y_${34},w_${77},h_${28})`,
+          height: borderWidth,
+          backgroundImage: `url(${url},x_${84},y_${0},w_${77},h_${borderWidth})`,
+          position: 'absolute',
+          right: 0,
+          top: 0,
+        }}
+      />
+      <div
+        style={{
+          backgroundImage: `url(${url},x_${78},y_${34},w_${4},h_${4})`,
+          backgroundRepeat: 'repeat',
+          position: 'absolute',
+          left: edgeWidth,
+          right: edgeWidth,
+          top: borderWidth,
+          bottom: borderWidth,
+        }}
+      />
+      <div
+        style={{
+          width: edgeWidth,
+          backgroundImage: `url(${url},x_${0},y_${34},w_${edgeWidth},h_${4})`,
+          backgroundRepeat: 'repeat-y',
+          position: 'absolute',
+          left: 0,
+          top: borderWidth,
+          bottom: borderWidth,
+        }}
+      />
+      <div
+        style={{
+          width: edgeWidth,
+          backgroundImage: `url(${url},x_${84},y_${34},w_${edgeWidth},h_${4})`,
+          backgroundRepeat: 'repeat-y',
+          position: 'absolute',
+          right: 0,
+          top: 28,
+          bottom: 28,
+        }}
+      />
+      <div
+        style={{
+          width: edgeWidth,
+          height: borderWidth,
+          backgroundImage: `url(${url},x_${0},y_${34},w_${77},h_${borderWidth})`,
           position: 'absolute',
           left: 0,
           bottom: 0,
@@ -81,9 +96,8 @@ function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY }: FramePro
       />
       <div
         style={{
-          width,
-          height: 28,
-          backgroundImage: `url(${url},x_${78},y_${34},w_${4},h_${28})`,
+          height: borderWidth,
+          backgroundImage: `url(${url},x_${78},y_${34},w_${4},h_${borderWidth})`,
           backgroundRepeat: 'repeat-x',
           position: 'absolute',
           left: edgeWidth,
@@ -94,15 +108,16 @@ function Frame({ baseImageFilename, baseObjectSizeX, baseObjectSizeY }: FramePro
       <div
         style={{
           width: edgeWidth,
-          height: 28,
-          backgroundImage: `url(${url},x_${84},y_${34},w_${77},h_${28})`,
+          height: borderWidth,
+          backgroundImage: `url(${url},x_${84},y_${34},w_${77},h_${borderWidth})`,
           position: 'absolute',
           right: 0,
           bottom: 0,
         }}
       />
+      {children}
     </div>
   );
 }
 
-export default Frame;
+export default memo(Frame);

@@ -9,3 +9,5 @@ export const MustShowWeaponIds = [
 ];
 
 export * from './status';
+
+export * from './awaken';

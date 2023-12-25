@@ -371,7 +371,7 @@ function Detail({ data }: { data: AccountInfo }) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
   const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`, {
-    headers: { device: JSON.stringify({ version: '1.10.42' }) },
+    headers: { device: JSON.stringify({ version: '1.10.46' }) },
   });
   const data = await res.json();
   return { props: { data: data.data } };

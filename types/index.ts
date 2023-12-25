@@ -110,6 +110,7 @@ export interface Item {
   storage: boolean;
   posId1: number;
   subType: number;
+  index: number;
 }
 
 export interface AccountInfo {

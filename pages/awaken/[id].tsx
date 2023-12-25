@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { ui } from './awaken.json';
 import ChdImage from './ChdImage';
-import Frame from './Frame';
 import { getMap } from '@/utils';
 import { AwakenSkill, AwakenTree, ClassMap } from '@/constants';
 import { Popover, Watermark } from 'antd';
@@ -11,6 +10,7 @@ import dayjs from 'dayjs';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { Item } from '@/types';
+import { Frame } from '@/components';
 
 const awakenTreeMap = getMap(AwakenTree);
 const awakenTreeIconMap = getMap(AwakenTree, 'iconInstance') as any;

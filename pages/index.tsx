@@ -22,7 +22,7 @@ const Main: FC<MainProps> = () => {
   const [data, setData] = useState({} as CheckUpdate);
 
   useEffect(() => {
-    axios.get('https://api.privacy.hengzwl.com/api/checkUpdate').then((res) => {
+    axios.get('https://api.chd.hengzwl.com/api/checkUpdate').then((res) => {
       setData(res as any);
     });
   }, []);

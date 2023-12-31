@@ -1,5 +1,28 @@
 import { ClassMap } from '@/constants';
 
+export enum ItemRare {
+  /**
+   * 普通
+   */
+  Ordinary = 1,
+  /**
+   * 优秀
+   */
+  Excellent,
+  /**
+   * 精良
+   */
+  SuperExcellence,
+  /**
+   * 史诗
+   */
+  Epic,
+  /**
+   * 传说
+   */
+  Legend,
+}
+
 interface NameBackground {
   icon: string;
   iconIndex: number;
@@ -111,6 +134,7 @@ export interface Item {
   posId1: number;
   subType: number;
   index: number;
+  rare: ItemRare;
 }
 
 export interface AccountInfo {

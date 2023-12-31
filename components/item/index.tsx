@@ -1,7 +1,8 @@
 import { Typography } from 'antd';
 import Icon from '../Icon';
-import { ItemEnchant } from '@/types';
-import { memo } from 'react';
+import { Item, ItemEnchant } from '@/types';
+import { memo, useMemo } from 'react';
+import { ItemRareColor } from '@/constants';
 
 const { Text } = Typography;
 
@@ -19,22 +20,14 @@ interface PetPotential {
   description: string;
 }
 
-interface ItemProps {
-  name: string;
-  icon: string;
-  iconIndex: number;
-  enchants: ItemEnchant[];
-  chaosStatuses: ItemEnchant[];
-  point: number;
-  count: number;
+interface ItemProps extends Item {
   petPotential?: PetPotential;
-  color?: string;
   onlyCount?: boolean;
   showEnchant?: boolean;
   showName?: boolean;
 }
 
-function Item({
+function ItemComponent({
   onlyCount,
   count,
   color,
@@ -46,12 +39,21 @@ function Item({
   chaosStatuses,
   showEnchant = true,
   showName,
+  rare,
 }: ItemProps) {
+  const nameStyle = useMemo(
+    () => ({
+      color: color === 'rgb(0,0,0)' ? ItemRareColor[rare] : color,
+      fontWeight: 'bold',
+    }),
+    [color, rare]
+  );
+
   if (onlyCount) {
     return (
-      <div className="flex items-center">
+      <div className="flex items-center gap-1">
         <Icon icon={icon} iconIndex={iconIndex} />
-        {showName && <Text style={{ color }}>{name}</Text>}
+        {showName && <Text style={nameStyle}>{name}</Text>}
         <div className="font-bold">X{count}</div>
       </div>
     );
@@ -61,11 +63,11 @@ function Item({
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Icon icon={icon} iconIndex={iconIndex} />
-        <Text style={{ color }}>{name}</Text>
+        <Text style={nameStyle}>{name}</Text>
       </div>
       <div className="flex flex-col">
         {chaosStatuses?.map((p, index) => (
-          <Text className="block" style={{ color: '#F7BF12' }} key={index}>
+          <Text className="block" style={{ color: '#eba00b' }} key={index}>
             {p.description}
           </Text>
         ))}
@@ -73,8 +75,10 @@ function Item({
           enchants?.map((p, index) => (
             <Text
               className="block"
-              //  #A25FF9
-              style={{ color: chaosStatuses.length > 0 ? '#9648FA' : '#575C9E' }}
+              style={{
+                color:
+                  chaosStatuses.length > 0 ? '#7e22f3' : rare === index + 1 ? '#ad37f9' : '#1e279e',
+              }}
               key={index}
             >
               {p.description}
@@ -90,6 +94,6 @@ function Item({
   );
 }
 
-export default memo(Item);
+export default memo(ItemComponent);
 
 export { default as ExpAwaken } from './ExpAwaken';

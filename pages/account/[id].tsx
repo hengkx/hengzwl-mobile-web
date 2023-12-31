@@ -8,6 +8,8 @@ import { useFetch } from '@/hooks';
 import { AccountInfo, Item } from '@/types';
 import {
   ClassTypeMap,
+  ItemRareColor,
+  ItemRareMap,
   MagicExcludeTypes,
   PhyExcludeTypes,
   StatusMap,
@@ -35,7 +37,10 @@ function Item({ type, ...props }: any) {
       <div key={index}>
         <Text className="block">
           {item.type}-{item.subType}-{item.posId1}-{item.id} {item.name || item.id} x{item.count}{' '}
-          {item.score}
+          {item.score}{' '}
+          <span style={{ color: (ItemRareColor as any)[item.rare] }}>
+            {(ItemRareMap as any)[item.rare]}
+          </span>
         </Text>
 
         {item.mergedStatus ? (
@@ -210,11 +215,13 @@ function Detail() {
     { key: 'pet', label: '宠物', children: <Item items={data.pets} /> },
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={accessories} /> },
-    // ...data.packages.map((p) => ({
-    //   key: p.type,
-    //   label: `${p.type}[${p.count}]`,
-    //   children: <Item items={p.items} />,
-    // })),
+    ...data.packages
+      .filter((p) => p.type === '装备')
+      .map((p, index) => ({
+        key: index.toString(),
+        label: `${p.type}[${p.count}]`,
+        children: <Item items={_.orderBy(p.items, 'index', 'asc')} />,
+      })),
   ];
   const scoreItems: DescriptionsProps['items'] = [
     {

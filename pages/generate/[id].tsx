@@ -281,13 +281,14 @@ function Detail({ data }: { data: AccountInfo }) {
                   </div>
                   {role.fairies && (
                     <div className="flex flex-col">
-                      <Text className="text-center" style={{ color: 'rgb(255, 117, 188)' }}>
+                      <Text
+                        className="text-center"
+                        style={{ color: 'rgb(255, 117, 188)', fontWeight: 'bold' }}
+                      >
                         {role.fairies[2].name}
                       </Text>
                       {role.fairies[2].attrs.map((item) => (
-                        <Text key={item.description} type="secondary">
-                          {item.description}
-                        </Text>
+                        <Text key={item.description}>{item.description}</Text>
                       ))}
                     </div>
                   )}
@@ -296,7 +297,7 @@ function Detail({ data }: { data: AccountInfo }) {
                       ?.filter((p) => ShowSkillIds.includes(p.id) && p.slv > 10)
                       .map((skill) => (
                         <Text className="block" key={skill.id} type="warning">
-                          {skill.name}({skill.slv}/{skill.maxSlv})
+                          {JSON.stringify(skill, null, 2)} {skill.name}({skill.slv}/{skill.maxSlv})
                         </Text>
                       ))}
                   </div>

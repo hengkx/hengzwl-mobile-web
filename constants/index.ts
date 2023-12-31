@@ -1,3 +1,5 @@
+import { ItemRare } from '@/types';
+
 export * from './class';
 
 export const MustShowWeaponIds = [
@@ -11,3 +13,19 @@ export const MustShowWeaponIds = [
 export * from './status';
 
 export * from './awaken';
+
+export const ItemRareMap = {
+  [ItemRare.Ordinary]: '普通',
+  [ItemRare.Excellent]: '优秀',
+  [ItemRare.SuperExcellence]: '精良',
+  [ItemRare.Epic]: '史诗',
+  [ItemRare.Legend]: '传说',
+};
+
+export const ItemRareColor = {
+  [ItemRare.Ordinary]: '#333',
+  [ItemRare.Excellent]: '#52c41a',
+  [ItemRare.SuperExcellence]: '#1890ff',
+  [ItemRare.Epic]: '#faad14',
+  [ItemRare.Legend]: '#f00',
+};

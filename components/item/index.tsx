@@ -65,7 +65,7 @@ function Item({
       </div>
       <div className="flex flex-col">
         {chaosStatuses?.map((p, index) => (
-          <Text className="block" type="warning" key={index}>
+          <Text className="block" style={{ color: '#F7BF12' }} key={index}>
             {p.description}
           </Text>
         ))}
@@ -73,8 +73,8 @@ function Item({
           enchants?.map((p, index) => (
             <Text
               className="block"
-              type="secondary"
-              style={chaosStatuses.length > 0 ? { color: 'rgb(255, 0, 255)' } : undefined}
+              //  #A25FF9
+              style={{ color: chaosStatuses.length > 0 ? '#9648FA' : '#575C9E' }}
               key={index}
             >
               {p.description}

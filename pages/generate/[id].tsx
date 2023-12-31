@@ -9,8 +9,10 @@ import { AccountInfo, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
 import { CalcScore } from '@/utils';
+import classNames from 'classnames';
 
 const { Text } = Typography;
+const GemOrder = [2, 6, 10, 3, 7, 11, 4, 8, 12, 5, 9, 13, 1];
 
 const ShowSkillIds = [4305001, 4306001, 4307001, 4308001];
 const ShowPackageTypes = [
@@ -296,9 +298,12 @@ function Detail({ data }: { data: AccountInfo }) {
                     {(role.skills || role.subSkills)
                       ?.filter((p) => ShowSkillIds.includes(p.id) && p.slv > 10)
                       .map((skill) => (
-                        <Text className="block" key={skill.id} type="warning">
-                          {JSON.stringify(skill, null, 2)} {skill.name}({skill.slv}/{skill.maxSlv})
-                        </Text>
+                        <div key={skill.id} className="flex flex-col items-center">
+                          <Icon icon={skill.icon} iconIndex={skill.iconIndex} />
+                          <Text className="block">
+                            {skill.slv}/{skill.maxSlv}
+                          </Text>
+                        </div>
                       ))}
                   </div>
                   <div>{renderItemCount(role)}</div>
@@ -314,42 +319,52 @@ function Detail({ data }: { data: AccountInfo }) {
                 ))}
               </div>
             </Card>
-            <Card size="small" title="首饰">
-              <div className="grid grid-cols-5 gap-2">
-                {accessories.map((item, index) => (
-                  <Item key={index} {...item} />
-                ))}
-              </div>
-            </Card>
+
             {/* <Card size="small" title="图鉴">
-              <div>
-                <Text strong>
-                  激活套装：{data.collectSetCount} 激活数：{data.collectCount}
-                </Text>
-                {data.collects
-                  .filter((p) => p.activeCount !== p.totalCount)
-                  .map((collect) => (
-                    <div key={collect.id}>
-                      <Text type={collect.active ? undefined : 'secondary'}>{collect.name}</Text>
-                      {collect.activeCount !== collect.totalCount && (
-                        <Text type="secondary">
-                          [{collect.activeCount}/{collect.totalCount}]
-                        </Text>
-                      )}
-                    </div>
-                  ))}
+             */}
+
+            <div className="flex gap-2">
+              <div className="flex-1 flex gap-2 flex-col">
+                <Card size="small" title="首饰">
+                  <div className="grid grid-cols-2 gap-2">
+                    {accessories.map((item, index) => (
+                      <Item key={index} {...item} />
+                    ))}
+                  </div>
+                </Card>
+                <Card size="small" title="图鉴" className="flex-1">
+                  <Text strong>
+                    激活套装：{data.collectSetCount} 激活数：{data.collectCount}
+                  </Text>
+                  {data.collects
+                    .filter((p) => p.activeCount !== p.totalCount)
+                    .map((collect) => (
+                      <div key={collect.id}>
+                        <Text type={collect.active ? undefined : 'secondary'}>{collect.name}</Text>
+                        {collect.activeCount !== collect.totalCount && (
+                          <Text type="secondary">
+                            [{collect.activeCount}/{collect.totalCount}]
+                          </Text>
+                        )}
+                      </div>
+                    ))}
+                </Card>
               </div>
-            </Card> */}
+              <Card size="small" title="宝石">
+                <div className={'grid grid-cols-3 gap-2'}>
+                  {_.orderBy(gems, (p) => GemOrder.indexOf(p.posId1)).map((item, index) => (
+                    <Item
+                      key={index}
+                      className={item.posId1 === 1 ? 'col-start-2' : ''}
+                      {...item}
+                    />
+                  ))}
+                </div>
+              </Card>
+            </div>
             <Card size="small" title="特殊">
               <div className="grid grid-cols-5">
                 {specialItems.map((item, index) => (
-                  <Item key={index} {...item} />
-                ))}
-              </div>
-            </Card>
-            <Card size="small" title="宝石">
-              <div className="grid grid-cols-5">
-                {gems.map((item, index) => (
                   <Item key={index} {...item} />
                 ))}
               </div>

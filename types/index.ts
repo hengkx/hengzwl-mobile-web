@@ -77,6 +77,8 @@ export interface Skill {
   slv: number;
   name: string;
   maxSlv: number;
+  icon: string;
+  iconIndex: number;
 }
 
 export interface ClassSkill {

@@ -3,6 +3,7 @@ import Icon from '../Icon';
 import { Item, ItemEnchant } from '@/types';
 import { memo, useMemo } from 'react';
 import { ItemRareColor } from '@/constants';
+import classNames from 'classnames';
 
 const { Text } = Typography;
 
@@ -25,6 +26,7 @@ interface ItemProps extends Item {
   onlyCount?: boolean;
   showEnchant?: boolean;
   showName?: boolean;
+  className?: string;
 }
 
 function ItemComponent({
@@ -40,6 +42,7 @@ function ItemComponent({
   showEnchant = true,
   showName,
   rare,
+  className,
 }: ItemProps) {
   const nameStyle = useMemo(
     () => ({
@@ -60,7 +63,7 @@ function ItemComponent({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={classNames('flex flex-col gap-2', className)}>
       <div className="flex items-center gap-2">
         <Icon icon={icon} iconIndex={iconIndex} />
         <Text style={nameStyle}>{name}</Text>

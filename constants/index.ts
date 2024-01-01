@@ -24,8 +24,8 @@ export const ItemRareMap = {
 
 export const ItemRareColor = {
   [ItemRare.Ordinary]: '#333',
-  [ItemRare.Excellent]: '#52c41a',
-  [ItemRare.SuperExcellence]: '#1890ff',
+  [ItemRare.Excellent]: '#3bab03',
+  [ItemRare.SuperExcellence]: '#3aafea',
   [ItemRare.Epic]: '#faad14',
   [ItemRare.Legend]: '#f00',
 };

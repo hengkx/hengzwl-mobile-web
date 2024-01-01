@@ -50,7 +50,7 @@ function Detail({ data }: { data: AccountInfo }) {
       const items = [...data.guards, ...data.caps, ...data.crystals, ...data.badges].filter(
         (p) => p.score > 0
       );
-      const mergedItems = [...data.runes, ...data.medals];
+      let mergedItems = [...data.runes, ...data.medals];
       if (data.halos.length > 0) {
         mergedItems.push(data.halos[0]);
       }
@@ -61,13 +61,11 @@ function Detail({ data }: { data: AccountInfo }) {
         mergedItems.push(data.brooches[0]);
       }
       mergedItems.push(...data.bangles);
-      return [
-        ...items,
-        ..._.chunk(
-          mergedItems.filter((p) => p.score > 0),
-          3
-        ),
-      ];
+      let col = 5 - (items.length % 5);
+      col = col === 5 ? 0 : col;
+      const len = col * 3;
+      mergedItems = mergedItems.filter((p) => p.score > 0);
+      return [...items, ..._.chunk(mergedItems.slice(0, len), 3), ...mergedItems.slice(len)];
     }
     return [];
   }, [data]);
@@ -321,36 +319,41 @@ function Detail({ data }: { data: AccountInfo }) {
                 ))}
               </div>
             </Card>
-
-            {/* <Card size="small" title="图鉴">
-             */}
-
             <div className="flex gap-2">
               <div className="flex-1 flex gap-2 flex-col">
                 <Card size="small" title="首饰">
-                  <div className="grid grid-cols-2 gap-2">
+                  <div
+                    className={classNames('grid grid-cols-2 gap-2', {
+                      'grid-cols-1': accessories.find((p) => p.enchants.length > 0),
+                    })}
+                  >
                     {accessories.map((item, index) => (
                       <Item key={index} {...item} />
                     ))}
                   </div>
                 </Card>
-                <Card size="small" title="图鉴" className="flex-1">
-                  <Text strong>
-                    激活套装：{data.collectSetCount} 激活数：{data.collectCount}
-                  </Text>
-                  {data.collects
-                    .filter((p) => p.activeCount !== p.totalCount)
-                    .map((collect) => (
-                      <div key={collect.id}>
-                        <Text type={collect.active ? undefined : 'secondary'}>{collect.name}</Text>
-                        {collect.activeCount !== collect.totalCount && (
-                          <Text type="secondary">
-                            [{collect.activeCount}/{collect.totalCount}]
+                {data.collectSetCount > 15 && (
+                  <Card
+                    size="small"
+                    title={`图鉴 激活套装：${data.collectSetCount} 激活数：${data.collectCount}`}
+                    className="flex-1"
+                  >
+                    {data.collects
+                      .filter((p) => p.activeCount !== p.totalCount)
+                      .map((collect) => (
+                        <div key={collect.id}>
+                          <Text type={collect.active ? undefined : 'secondary'}>
+                            {collect.name}
                           </Text>
-                        )}
-                      </div>
-                    ))}
-                </Card>
+                          {collect.activeCount !== collect.totalCount && (
+                            <Text type="secondary">
+                              [{collect.activeCount}/{collect.totalCount}]
+                            </Text>
+                          )}
+                        </div>
+                      ))}
+                  </Card>
+                )}
               </div>
               <Card size="small" title="宝石">
                 <div className={'grid grid-cols-3 gap-2'}>

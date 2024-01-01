@@ -47,25 +47,27 @@ function Detail({ data }: { data: AccountInfo }) {
 
   const specialItems = useMemo(() => {
     if (data) {
-      const items = [
-        ...data.guards,
-        ...data.caps,
-        ...data.crystals,
-        ...data.badges,
-        ...data.runes,
-        ...data.medals,
-      ].filter((p) => p.score > 0);
+      const items = [...data.guards, ...data.caps, ...data.crystals, ...data.badges].filter(
+        (p) => p.score > 0
+      );
+      const mergedItems = [...data.runes, ...data.medals];
       if (data.halos.length > 0) {
-        items.push(data.halos[0]);
+        mergedItems.push(data.halos[0]);
       }
       if (data.rings.length > 0) {
-        items.push(data.rings[0]);
+        mergedItems.push(data.rings[0]);
       }
       if (data.brooches.length > 0) {
-        items.push(data.brooches[0]);
+        mergedItems.push(data.brooches[0]);
       }
-      items.push(...data.bangles);
-      return items;
+      mergedItems.push(...data.bangles);
+      return [
+        ...items,
+        ..._.chunk(
+          mergedItems.filter((p) => p.score > 0),
+          3
+        ),
+      ];
     }
     return [];
   }, [data]);
@@ -365,7 +367,13 @@ function Detail({ data }: { data: AccountInfo }) {
             <Card size="small" title="特殊">
               <div className="grid grid-cols-5">
                 {specialItems.map((item, index) => (
-                  <Item key={index} {...item} />
+                  <div key={index}>
+                    {Array.isArray(item) ? (
+                      item.map((p) => <Item key={p.id} {...p} />)
+                    ) : (
+                      <Item {...item} />
+                    )}
+                  </div>
                 ))}
               </div>
             </Card>

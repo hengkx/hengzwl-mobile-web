@@ -370,10 +370,13 @@ export const StatusScoreMap: Record<string, number> = {
    */
   218: 0,
   /**
+   * 生命值痊愈效果％
+   */
+  232: 0,
+  /**
    * 魔法伤害
    */
   240: 10,
-
   /**
    * 属性力最小伤害
    */
@@ -390,6 +393,10 @@ export const StatusScoreMap: Record<string, number> = {
    * 所有属性
    */
   455: 10,
+  /**
+   * 所有属性%
+   */
+  456: 100,
   /**
    * 物理/魔法 爆击伤害
    */

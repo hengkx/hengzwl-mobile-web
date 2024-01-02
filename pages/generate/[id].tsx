@@ -32,8 +32,8 @@ const ShowPackageTypes = [
 const ShowItemIds = [166200112, 166200612];
 // 材料 石头等
 const ShowItemCountIds = [
-  180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818, 430139032,
-  190147815, 20201200, 190147814, 751800117, 522220049, 10318354,
+  20200729, 180191113, 753810002, 13000035, 81580004, 43901305, 81580001, 190147819, 190147818,
+  430139032, 190147815, 20201200, 190147814, 751800117, 522220049, 10318354, 190170101,
 ];
 // 显示的脚底
 const ShowSoleIds = [43052105, 43052205, 43060505, 43060605, 430110616];
@@ -143,8 +143,10 @@ function Detail({ data }: { data: AccountInfo }) {
 
   const { pets, gems, roles, server } = data;
 
-  const renderItemCount = (role: Role) => {
-    const items = _.flatten(role.packages.map((p) => p.items));
+  const renderItemCount = (role: Role, index: number) => {
+    const items = _.flatten(
+      role.packages.filter((p) => index === 0 || p.type !== '仓库').map((p) => p.items)
+    );
     const group = _.groupBy(items, 'id');
     return (
       <div className="grid grid-cols-4 gap-1">
@@ -207,7 +209,7 @@ function Detail({ data }: { data: AccountInfo }) {
                 </div>
               </Card>
             )}
-            {roles.map((role) => (
+            {roles.map((role, index) => (
               <Card
                 key={role.id}
                 size="small"
@@ -306,7 +308,7 @@ function Detail({ data }: { data: AccountInfo }) {
                         </div>
                       ))}
                   </div>
-                  <div>{renderItemCount(role)}</div>
+                  <div>{renderItemCount(role, index)}</div>
                 </div>
 
                 {renderAwaken(role)}

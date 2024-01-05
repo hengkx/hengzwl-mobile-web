@@ -47,7 +47,7 @@ function Item({ type, ...props }: any) {
           item.mergedStatus.map((p: any, childIndex: number) => (
             <Text className="block" type="secondary" key={childIndex}>
               {format(StatusMap[p.effectType], p.value)}
-              {/* <Text> {p.score}</Text> {p.effectType} */}
+              <Text> {p.score}</Text> {p.effectType}
             </Text>
           ))
         ) : (

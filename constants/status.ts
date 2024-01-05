@@ -186,6 +186,10 @@ export const StatusScoreMap: Record<string, number> = {
    */
   55: 0,
   /**
+   * 休息 恢复SP%
+   */
+  59: 0,
+  /**
    * 最大攻击力
    */
   62: 100,

@@ -115,6 +115,7 @@ export const StatusMap: Record<string, string> = {
   '1604': ' 最大属性卡牌 %+d',
   '1609': ' 最大光明卡牌 %+d',
   '1618': ' 力量/魔法力 %+d',
+  '1619': ' 基础力量/魔法力 %+d％',
 };
 
 /**
@@ -468,4 +469,8 @@ export const StatusScoreMap: Record<string, number> = {
    * 力量/魔法力
    */
   1618: 0,
+  /**
+   * 基础力量/魔法力％
+   */
+  1619: 0,
 };

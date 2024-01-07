@@ -70,6 +70,12 @@ export interface Role {
   packages: Package[];
   gender: number;
   titles: Title[];
+  diplomacies?: Diplomacy[];
+}
+
+interface Diplomacy {
+  id: number;
+  point: number;
 }
 
 export interface Skill {

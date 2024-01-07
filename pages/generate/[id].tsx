@@ -8,7 +8,7 @@ import { ClassMap, ClassTypeMap, MustShowWeaponIds } from '@/constants';
 import { AccountInfo, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
-import { CalcScore } from '@/utils';
+import { CalcScore, getMap } from '@/utils';
 import classNames from 'classnames';
 
 const { Text } = Typography;
@@ -46,7 +46,21 @@ interface Ultra {
   grade: number;
 }
 
-function Detail({ data, ultras }: { data: AccountInfo; ultras: Ultra[] }) {
+interface DiplomacySup {
+  id: number;
+  name: string;
+  level: number;
+  icon: string;
+  iconIndex: number;
+}
+
+interface DetailProps {
+  data: AccountInfo;
+  ultras: Ultra[];
+  diplomacySups: DiplomacySup[];
+}
+
+function Detail({ data, ultras, diplomacySups }: DetailProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const searchParams = useSearchParams();
@@ -182,6 +196,31 @@ function Detail({ data, ultras }: { data: AccountInfo; ultras: Ultra[] }) {
     );
   };
 
+  const renderDiplomacy = (role: Role) => {
+    const map = getMap(diplomacySups);
+    const sups = role.diplomacies?.map((p) => ({ ...p, ...map[p.id] }));
+    return (
+      sups && (
+        <div className="grid grid-cols-4 gap-1">
+          {sups
+            .filter((p) => p.level === 5)
+            .map((item) => (
+              <div key={item.id} className="flex-1 flex items-center gap-1">
+                <Icon icon={item.icon} iconIndex={item.iconIndex} />
+                <div className="h-full flex flex-col justify-between">
+                  <Text className="font-bold" style={{ lineHeight: 1 }}>
+                    {item.name}
+                  </Text>
+                  <Text className="font-semibold" style={{ lineHeight: 1, color: '#1e279e' }}>
+                    Lv. {item.level}
+                  </Text>
+                </div>
+              </div>
+            ))}
+        </div>
+      )
+    );
+  };
   const renderUltra = () => {
     const skills = roles[0].skills || roles[0].subSkills;
     if (!skills) {
@@ -335,7 +374,10 @@ function Detail({ data, ultras }: { data: AccountInfo; ultras: Ultra[] }) {
                         </div>
                       ))}
                   </div>
-                  <div>{renderItemCount(role, index)}</div>
+                  <div>
+                    {renderItemCount(role, index)}
+                    {renderDiplomacy(role)}
+                  </div>
                 </div>
 
                 {renderAwaken(role)}
@@ -427,16 +469,26 @@ function Detail({ data, ultras }: { data: AccountInfo; ultras: Ultra[] }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
+  const headers = { device: JSON.stringify({ version: '1.10.49' }) };
+
   const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`, {
-    headers: { device: JSON.stringify({ version: '1.10.49' }) },
+    headers,
   });
   const data = await res.json();
 
-  const ultraRes = await fetch(`${axios.defaults.baseURL}/api/chd/ultra/all`, {
-    headers: { device: JSON.stringify({ version: '1.10.49' }) },
-  });
-  const ultraData = await ultraRes.json();
-  return { props: { data: data.data, ultras: ultraData.data } };
+  const ultraRes = await (
+    await fetch(`${axios.defaults.baseURL}/api/chd/ultra/all`, {
+      headers,
+    })
+  ).json();
+
+  const diplomacyRes = await (
+    await fetch(`${axios.defaults.baseURL}/api/chd/diplomacy/sups`, {
+      headers,
+    })
+  ).json();
+
+  return { props: { data: data.data, ultras: ultraRes.data, diplomacySups: diplomacyRes.data } };
 };
 
 export default Detail;

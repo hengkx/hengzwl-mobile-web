@@ -40,7 +40,13 @@ const ShowSoleIds = [43052105, 43052205, 43060505, 43060605, 430110616];
 
 const AddonAccessoriesIds = [200101011, 200101012, 40170602, 321110027, 120270462];
 
-function Detail({ data }: { data: AccountInfo }) {
+interface Ultra {
+  name: string;
+  skillId: number;
+  grade: number;
+}
+
+function Detail({ data, ultras }: { data: AccountInfo; ultras: Ultra[] }) {
   const ref = useRef<HTMLDivElement>(null);
 
   const searchParams = useSearchParams();
@@ -171,6 +177,27 @@ function Detail({ data }: { data: AccountInfo }) {
           .filter((p) => ShowItemIds.includes(p.id))
           .map((item, index) => (
             <Item {...item} key={index} />
+          ))}
+      </div>
+    );
+  };
+
+  const renderUltra = () => {
+    const skills = roles[0].skills || roles[0].subSkills;
+    if (!skills) {
+      return;
+    }
+    return (
+      <div>
+        {ultras
+          .filter((p) => skills.find((r) => r.id === p.skillId))
+          .map((item) => (
+            <div key={item.name}>
+              <Text type="warning">
+                {item.name} {item.grade}星 {skills.find((p) => p.id === item.skillId)!.slv}/
+                {skills.find((p) => p.id === item.skillId)!.maxSlv}
+              </Text>
+            </div>
           ))}
       </div>
     );
@@ -366,6 +393,7 @@ function Detail({ data }: { data: AccountInfo }) {
                       {...item}
                     />
                   ))}
+                  {renderUltra()}
                 </div>
               </Card>
             </div>
@@ -400,10 +428,15 @@ function Detail({ data }: { data: AccountInfo }) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
   const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`, {
-    headers: { device: JSON.stringify({ version: '1.10.46' }) },
+    headers: { device: JSON.stringify({ version: '1.10.49' }) },
   });
   const data = await res.json();
-  return { props: { data: data.data } };
+
+  const ultraRes = await fetch(`${axios.defaults.baseURL}/api/chd/ultra/all`, {
+    headers: { device: JSON.stringify({ version: '1.10.49' }) },
+  });
+  const ultraData = await ultraRes.json();
+  return { props: { data: data.data, ultras: ultraData.data } };
 };
 
 export default Detail;

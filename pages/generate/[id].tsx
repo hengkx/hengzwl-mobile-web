@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import { Card, Typography, Watermark } from 'antd';
 import dayjs from 'dayjs';
 import { ExpAwaken, Icon, Item } from '@/components';
-import { ClassMap, ClassTypeMap, MustShowWeaponIds } from '@/constants';
-import { AccountInfo, Role } from '@/types';
+import { ClassMap, ClassTypeMap, MustShowWeaponIds, PosIds } from '@/constants';
+import { AccountInfo, Item as ItemType, Role } from '@/types';
 import _ from 'lodash';
 import { GetServerSideProps } from 'next';
 import { CalcScore, getMap } from '@/utils';
@@ -158,6 +158,8 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
     return [];
   }, [data]);
 
+  const classType = useMemo(() => ClassTypeMap[data.classId], [data]);
+
   if (!data) {
     return;
   }
@@ -247,6 +249,52 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
     .map((p) => ClassMap[p.currentClassId])
     .join('/')} ${data.collectCount}张图鉴`;
 
+  const renderWeapon = (role: Role) => {
+    // 筛选出战斗栏可携带的装备
+    const items = role.packages
+      .filter((p) => p.type === '装备' || p.type === '战斗')
+      .map((p) => p.items)
+      .flat()
+      .filter((p) => p.type === 1 && p.subType === 1);
+    // 精灵石
+    const stones = _.orderBy(
+      CalcScore(
+        items.filter((p) => p.posId1 === 11),
+        classType
+      ),
+      'score',
+      'desc'
+    );
+    // 武器
+    const weapons = _.orderBy(
+      CalcScore(
+        items.filter((p) => p.posId1 === 13 || p.posId1 === 14),
+        classType
+      ),
+      'score',
+      'desc'
+    );
+
+    let showIds = [...MustShowWeaponIds];
+    if (weapons.length > 0) {
+      showIds.push(weapons[0].id);
+    }
+    if (stones.length > 0) {
+      showIds.push(stones[0].id);
+    }
+    const sortPosId1 = [13, 14, 11];
+    return (
+      <div className="flex flex-col gap-2">
+        {items
+          .filter((p) => showIds.includes(p.id))
+          .sort((a, b) => sortPosId1.indexOf(a.posId1) - sortPosId1.indexOf(b.posId1))
+          .map((item, index) => (
+            <Item key={index} showEnchant {...item} />
+          ))}
+      </div>
+    );
+  };
+
   return (
     <div className="flex items-center">
       <div ref={ref} className="mx-auto">
@@ -256,7 +304,7 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
             <div className="text-center">
               <Text type="secondary">{dayjs(data.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
             </div>
-            {gifts.length > 0 && (
+            {gifts.filter((p) => ShowItemCountIds.includes(p.id)).length > 0 && (
               <Card size="small" title="礼品">
                 <div className="flex flex-wrap gap-2">
                   {gifts
@@ -304,7 +352,7 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
                 }
               >
                 {role.titles.length > 0 && (
-                  <div className="flex gap-2 mb-2 bg-[#325669] px-2 py-1 rounded">
+                  <div className="flex flex-wrap gap-2 mb-2 bg-[#325669] px-2 py-1 rounded">
                     {role.titles.map((item) => (
                       <Text
                         key={item.id}
@@ -319,30 +367,7 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
                 )}
 
                 <div className="flex gap-2">
-                  <div className="flex flex-col gap-2">
-                    {_.orderBy(
-                      _.uniqBy(
-                        [
-                          ..._.uniqBy(
-                            _.orderBy(
-                              weapons.filter((p) => p.roleId === role.roleId),
-                              'posId1',
-                              'desc'
-                            ),
-                            'posId1'
-                          ),
-                          ...weapons.filter(
-                            (p) => p.roleId === role.roleId && MustShowWeaponIds.includes(p.id)
-                          ),
-                        ],
-                        'id'
-                      ),
-                      'posId1',
-                      'desc'
-                    ).map((item, index) => (
-                      <Item key={index} showEnchant {...item} />
-                    ))}
-                  </div>
+                  {renderWeapon(role)}
                   <div>
                     {pets
                       .filter((p) => p.roleId === role.roleId && !p.storage)

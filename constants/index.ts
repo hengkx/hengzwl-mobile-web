@@ -29,3 +29,18 @@ export const ItemRareColor = {
   [ItemRare.Epic]: '#faad14',
   [ItemRare.Legend]: '#f00',
 };
+
+export const PosIds = {
+  /**
+   * 防具
+   */
+  Armor: [1, 4, 5, 7, 8],
+  /**
+   * 首饰
+   */
+  Accessory: [2, 3, 6, 9, 10, 12],
+  /**
+   * 武器和精灵石
+   */
+  Weapon: [11, 13, 14],
+};

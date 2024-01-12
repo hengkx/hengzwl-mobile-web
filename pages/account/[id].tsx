@@ -216,7 +216,7 @@ function Detail() {
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={accessories} /> },
     ...data.packages
-      .filter((p) => p.type === '装备')
+      .filter((p) => p.type === '战斗')
       .map((p, index) => ({
         key: index.toString(),
         label: `${p.type}[${p.count}]`,

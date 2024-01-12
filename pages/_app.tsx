@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
   (config) => {
-    config.headers.set('device', JSON.stringify({ version: '1.10.49' }));
+    config.headers.set('device', JSON.stringify({ version: '1.10.51' }));
     config.headers.set('Authorization', localStorage.getItem('token'));
     return config;
   },

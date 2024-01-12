@@ -140,9 +140,11 @@ export interface Item {
   trade: boolean;
   storage: boolean;
   posId1: number;
+  type: number;
   subType: number;
   index: number;
   rare: ItemRare;
+  classReq: number;
 }
 
 export interface AccountInfo {

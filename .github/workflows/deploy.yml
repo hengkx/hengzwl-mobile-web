@@ -29,6 +29,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            PATH=$PATH:/${{secrets.SERVER_USERNAME}}/.nvm/versions/node/v20.10.0/bin
             cd /root/hengzwl-mobile-web
             npm run build
             pm2 restart 0

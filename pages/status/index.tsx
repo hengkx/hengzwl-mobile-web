@@ -102,7 +102,7 @@ function AwakenPage({ data }: { data: RoleAwaken }) {
 
 // export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
 //   const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/awaken/${params?.id}`, {
-//     headers: { device: JSON.stringify({ version: '1.10.46' }) },
+//     headers: { device: JSON.stringify({ version: '1.10.55' }) },
 //   });
 //   const data = await res.json();
 //   console.log(data);

@@ -14,10 +14,12 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
 }
 
+export const device = JSON.stringify({ version: '1.10.55' });
+
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
   (config) => {
-    config.headers.set('device', JSON.stringify({ version: '1.10.55' }));
+    config.headers.set('device', device);
     config.headers.set('Authorization', localStorage.getItem('token'));
     return config;
   },

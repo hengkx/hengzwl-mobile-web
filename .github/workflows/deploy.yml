@@ -31,5 +31,6 @@ jobs:
           script: |
             PATH=$PATH:/${{secrets.SERVER_USERNAME}}/.nvm/versions/node/v20.10.0/bin
             cd /root/hengzwl-mobile-web
+            npm install
             npm run build
             pm2 restart 0

@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
 }
 
-export const device = JSON.stringify({ version: '1.10.55' });
+export const device = JSON.stringify({ version: '1.10.58' });
 
 axios.interceptors.request.clear();
 axios.interceptors.request.use(

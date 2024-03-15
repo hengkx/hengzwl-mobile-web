@@ -118,7 +118,7 @@ function AwakenPage({ data }: { data: RoleAwaken }) {
           <div className="absolute z-[9999] w-full flex items-center justify-center text-black mt-3">
             <div className="font-bold">
               {data.server} {data.name} Lv.{data.uLv} {ClassMap[data.currentClassId]}{' '}
-              {data.awakenUsePoint - 1}p
+              {data.awakenUsePoint}p
             </div>
           </div>
         </Frame>

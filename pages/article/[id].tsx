@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { Article } from '.';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 const WangEditor = dynamic(() => import('../../components/WangEditor'), { ssr: false });
 
@@ -15,6 +16,8 @@ function ArticlePage() {
   const { id } = useParams() || {};
 
   const { data } = useFetch<Article>(id && id !== 'add' ? `/api/article/${id}` : null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (data) {
@@ -28,6 +31,9 @@ function ArticlePage() {
     console.log(res);
     if (res.code === 0) {
       message.success('保存成功');
+      if (id === 'add') {
+        router.push(`/article/${res.data.id}`);
+      }
     } else {
       message.error('保存失败');
     }

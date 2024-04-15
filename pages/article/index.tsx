@@ -1,7 +1,13 @@
 import { useFetch } from '@/hooks';
-import { Button, Table } from 'antd';
+import { Button, Space, Table } from 'antd';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+
+interface User {
+  id: string;
+  name: string;
+  avatar: string;
+}
 
 export interface Article {
   id: string;
@@ -9,6 +15,7 @@ export interface Article {
   html: string;
   createdAt: number;
   updatedAt: number;
+  user: User;
 }
 
 interface ArticleList {
@@ -46,9 +53,18 @@ function ArticlePage() {
             title: '操作',
             dataIndex: 'id',
             render: (text) => (
-              <Button type="link" size="small" onClick={() => router.push(`/article/${text}`)}>
-                编辑
-              </Button>
+              <Space>
+                <Button type="link" size="small" onClick={() => router.push(`/article/${text}`)}>
+                  编辑
+                </Button>
+                <Button
+                  type="link"
+                  size="small"
+                  onClick={() => router.push(`/article/preview/${text}`)}
+                >
+                  预览
+                </Button>
+              </Space>
             ),
           },
         ]}

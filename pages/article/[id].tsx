@@ -40,7 +40,7 @@ function ArticlePage() {
   };
 
   return (
-    <div className="h-screen p-4 flex flex-col gap-4">
+    <div className="h-screen p-4 flex flex-col gap-4 overflow-y-hidden">
       <div className="flex flex-row gap-4">
         <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="标题" />
         <Button type="primary" onClick={handleSave}>

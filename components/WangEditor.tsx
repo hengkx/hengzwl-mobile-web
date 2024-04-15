@@ -56,7 +56,10 @@ function WangEditor({ onChange, ...props }: WangEditorProps) {
   }, [editor]);
 
   return (
-    <div className="flex flex-col flex-1" style={{ border: '1px solid #d9d9d9', zIndex: 100 }}>
+    <div
+      className="flex flex-col flex-1 overflow-y-hidden"
+      style={{ border: '1px solid #d9d9d9', zIndex: 100 }}
+    >
       <Toolbar
         editor={editor}
         defaultConfig={toolbarConfig}
@@ -73,7 +76,7 @@ function WangEditor({ onChange, ...props }: WangEditorProps) {
           onChange?.(val);
         }}
         mode="default"
-        style={{ flex: 1, overflowY: 'hidden' }}
+        style={{ flex: 1, overflowY: 'auto' }}
       />
     </div>
   );

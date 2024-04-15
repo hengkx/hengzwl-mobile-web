@@ -14,13 +14,15 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
 }
 
-export const device = JSON.stringify({ version: '1.10.58' });
+// axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
+
+export const device = JSON.stringify({ version: '1.10.59' });
 
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
   (config) => {
     config.headers.set('device', device);
-    config.headers.set('Authorization', localStorage.getItem('token'));
+    config.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     return config;
   },
   (error) => error
@@ -28,14 +30,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.clear();
 axios.interceptors.response.use(
   ({ data }) => {
-    if (data && data.code === 401 && window.location.pathname !== '/account/login') {
-      return (window.location.pathname = '/account/login');
-    }
+    // if (data && data.code === 401 && window.location.pathname !== '/login') {
+    //   return (window.location.pathname = '/login');
+    // }
     return data;
   },
   (error) => {
     console.log(error);
-    if (error.response.status === 401 && !window.location.pathname.startsWith('/account/login')) {
+    if (error.response.status === 401 && !window.location.pathname.startsWith('/login')) {
       // Router.push(`/account/login?redirect=${window.location.pathname}`);
       return;
     }

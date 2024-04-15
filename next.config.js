@@ -2,12 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
-    '@babel/runtime',
+    '@ant-design/icons',
     'rc-util',
-    '@ant-design',
-    'antd',
     'rc-pagination',
     'rc-picker',
+    '@ant-design/icons-svg',
     'rc-tree',
     'rc-table',
   ],

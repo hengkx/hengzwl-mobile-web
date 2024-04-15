@@ -27,7 +27,13 @@ function ArticlePage() {
           <div className="flex flex-col gap-4">
             <div className="text-xl">{data.title}</div>
             <div className="flex items-center gap-1">
-              <Avatar src={data.user.avatar} />
+              <Avatar
+                src={
+                  !data.user.avatar.startsWith('http')
+                    ? 'https://oss.hengzwl.com/'
+                    : '' + data.user.avatar
+                }
+              />
               <Text style={{ fontSize: 16 }}>{data.user.name}</Text>
               <Text style={{ fontSize: 16 }} type="secondary">
                 {dayjs(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}

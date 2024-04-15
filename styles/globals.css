@@ -19,3 +19,12 @@ body,
 .Awaken_Skill_Line_Group {
   /* display: none; */
 }
+
+.article {
+  p {
+    margin: 15px 0;
+  }
+  img {
+    display: inline-block;
+  }
+}

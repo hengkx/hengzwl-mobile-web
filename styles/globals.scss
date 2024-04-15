@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+iframe {
+  color-scheme: auto;
+}
+
+html,
+body,
+#__next {
+  /* height: 100%; */
+}
+
+.Awaken_Skill {
+  z-index: 1000;
+}
+
+.Awaken_Skill_Line_Group {
+  /* display: none; */
+}
+
+.article {
+  p {
+    margin: 15px 0;
+  }
+  img {
+    display: inline-block;
+  }
+  blockquote {
+    background-color: #f5f2f0;
+    border-left: 8px solid #b4d5ff;
+    display: block;
+    font-size: 100%;
+    line-height: 1.5;
+    margin: 10px 0;
+    padding: 10px;
+  }
+  h1 {
+    font-size: 28px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+}
+
+.w-e-text-container [data-slate-editor] h1,
+.w-e-text-container [data-slate-editor] h2,
+.w-e-text-container [data-slate-editor] h3,
+.w-e-text-container [data-slate-editor] h4,
+.w-e-text-container [data-slate-editor] h5 {
+  font-size: 28px;
+}

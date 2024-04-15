@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 import '@wangeditor/editor/dist/css/style.css';
+import axios from 'axios';
 
 interface WangEditorProps {
   html?: string;
@@ -34,7 +35,7 @@ function WangEditor({ onChange, ...props }: WangEditorProps) {
     placeholder: '请输入内容...',
     MENU_CONF: {
       uploadImage: {
-        server: 'http://localhost:5001/api/file/upload',
+        server: `${axios.defaults.baseURL}/api/file/upload`,
         fieldName: 'file',
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         customInsert: (res: any, insertFn: any) => {

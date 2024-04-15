@@ -30,9 +30,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.clear();
 axios.interceptors.response.use(
   ({ data }) => {
-    // if (data && data.code === 401 && window.location.pathname !== '/login') {
-    //   return (window.location.pathname = '/login');
-    // }
+    if (data && data.code === 401 && window.location.pathname !== '/login') {
+      return (window.location.pathname = '/login');
+    }
     return data;
   },
   (error) => {

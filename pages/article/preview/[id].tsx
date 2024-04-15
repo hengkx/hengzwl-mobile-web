@@ -19,7 +19,7 @@ function ArticlePage() {
       <Skeleton loading={!data}>
         {data && (
           <div className="flex flex-col">
-            <div className="text-xl">{data.title}</div>
+            <div className="text-xl font-bold">{data.title}</div>
             <div className="flex items-center gap-2 mt-4">
               <Avatar
                 src={

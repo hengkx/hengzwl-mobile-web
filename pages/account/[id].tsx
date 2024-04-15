@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Button, Descriptions, DescriptionsProps, Table, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useFetch } from '@/hooks';
-import { AccountInfo, Item } from '@/types';
+import { AccountInfo } from '@/types';
 import {
   ClassTypeMap,
   ItemRareColor,
@@ -121,7 +121,7 @@ function Detail() {
   const showTradeItems = useMemo(() => {
     if (data) {
       let items = _.uniqBy(
-        data.packages.reduce((prev, curr) => [...prev, ...curr.items], []) as Item[],
+        data.packages.reduce((prev, curr) => [...prev, ...curr.items], []) as any[],
         'key'
       );
       items = items.filter((p) => p.trade);

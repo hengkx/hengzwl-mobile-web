@@ -1,35 +1,26 @@
-import { useFetch } from '@/hooks';
-import { Avatar, Button, Input, Skeleton, Typography } from 'antd';
-import axios from 'axios';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { Avatar, Skeleton, Typography } from 'antd';
 import { Article } from '..';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useFetch } from '@/hooks';
 
 dayjs.extend(relativeTime);
 
 const { Text } = Typography;
 
 function ArticlePage() {
-  const [title, setTitle] = useState('');
-  const [html, setHtml] = useState('');
-
   const { id } = useParams() || {};
 
   const { data } = useFetch<Article>(id ? `/api/article/${id}` : null);
-
-  const router = useRouter();
 
   return (
     <div className="article h-screen p-4 flex flex-col gap-4">
       <Skeleton loading={!data}>
         {data && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
             <div className="text-xl">{data.title}</div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mt-4">
               <Avatar
                 src={
                   (!data.user.avatar.startsWith('http') ? 'https://oss.hengzwl.com/' : '') +

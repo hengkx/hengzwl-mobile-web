@@ -24,12 +24,14 @@ function ArticlePage() {
     <div className="h-screen p-4 flex flex-col gap-4">
       <Skeleton loading={!data}>
         {data && (
-          <div className="flex flex-col gap-2">
-            <div>{data.title}</div>
+          <div className="flex flex-col gap-4">
+            <div className="text-xl">{data.title}</div>
             <div className="flex items-center gap-1">
               <Avatar src={data.user.avatar} />
-              <Text>{data.user.name}</Text>
-              <Text type="secondary">{dayjs(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
+              <Text style={{ fontSize: 16 }}>{data.user.name}</Text>
+              <Text style={{ fontSize: 16 }} type="secondary">
+                {dayjs(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+              </Text>
             </div>
             <div className="" dangerouslySetInnerHTML={{ __html: data.html }} />
           </div>

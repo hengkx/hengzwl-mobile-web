@@ -18,6 +18,7 @@ export interface Article {
   createdAt: number;
   updatedAt: number;
   status: number;
+  views: number;
   user: User;
 }
 

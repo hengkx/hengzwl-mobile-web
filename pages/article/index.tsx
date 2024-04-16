@@ -2,6 +2,7 @@ import { useFetch } from '@/hooks';
 import { Button, Space, Table } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 interface User {
@@ -78,13 +79,11 @@ function ArticlePage() {
                 <Button type="link" size="small" onClick={() => router.push(`/article/${text}`)}>
                   编辑
                 </Button>
-                <Button
-                  type="link"
-                  size="small"
-                  onClick={() => router.push(`/article/preview/${text}`)}
-                >
-                  预览
-                </Button>
+                <Link href={`/article/preview/${text}`} passHref target="_blank">
+                  <Button type="link" size="small">
+                    预览
+                  </Button>
+                </Link>
               </Space>
             ),
           },

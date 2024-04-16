@@ -80,7 +80,7 @@ function WangEditor({ onChange, ...props }: WangEditorProps) {
 
   return (
     <div
-      className="flex flex-col flex-1 overflow-y-hidden"
+      className="article flex flex-col flex-1 overflow-y-hidden"
       style={{ border: '1px solid #d9d9d9', zIndex: 100 }}
     >
       <Toolbar

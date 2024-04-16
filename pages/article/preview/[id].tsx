@@ -27,9 +27,9 @@ function ArticlePage() {
     <div className="article h-screen p-4 flex flex-col gap-4 max-w-[680px] mx-auto">
       <Skeleton loading={!data}>
         {data && (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-4 pb-4">
             <div className="text-xl font-bold">{data.title}</div>
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-2">
               <Avatar
                 src={
                   (!data.user.avatar.startsWith('http') ? 'https://oss.hengzwl.com/' : '') +

@@ -22,7 +22,7 @@ body,
 
 .article {
   p {
-    margin: 10px 0;
+    margin: 15px 0;
   }
   img {
     display: inline-block;
@@ -40,7 +40,10 @@ body,
     font-size: 28px;
   }
   h2 {
-    font-size: 26px;
+    font-size: 22px;
+    line-height: 34px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec;
   }
   code {
     background-color: #f5f2f0;
@@ -48,12 +51,34 @@ body,
     font-family: monospace;
     padding: 3px;
   }
-}
-
-.w-e-text-container [data-slate-editor] h1,
-.w-e-text-container [data-slate-editor] h2,
-.w-e-text-container [data-slate-editor] h3,
-.w-e-text-container [data-slate-editor] h4,
-.w-e-text-container [data-slate-editor] h5 {
-  font-size: 28px;
+  pre > code {
+    word-wrap: normal;
+    font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+    hyphens: none;
+    line-height: 1.5;
+    margin: 0.5em 0;
+    overflow: auto;
+    padding: 1em;
+    tab-size: 4;
+    text-align: left;
+    text-shadow: 0 1px #fff;
+    white-space: pre;
+    word-break: normal;
+    word-spacing: normal;
+    background-color: #f5f2f0;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px 4px;
+    display: block;
+    font-size: 14px;
+    padding: 10px;
+    text-indent: 0;
+  }
+  .w-e-text-container [data-slate-editor] h1,
+  .w-e-text-container [data-slate-editor] h2,
+  .w-e-text-container [data-slate-editor] h3,
+  .w-e-text-container [data-slate-editor] h4,
+  .w-e-text-container [data-slate-editor] h5 {
+    font-size: 28px;
+    margin: 0px;
+  }
 }

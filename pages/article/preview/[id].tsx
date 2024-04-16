@@ -7,7 +7,6 @@ import { useFetch } from '@/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { EyeOutlined, LikeOutlined } from '@ant-design/icons';
-import { mutate } from 'swr';
 
 dayjs.extend(relativeTime);
 
@@ -53,7 +52,7 @@ function ArticlePage() {
             <div className="flex items-end justify-end">
               <Text
                 className="cursor-pointer"
-                style={{ fontSize: 14, lineHeight: 1 }}
+                style={{ fontSize: 16, lineHeight: 1 }}
                 type={data.like ? 'danger' : 'secondary'}
                 onClick={async () => {
                   await axios.post(`/api/article/${id}/like`);

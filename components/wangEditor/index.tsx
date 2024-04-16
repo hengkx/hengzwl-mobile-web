@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
-import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
+import { Boot, IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 import '@wangeditor/editor/dist/css/style.css';
 import axios from 'axios';
+import ImageWidthAuto from './ImageWidthAuto';
+
+const imageWidthAutoMenuConf = {
+  key: 'imageWidthAuto', // 定义 menu key ：要保证唯一、不重复（重要）
+  factory() {
+    return new ImageWidthAuto(); // 把 `YourMenuClass` 替换为你菜单的 class
+  },
+};
+
+Boot.registerMenu(imageWidthAutoMenuConf);
 
 interface WangEditorProps {
   html?: string;
@@ -33,6 +43,17 @@ function WangEditor({ onChange, ...props }: WangEditorProps) {
     // TS 语法
     // const editorConfig = {                         // JS 语法
     placeholder: '请输入内容...',
+    hoverbarKeys: {
+      image: {
+        menuKeys: [
+          'imageWidth30',
+          'imageWidth50',
+          'imageWidth100',
+          'imageWidthAuto',
+          'deleteImage',
+        ],
+      },
+    },
     MENU_CONF: {
       uploadImage: {
         server: `${axios.defaults.baseURL}/api/file/upload`,
@@ -45,6 +66,8 @@ function WangEditor({ onChange, ...props }: WangEditorProps) {
       },
     },
   };
+
+  // console.log(editor?.getAllMenuKeys());
 
   // 及时销毁 editor ，重要！
   useEffect(() => {

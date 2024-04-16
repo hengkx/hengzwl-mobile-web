@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { Article } from '.';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-const WangEditor = dynamic(() => import('../../components/WangEditor'), { ssr: false });
+const WangEditor = dynamic(() => import('../../components/wangEditor'), { ssr: false });
 
 function ArticlePage() {
   const [title, setTitle] = useState('');
@@ -46,6 +47,11 @@ function ArticlePage() {
         <Button type="primary" onClick={handleSave}>
           保存
         </Button>
+        {id !== 'add' && (
+          <Link href={`/article/preview/${id}`} passHref target="_blank">
+            <Button type="link">预览</Button>
+          </Link>
+        )}
       </div>
       <WangEditor html={html} onChange={setHtml} />
     </div>

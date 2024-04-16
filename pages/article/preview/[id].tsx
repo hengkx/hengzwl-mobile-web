@@ -6,7 +6,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useFetch } from '@/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, LikeOutlined } from '@ant-design/icons';
+import { mutate } from 'swr';
 
 dayjs.extend(relativeTime);
 
@@ -15,7 +16,7 @@ const { Text } = Typography;
 function ArticlePage() {
   const { id } = useParams() || {};
 
-  const { data } = useFetch<Article>(id ? `/api/article/${id}` : null);
+  const { data, mutate } = useFetch<Article>(id ? `/api/article/${id}` : null);
 
   useEffect(() => {
     if (id) {
@@ -49,6 +50,20 @@ function ArticlePage() {
               </div>
             </div>
             <div className="" dangerouslySetInnerHTML={{ __html: data.html }} />
+            <div className="flex items-end justify-end">
+              <Text
+                className="cursor-pointer"
+                style={{ fontSize: 14, lineHeight: 1 }}
+                type={data.like ? 'danger' : 'secondary'}
+                onClick={async () => {
+                  await axios.post(`/api/article/${id}/like`);
+                  mutate();
+                }}
+              >
+                <LikeOutlined />{' '}
+                {data.likeUserIds && data.likeUserIds.length > 0 ? data.likeUserIds.length : '赞'}
+              </Text>
+            </div>
           </div>
         )}
       </Skeleton>

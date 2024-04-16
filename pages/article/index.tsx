@@ -19,6 +19,8 @@ export interface Article {
   updatedAt: number;
   status: number;
   views: number;
+  like: boolean;
+  likeUserIds?: string[];
   user: User;
 }
 

@@ -1,5 +1,6 @@
 import { useFetch } from '@/hooks';
 import { Button, Space, Table } from 'antd';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
@@ -15,6 +16,7 @@ export interface Article {
   html: string;
   createdAt: number;
   updatedAt: number;
+  status: number;
   user: User;
 }
 
@@ -24,7 +26,7 @@ interface ArticleList {
 }
 
 function ArticlePage() {
-  const { data } = useFetch<ArticleList>('/api/article/admin');
+  const { data, mutate } = useFetch<ArticleList>('/api/article/admin');
 
   const router = useRouter();
 
@@ -50,10 +52,29 @@ function ArticlePage() {
             render: (text) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
           },
           {
+            title: '作者',
+            dataIndex: ['user', 'name'],
+          },
+          {
+            title: '状态',
+            dataIndex: 'status',
+            render: (text) => (text === 0 ? '未发布' : '已发布'),
+          },
+          {
             title: '操作',
             dataIndex: 'id',
-            render: (text) => (
+            render: (text, record) => (
               <Space>
+                <Button
+                  type="link"
+                  size="small"
+                  onClick={async () => {
+                    await axios.put(`/api/article/${text}/status`);
+                    await mutate();
+                  }}
+                >
+                  {record.status === 0 ? '发布' : '撤回'}
+                </Button>
                 <Button type="link" size="small" onClick={() => router.push(`/article/${text}`)}>
                   编辑
                 </Button>

@@ -25,7 +25,7 @@ export type ImageElement = {
 };
 
 class ImageWidthBaseClass implements IButtonMenu {
-  readonly title: string = 'auto'; // 菜单标题
+  readonly title: string = '自动'; // 菜单标题
   readonly tag = 'button';
   readonly value: string = 'auto'; // css width 的值
 

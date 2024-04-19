@@ -18,7 +18,9 @@ global {
   }
 
   interface Window {
-    frankieFinancial: any;
+    ReactNativeWebView?: {
+      postMessage: (message: string) => void;
+    };
   }
 
   export interface Collect {

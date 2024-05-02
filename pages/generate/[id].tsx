@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { Card, Typography, Watermark } from 'antd';
+import { Card, Image, Typography, Watermark } from 'antd';
 import dayjs from 'dayjs';
 import { ExpAwaken, Icon, Item } from '@/components';
 import { ClassMap, ClassTypeMap, MustShowWeaponIds, PosIds } from '@/constants';
@@ -67,9 +67,20 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
 
   const searchParams = useSearchParams();
 
+  const badges = useMemo(() => {
+    if (data) {
+      const items = CalcScore(data.badges, ClassTypeMap[data.classId]);
+      console.log(items);
+      return _.orderBy(_.uniqBy(_.orderBy(items, 'score', 'desc'), 'posId1'), 'posId1');
+    }
+    return [];
+  }, [data]);
+
+  console.log(badges);
+
   const specialItems = useMemo(() => {
     if (data) {
-      const items = [...data.guards, ...data.caps, ...data.crystals, ...data.badges].filter(
+      const items = [...data.guards, ...data.caps, ...data.crystals, ...badges].filter(
         (p) => p.score > 0
       );
       let mergedItems = [...data.runes, ...data.medals];
@@ -90,7 +101,7 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
       return [...items, ..._.chunk(mergedItems.slice(0, len), 3), ...mergedItems.slice(len)];
     }
     return [];
-  }, [data]);
+  }, [data, badges]);
 
   const armors = useMemo(() => {
     if (data) {
@@ -368,6 +379,16 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
                 )}
 
                 <div className="flex gap-2">
+                  {role.image && (
+                    <Image
+                      width={100}
+                      height={150}
+                      preview={false}
+                      src={`https://oss.hengzwl.com/chd/role/${role.image}`}
+                      fallback={`https://oss.hengzwl.com/chd/role/source/${role.image}`}
+                      alt="role"
+                    />
+                  )}
                   {renderWeapon(role)}
                   <div>
                     {pets

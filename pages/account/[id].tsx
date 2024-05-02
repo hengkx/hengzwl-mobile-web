@@ -54,19 +54,20 @@ function Item({ type, ...props }: any) {
           <div>
             {item.status.map((p: any, childIndex: number) => (
               <Text className="block" type="secondary" key={childIndex}>
-                {p.description} {p.id} <Text> {StatusScoreMap[p.id] * p.value}</Text>
+                {format(StatusMap[p.effectType], p.value)} {p.id}{' '}
+                <Text> {StatusScoreMap[p.id] * p.value}</Text>
               </Text>
             ))}
             {item.chaosStatuses.map((p: any, childIndex: number) => (
               <Text className="block" type="secondary" key={childIndex}>
-                {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
+                {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> type{' '}
                 {p.effectType}
               </Text>
             ))}
             {item.enchants.map((p: any, childIndex: number) => (
               <Text className="block" type="secondary" key={childIndex}>
-                {p.description} <Text>{StatusScoreMap[p.effectType] * p.value}</Text> effectType{' '}
-                {p.effectType}
+                {format(StatusMap[p.effectType], p.value)}
+                <Text>{StatusScoreMap[p.effectType] * p.value}</Text> type {p.effectType}
               </Text>
             ))}
           </div>
@@ -216,7 +217,7 @@ function Detail() {
     { key: '守护', label: '守护', children: <Item items={data.guards} /> },
     { key: '首饰', label: '首饰', children: <Item items={accessories} /> },
     ...data.packages
-      .filter((p) => p.type === '战斗')
+      .filter((p) => p.type === '装备')
       .map((p, index) => ({
         key: index.toString(),
         label: `${p.type}[${p.count}]`,

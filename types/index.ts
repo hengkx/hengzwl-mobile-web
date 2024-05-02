@@ -69,6 +69,7 @@ export interface Role {
   fairies: Fairy[];
   packages: Package[];
   gender: number;
+  image: string;
   titles: Title[];
   diplomacies?: Diplomacy[];
 }

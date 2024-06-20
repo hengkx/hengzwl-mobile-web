@@ -11,7 +11,7 @@ import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { Item } from '@/types';
 import { Frame } from '@/components';
-import { device } from '../_app';
+import { version } from '../_app';
 
 const awakenTreeMap = getMap(AwakenTree);
 const awakenTreeIconMap = getMap(AwakenTree, 'iconInstance') as any;
@@ -129,7 +129,7 @@ function AwakenPage({ data }: { data: RoleAwaken }) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
   const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/awaken/${params?.id}`, {
-    headers: { device },
+    headers: { version },
   });
   const data = await res.json();
   return { props: { data: data.data } };

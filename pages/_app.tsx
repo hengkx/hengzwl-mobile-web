@@ -16,10 +16,12 @@ if (process.env.NODE_ENV === 'development') {
 
 // axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
 
+export const version = '1.11.2';
+
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
   (config) => {
-    config.headers.set('version', '1.11.2');
+    config.headers.set('version', version);
     config.headers.set('bundleId', 'web');
     config.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     return config;

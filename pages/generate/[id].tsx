@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { GetServerSideProps } from 'next';
 import { CalcScore, getMap } from '@/utils';
 import classNames from 'classnames';
-import { device } from '../_app';
+import { version } from '../_app';
 
 const { Text } = Typography;
 const GemOrder = [2, 6, 10, 3, 7, 11, 4, 8, 12, 5, 9, 13, 1];
@@ -517,8 +517,7 @@ function Detail({ data, ultras, diplomacySups }: DetailProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
-  const headers = { device };
-
+  const headers = { version };
   const res = await fetch(`${axios.defaults.baseURL}/api/chd/info/${params?.id}`, {
     headers,
   });

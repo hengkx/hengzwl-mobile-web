@@ -173,11 +173,11 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 最大生命值
    */
-  30: 1,
+  30: 0.5,
   /**
    * 最大生命值%
    */
-  31: 2000,
+  31: 1000,
   /**
    * 最大法力值
    */
@@ -209,7 +209,7 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 魔法抵抗力
    */
-  70: 1,
+  70: 0.5,
   /**
    * 最终减伤
    */
@@ -397,7 +397,7 @@ export const StatusScoreMap: Record<string, number> = {
   /**
    * 防御力
    */
-  216: 5,
+  216: 3,
   /**
    * 防御力%
    */

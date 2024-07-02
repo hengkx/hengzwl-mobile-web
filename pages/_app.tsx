@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // axios.defaults.baseURL = 'https://api.chd.hengzwl.com';
 
-export const version = '1.11.2';
+export const version = '1.11.5';
 
 axios.interceptors.request.clear();
 axios.interceptors.request.use(
